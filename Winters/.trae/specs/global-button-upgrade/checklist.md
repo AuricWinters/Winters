@@ -1,0 +1,21 @@
+# Checklist
+
+- [x] 全局按钮基础类已定义（.btn-base）在main.css中
+- [x] 渐变背景正确应用（#8B5CF6 → #6366F1紫蓝渐变）
+- [x] 默认状态有柔和的基础阴影（box-shadow多层组合）
+- [x] Hover时显示白色光晕效果（rgba(255,255,255,0.6)核心光晕）
+- [x] 光晕颜色为白色/浅色系（三层光晕：白+紫+影）
+- [x] Hover时有上浮动画（translateY -2px + scale 1.02）
+- [x] 过渡动画流畅（0.3s ease / 0.4s cubic-bezier）
+- [x] .btn-primary变体样式完整（强渐变+强光晕）
+- [x] .btn-secondary变体样式完整（玻璃态+中等光晕+backdrop-filter）
+- [x] .btn-ghost变体样式完整（透明+边框+hover填充+轻光晕）
+- [x] Header.vue登录按钮已升级（header.css）
+- [x] Login.vue表单按钮已升级（渐变+白色光晕）
+- [x] Register.vue表单按钮已升级（与Login一致）
+- [x] Projects.vue项目卡片按钮已升级（primary/secondary双变体）
+- [x] Lab.vue实验室卡片按钮已升级（icon-btn三层光晕）
+- [x] Contact.vue等页面按钮已检查并升级（submit-btn全局样式）
+- [x] 所有按钮在不同背景下可读性良好（对比度符合WCAG标准）
+- [x] 移动端触摸反馈正常（transition优化）
+- [x] 按钮颜色不再单调（使用紫蓝渐变替代纯色）

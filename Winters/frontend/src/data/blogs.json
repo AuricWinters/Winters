@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "2026年我的第一篇博客",
+    "date": "2026-04-14",
+    "summary": "这是使用纯前端搭建的博客系统，完全基于本地 JSON 数据驱动，无需后端服务。",
+    "content": "这里是正文内容... 支持 Markdown 格式的话可以更好。"
+  },
+  {
+    "id": 2,
+    "title": "Vue3 组合式 API 实践",
+    "date": "2026-04-10",
+    "summary": "记录在项目中使用 Composition API 的心得体会，如何优雅地抽离逻辑代码。",
+    "content": "Vue3 的 Composition API 极大地提高了代码的复用性和可维护性..."
+  },
+  {
+    "id": 3,
+    "title": "Canvas 粒子动画探索",
+    "date": "2026-03-25",
+    "summary": "分享我在实现个人网站实验室模块中粒子特效时的数学原理和性能优化经验。",
+    "content": "利用 requestAnimationFrame 进行性能优化，减少不必要的重绘..."
+  }
+]

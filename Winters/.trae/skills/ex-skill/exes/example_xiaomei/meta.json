@@ -1,0 +1,22 @@
+{
+  "name": "小美（示例）",
+  "slug": "example_xiaomei",
+  "created_at": "2026-03-31T00:00:00Z",
+  "updated_at": "2026-03-31T00:00:00Z",
+  "version": "v1",
+  "profile": {
+    "duration": "两年半",
+    "how_met": "大学同学",
+    "time_since_breakup": "一年",
+    "occupation": "UI 设计师",
+    "gender": "女",
+    "mbti": "ENFP"
+  },
+  "tags": {
+    "personality": ["爱撒娇", "细腻敏感", "翻旧账", "言语肯定"],
+    "attachment": "焦虑型"
+  },
+  "impression": "嘴上说不在意 其实比谁都在意 生气的时候说的反话要反着听",
+  "knowledge_sources": [],
+  "corrections_count": 0
+}

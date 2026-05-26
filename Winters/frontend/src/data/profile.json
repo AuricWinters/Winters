@@ -1,0 +1,10 @@
+{
+  "name": "Winters",
+  "bio": "前端开发者 / 热爱开源与分享",
+  "avatar": "/img/tx.jpg",
+  "skills": ["Vue 3", "Vite", "JavaScript", "CSS3", "HTML5", "Node.js"],
+  "socials": {
+    "github": "https://github.com",
+    "email": "mailto:example@example.com"
+  }
+}

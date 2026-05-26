@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>粒子反弹测试 - 调试模式</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #0f0f1a;
+    }
+    canvas {
+      display: block;
+    }
+    .info {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .debug {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 100;
+      pointer-events: none;
+      max-height: 200px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="particles-background"></canvas>
+  <div class="info">
+    <div>粒子反弹测试 - 调试模式</div>
+    <div>粒子速度：0.5</div>
+    <div>观察粒子碰到边界时的反弹效果</div>
+    <div>按 F12 查看控制台调试信息</div>
+  </div>
+  <div class="debug" id="debugInfo">调试信息将显示在这里</div>
+  <script src="particles-attract.js"></script>
+  <script>
+    // 添加调试输出
+    (function() {
+      var originalInit = Particles.init;
+      Particles.init = function(options) {
+        console.log('Particles.init called with options:', options);
+        var plugin = originalInit.call(this, options);
+        
+        // 添加调试输出
+        setInterval(function() {
+          if (plugin.storage && plugin.storage.length > 0) {
+            var particle = plugin.storage[0];
+            var debugInfo = document.getElementById('debugInfo');
+            if (debugInfo) {
+              debugInfo.innerHTML = 
+                '粒子 1 状态:<br>' +
+                '位置：(' + particle.x.toFixed(2) + ', ' + particle.y.toFixed(2) + ')<br>' +
+                '速度：(' + particle.vx.toFixed(4) + ', ' + particle.vy.toFixed(4) + ')<br>' +
+                '原始速度：(' + particle.originalVx.toFixed(4) + ', ' + particle.originalVy.toFixed(4) + ')<br>' +
+                '画布尺寸：' + plugin.element.width + 'x' + plugin.element.height + '<br>' +
+                '实际尺寸：' + window.innerWidth + 'x' + window.innerHeight;
+            }
+          }
+        }, 500);
+        
+        return plugin;
+      };
+    })();
+    
+    Particles.init({
+      selector: '.particles-background',
+      maxParticles: 50,
+      sizeVariations: 5,
+      speed: 0.5,
+      color: ['#8b5cf6', '#6366f1', '#a78bfa', '#c4b5fd'],
+      minDistance: 150,
+      connectParticles: true,
+      mouseAttract: true,
+      attractRadius: 250,
+      attractStrength: 0.1,
+      attractEase: 0.15,
+    });
+  </script>
+</body>
+</html>
