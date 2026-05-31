@@ -110,6 +110,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/system',
+      name: 'System',
+      component: () => import('../views/System.vue'),
+      meta: {
+        title: '自驱工作站 - Winters',
+      },
+    },
+    {
       path: '/learning',
       name: 'Learning',
       component: () => import('../views/Learning.vue'),

@@ -47,6 +47,7 @@ Winters/
 | `/drive` | 云盘 | 否 |
 | `/care` | 暖心关怀 | 否 |
 | `/learning` | AI 学习路线 | 否 |
+| `/system` | 自驱工作站 | 否 |
 | `/login` `/register` `/reset-password` | 认证 | 否 |
 | `/profile` | 个人中心 | **是** |
 

@@ -1,0 +1,525 @@
+<template>
+  <div class="sys-page">
+    <canvas class="particles-background"></canvas>
+
+    <div class="sys-container">
+      <!-- ===== Hero ===== -->
+      <header class="sys-hero scroll-reveal">
+        <div class="hero-badge">🧠 内部文档</div>
+        <h1 class="hero-title">
+          Claude Code<br /><span class="hero-accent">自驱工作站</span>
+        </h1>
+        <p class="hero-sub">
+          一套让 AI 理解项目、自动干活、记住偏好的完整体系。
+          从开机扫描市场到写完代码推送 GitHub，每一步背后都有配置在驱动。
+        </p>
+      </header>
+
+      <!-- ===== 全景图 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">01</span> 全景架构</h2>
+        <p class="block-desc">整个工作站由「全局大脑」+「项目躯体」+「外部手臂」三部分组成。</p>
+
+        <div class="arch-diagram">
+          <pre class="arch-code"><code>┌─────────────────────────────────────────────────────────┐
+│                  <em>~/.claude/</em>  全局「大脑」               │
+│                                                         │
+│  settings.json    → 模型/密钥/Hooks/市场/插件              │
+│  CLAUDE.md        → 7步工作流 + 指令速查 + 文档同步规则     │
+│  memory/          → 跨项目持久记忆                         │
+│     └─ projects/D--project/ → Winters 专属记忆            │
+└─────────────────────────────────────────────────────────┘
+        │          │
+        ▼          ▼
+┌───────────────────┐  ┌───────────────────┐
+│  <em>Winters/</em>       │  │  MCP 服务 (手臂)    │
+│  项目「躯体」        │  │                   │
+│                   │  │  GitHub API       │
+│  CLAUDE.md        │  │  ├─ 查 PR/文件     │
+│  README.md        │  │  └─ 搜代码         │
+│  .mcp.json        │  │                   │
+│  .claude/         │  │  SQLite           │
+│  .trae/specs/     │  │  └─ 数据库直连      │
+│  frontend/        │  │                   │
+│  backend/         │  │                   │
+└───────────────────┘  └───────────────────┘</code></pre>
+        </div>
+      </section>
+
+      <!-- ===== 启动流程 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">02</span> 启动流程</h2>
+        <p class="block-desc">每次打开 Claude Code，背后都在自动做这些事：</p>
+
+        <div class="flow-cards">
+          <div class="flow-card" v-for="(step, i) in bootSteps" :key="i">
+            <div class="flow-num">{{ i + 1 }}</div>
+            <div class="flow-icon">{{ step.icon }}</div>
+            <div class="flow-info">
+              <h4>{{ step.title }}</h4>
+              <p>{{ step.desc }}</p>
+              <code v-if="step.code">{{ step.code }}</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 六层加载 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">03</span> 上下文加载</h2>
+        <p class="block-desc">开发时，每一条对话背后，AI 已经读了这 6 层上下文：</p>
+
+        <div class="layer-stack">
+          <div class="layer" v-for="layer in layers" :key="layer.level" :style="{ '--layer-opacity': 0.4 + layer.level * 0.1 }">
+            <div class="layer-head">
+              <span class="layer-lv">L{{ layer.level }}</span>
+              <span class="layer-name">{{ layer.name }}</span>
+              <span class="layer-file">{{ layer.file }}</span>
+            </div>
+            <p class="layer-what">{{ layer.what }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 双模型 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">04</span> 双模型调度</h2>
+        <p class="block-desc">一个快一个强，各干各的活：</p>
+
+        <div class="dual-grid">
+          <div class="dual-card primary-model">
+            <div class="dual-badge">主力</div>
+            <h3>deepseek-v4-pro</h3>
+            <ul>
+              <li>跟你直接对话</li>
+              <li>Plan 模式出方案</li>
+              <li>写代码 / 改代码</li>
+              <li>复杂决策判断</li>
+            </ul>
+          </div>
+          <div class="dual-card secondary-model">
+            <div class="dual-badge">副手</div>
+            <h3>deepseek-v4-flash</h3>
+            <ul>
+              <li>SessionStart 扫描市场</li>
+              <li>子 Agent（审查/搜索）</li>
+              <li>Workflow 分发的工人</li>
+              <li>轻量重复任务</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 权限系统 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">05</span> 权限系统</h2>
+        <p class="block-desc">Plan ↔ Auto 双模式 + 白名单机制，安全不碍事。</p>
+
+        <div class="perm-grid">
+          <div class="perm-card">
+            <h4>🧠 Plan 模式</h4>
+            <p>所有操作都要你确认。用来出方案、讨论架构。用完一次即切回 Auto。</p>
+          </div>
+          <div class="perm-card">
+            <h4>⚡ Auto 模式</h4>
+            <p>白名单里的命令直接跑。写代码、删文件、启动服务 —— 不打断你。</p>
+          </div>
+        </div>
+
+        <div class="perm-example">
+          <h4>📋 当前白名单</h4>
+          <div class="perm-tags">
+            <span class="perm-tag">git *</span>
+            <span class="perm-tag">npx vite *</span>
+            <span class="perm-tag">node *</span>
+            <span class="perm-tag">npx playwright *</span>
+            <span class="perm-tag">curl localhost</span>
+            <span class="perm-tag">Read project/**</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== MCP ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">06</span> MCP 外部手臂</h2>
+        <p class="block-desc">Model Context Protocol —— 让 AI 能伸手操作外部系统。</p>
+
+        <div class="mcp-cards">
+          <div class="mcp-card">
+            <div class="mcp-icon">🐙</div>
+            <h3>GitHub MCP</h3>
+            <p>读仓库文件、搜代码、查 PR、管理 Issues —— 不需要你给 token，配置在 settings.json 里。</p>
+            <code>$env:GITHUB_TOKEN</code>
+          </div>
+          <div class="mcp-card">
+            <div class="mcp-icon">🗄️</div>
+            <h3>SQLite MCP</h3>
+            <p>直连 winters.db，查用户数据、验证注册结果，不需要你导出 CSV。</p>
+            <code>backend/data/winters.db</code>
+          </div>
+          <div class="mcp-card">
+            <div class="mcp-icon">💻</div>
+            <h3>IDE MCP</h3>
+            <p>VS Code 集成 —— 获取诊断信息、在 Jupyter Notebook 里执行代码。</p>
+            <code>内置连接</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CLAUDE.md 链 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">07</span> CLAUDE.md 文档链</h2>
+        <p class="block-desc">一份文件，三个人看：</p>
+
+        <div class="doc-chain">
+          <div class="chain-step">
+            <div class="chain-icon">🤖</div>
+            <h4>TRAE IDE Agent</h4>
+            <p>读 CLAUDE.md → 了解技术栈和路由 → 生成精准的 spec.md</p>
+          </div>
+          <div class="chain-arrow">→</div>
+          <div class="chain-step">
+            <div class="chain-icon">🧠</div>
+            <h4>Claude Code</h4>
+            <p>读 CLAUDE.md → 知道架构约定 → 写出符合项目规范的代码</p>
+          </div>
+          <div class="chain-arrow">→</div>
+          <div class="chain-step">
+            <div class="chain-icon">👤</div>
+            <h4>你（人类）</h4>
+            <p>读 README.md → 了解项目功能 → 快速上手启动</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 记忆系统 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">08</span> 记忆系统</h2>
+        <p class="block-desc">跨会话持久化。区分「什么项目都要遵守」vs「只对这个项目有意义」。</p>
+
+        <div class="mem-grid">
+          <div class="mem-card global-mem">
+            <h4>🌐 全局记忆</h4>
+            <code>~/.claude/CLAUDE.md</code>
+            <ul>
+              <li>永远用中文对话</li>
+              <li>7 步开发工作流</li>
+              <li>指令优先提醒规则</li>
+              <li>文档同步规则</li>
+            </ul>
+          </div>
+          <div class="mem-card local-mem">
+            <h4>📁 项目记忆</h4>
+            <code>~/.claude/projects/D--project/memory/</code>
+            <ul>
+              <li>CSS 变量必须用，禁止硬编码</li>
+              <li>桌面优先响应式策略</li>
+              <li>Winters 项目当前状态</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 完整开发流 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">09</span> 完整开发闭环</h2>
+        <p class="block-desc">从想法到上线的 7 步流水线，每步谁做什么，清清楚楚。</p>
+
+        <div class="pipeline">
+          <div class="pipe-step" v-for="s in pipeline" :key="s.step">
+            <div class="pipe-num">{{ s.step }}</div>
+            <div class="pipe-who">{{ s.who }}</div>
+            <div class="pipe-what">{{ s.what }}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 关键文件速查 ===== -->
+      <section class="sys-block scroll-reveal">
+        <h2 class="block-title"><span class="block-num">10</span> 关键文件速查</h2>
+
+        <div class="file-table-wrap">
+          <table class="file-table">
+            <thead>
+              <tr><th>文件</th><th>作用</th><th>修改频率</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>~/.claude/settings.json</code></td><td>全局配置（模型、密钥、Hook、市场）</td><td>几乎不改</td></tr>
+              <tr><td><code>~/.claude/CLAUDE.md</code></td><td>全局规则（工作流、指令、习惯）</td><td>偶尔补充</td></tr>
+              <tr><td><code>Winters/CLAUDE.md</code></td><td>AI 项目手册</td><td>每次加功能同步</td></tr>
+              <tr><td><code>Winters/README.md</code></td><td>人类项目介绍（GitHub 首页）</td><td>每次加功能同步</td></tr>
+              <tr><td><code>Winters/.claude/settings.local.json</code></td><td>项目权限白名单</td><td>遇到新命令时加</td></tr>
+              <tr><td><code>Winters/.mcp.json</code></td><td>外部工具连接配置</td><td>几乎不改</td></tr>
+              <tr><td><code>~/.claude/projects/D--project/memory/</code></td><td>项目专属持久记忆</td><td>发现新约定时写</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="sys-footer">
+        <p>Made with ❤️ by Claude Code · 驱动 Winters 项目的自驱工作站</p>
+      </footer>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useParticles } from '../composables/useParticles.js';
+import { useScrollReveal } from '../composables/useScrollReveal.js';
+
+useParticles('.particles-background');
+useScrollReveal();
+
+const bootSteps = [
+  { icon: '📂', title: '加载全局 CLAUDE.md', desc: '读到你的语言偏好、工作流、指令规则', code: '~/.claude/CLAUDE.md' },
+  { icon: '⚙️', title: '加载全局 settings.json', desc: '连哪个模型、用什么密钥、开什么插件', code: 'ANTHROPIC_MODEL=deepseek-v4-pro' },
+  { icon: '🔍', title: 'SessionStart Hook 触发', desc: '后台 Agent 扫描 Claudest + Antigravity 两个市场，有新插件自动装', code: '扫描社区 Skills…' },
+  { icon: '📖', title: '加载项目 CLAUDE.md', desc: '知道你是 Vue 3 项目、14 条路由、CSS 变量约定', code: 'Winters/CLAUDE.md' },
+  { icon: '🔐', title: '加载权限白名单', desc: 'Auto 模式下哪些命令可以直接跑，不用问你', code: '.claude/settings.local.json' },
+  { icon: '🔗', title: '连接 MCP 服务', desc: '接上 GitHub API 和 SQLite 数据库', code: '.mcp.json' },
+];
+
+const layers = [
+  { level: 1, name: '全局规则', file: '~/.claude/CLAUDE.md', what: '怎么说话、什么流程、何时用哪个指令' },
+  { level: 2, name: '全局配置', file: '~/.claude/settings.json', what: '模型/api密钥/市场/Hook/插件' },
+  { level: 3, name: '项目文档', file: 'Winters/CLAUDE.md', what: '技术栈、14条路由、4个Store、CSS变量体系' },
+  { level: 4, name: '项目权限', file: 'Winters/.claude/settings.local.json', what: '哪些命令 Auto 模式直接跑' },
+  { level: 5, name: '项目记忆', file: 'memory/projects/D--project/', what: '编码约定、项目状态、经验教训' },
+  { level: 6, name: '外部工具', file: '.mcp.json', what: 'GitHub API 操作、SQLite 数据库读写' },
+];
+
+const pipeline = [
+  { step: '①', who: 'TRAE Agent', what: '/spec → spec.md + tasks.md + checklist.md' },
+  { step: '②', who: 'Claude (Plan)', what: '读 3 文件 → 出方案 → 用户审批' },
+  { step: '③', who: 'Claude (Auto)', what: '自动写代码，复杂任务 Workflow 并行' },
+  { step: '④', who: '用户 /code-review', what: '多角度审查 → 出报告' },
+  { step: '⑤', who: 'Claude (Auto)', what: '有问题才修，没问题跳过' },
+  { step: '⑥', who: '用户 /simplify', what: '去冗余、抽重复、优化结构' },
+  { step: '⑦', who: '用户 /verify', what: '启动应用验证 → 收工' },
+];
+</script>
+
+<style scoped>
+.sys-page { position: relative; min-height: 100vh; }
+
+.sys-container {
+  position: relative; z-index: 10;
+  max-width: 860px; margin: 0 auto;
+  padding: 60px 24px 40px;
+}
+
+/* ===== Hero ===== */
+.sys-hero { text-align: center; margin-bottom: 56px; }
+.hero-badge {
+  display: inline-block; padding: 6px 18px;
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary); border-radius: 20px;
+  font-size: 13px; font-weight: 600; margin-bottom: 20px;
+}
+.hero-title {
+  font-size: 52px; font-weight: 900; line-height: 1.2; margin: 0 0 20px;
+  color: var(--text-main);
+}
+.hero-accent {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub { font-size: 17px; color: var(--text-secondary); line-height: 1.7; max-width: 640px; margin: 0 auto; }
+
+/* ===== Section blocks ===== */
+.sys-block { margin-bottom: 56px; }
+.block-title {
+  font-size: 26px; font-weight: 800; color: var(--text-main);
+  display: flex; align-items: center; gap: 12px; margin: 0 0 8px;
+}
+.block-num {
+  font-size: 14px; color: var(--primary); background: rgba(var(--primary-rgb), 0.08);
+  padding: 4px 12px; border-radius: 8px; font-weight: 700;
+}
+.block-desc { color: var(--text-secondary); font-size: 15px; margin: 0 0 24px; }
+
+/* ===== Architecture diagram ===== */
+.arch-diagram {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-md);
+  overflow-x: auto;
+}
+.arch-code {
+  margin: 0; font-size: 13px; line-height: 1.8; color: var(--text-secondary);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+.arch-code em { color: var(--primary); font-style: normal; font-weight: 700; }
+
+/* ===== Flow cards ===== */
+.flow-cards { display: flex; flex-direction: column; gap: 14px; }
+.flow-card {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--bg-card); border-radius: 14px; padding: 20px 24px;
+  box-shadow: var(--shadow-sm); border-left: 4px solid var(--primary);
+  transition: all 0.2s;
+}
+.flow-card:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+.flow-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.flow-icon { font-size: 24px; flex-shrink: 0; }
+.flow-info h4 { margin: 0 0 4px; font-size: 15px; color: var(--text-main); }
+.flow-info p { margin: 0 0 6px; font-size: 13px; color: var(--text-secondary); }
+.flow-info code {
+  display: inline-block; padding: 3px 10px; background: rgba(var(--primary-rgb), 0.06);
+  border-radius: 6px; font-size: 12px; color: var(--primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== Layer stack ===== */
+.layer-stack { display: flex; flex-direction: column; gap: 10px; }
+.layer {
+  background: var(--bg-card); border-radius: 12px; padding: 16px 22px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid rgba(var(--primary-rgb), var(--layer-opacity, 0.5));
+}
+.layer-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.layer-lv {
+  font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;
+  background: rgba(var(--primary-rgb), 0.1); color: var(--primary);
+}
+.layer-name { font-weight: 700; font-size: 15px; color: var(--text-main); }
+.layer-file { font-size: 12px; color: var(--text-secondary); font-family: monospace; margin-left: auto; }
+.layer-what { font-size: 13px; color: var(--text-secondary); margin: 0; padding-left: 44px; }
+
+/* ===== Dual model ===== */
+.dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.dual-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-sm);
+}
+.primary-model { border-top: 3px solid var(--primary); }
+.secondary-model { border-top: 3px solid var(--secondary); }
+.dual-badge {
+  display: inline-block; padding: 3px 12px; border-radius: 10px;
+  font-size: 11px; font-weight: 700; margin-bottom: 12px;
+}
+.primary-model .dual-badge { background: rgba(var(--primary-rgb), 0.1); color: var(--primary); }
+.secondary-model .dual-badge { background: rgba(var(--secondary-rgb), 0.1); color: var(--secondary); }
+.dual-card h3 { margin: 0 0 14px; font-size: 20px; color: var(--text-main); }
+.dual-card ul { margin: 0; padding-left: 20px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+/* ===== Permissions ===== */
+.perm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.perm-card {
+  background: var(--bg-card); border-radius: 14px; padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.perm-card h4 { margin: 0 0 8px; font-size: 18px; color: var(--text-main); }
+.perm-card p { margin: 0; font-size: 14px; color: var(--text-secondary); }
+.perm-example { background: var(--bg-card); border-radius: 14px; padding: 20px 24px; box-shadow: var(--shadow-sm); }
+.perm-example h4 { margin: 0 0 14px; font-size: 15px; color: var(--text-main); }
+.perm-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.perm-tag {
+  padding: 5px 14px; background: rgba(var(--primary-rgb), 0.06);
+  border-radius: 20px; font-size: 13px; color: var(--primary);
+  font-family: monospace; font-weight: 500;
+}
+
+/* ===== MCP ===== */
+.mcp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mcp-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-sm);
+  text-align: center; transition: all 0.2s;
+}
+.mcp-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.mcp-icon { font-size: 40px; margin-bottom: 14px; }
+.mcp-card h3 { margin: 0 0 8px; font-size: 17px; color: var(--text-main); }
+.mcp-card p { margin: 0 0 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.mcp-card code {
+  font-size: 11px; padding: 4px 10px; background: rgba(var(--primary-rgb), 0.06);
+  border-radius: 6px; color: var(--primary); font-family: monospace;
+}
+
+/* ===== CLAUDE.md chain ===== */
+.doc-chain { display: flex; align-items: flex-start; gap: 0; justify-content: center; flex-wrap: wrap; }
+.chain-step {
+  flex: 1; min-width: 180px; max-width: 220px;
+  text-align: center; padding: 24px 16px;
+  background: var(--bg-card); border-radius: 14px; box-shadow: var(--shadow-sm);
+}
+.chain-icon { font-size: 36px; margin-bottom: 10px; }
+.chain-step h4 { margin: 0 0 6px; font-size: 15px; color: var(--text-main); }
+.chain-step p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.chain-arrow {
+  display: flex; align-items: center; font-size: 28px; color: var(--primary);
+  padding: 0 8px; flex-shrink: 0; margin-top: 36px;
+}
+
+/* ===== Memory ===== */
+.mem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mem-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-sm);
+}
+.mem-card h4 { margin: 0 0 6px; font-size: 17px; color: var(--text-main); }
+.mem-card > code {
+  display: inline-block; margin-bottom: 14px; padding: 4px 10px;
+  background: rgba(var(--primary-rgb), 0.06); border-radius: 6px;
+  font-size: 11px; color: var(--primary); font-family: monospace;
+}
+.mem-card ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+.global-mem { border-top: 3px solid var(--primary); }
+.local-mem { border-top: 3px solid var(--secondary); }
+
+/* ===== Pipeline ===== */
+.pipeline { display: flex; flex-direction: column; gap: 10px; }
+.pipe-step {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 22px; background: var(--bg-card);
+  border-radius: 12px; box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+.pipe-step:hover { transform: translateX(4px); }
+.pipe-num {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px; flex-shrink: 0;
+}
+.pipe-who {
+  width: 140px; font-size: 13px; font-weight: 700; color: var(--primary);
+  flex-shrink: 0;
+}
+.pipe-what { font-size: 14px; color: var(--text-secondary); }
+
+/* ===== File table ===== */
+.file-table-wrap { overflow-x: auto; }
+.file-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.file-table th {
+  text-align: left; padding: 12px 16px; background: rgba(var(--primary-rgb), 0.06);
+  color: var(--text-main); font-weight: 700; border-radius: 8px 8px 0 0;
+}
+.file-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
+.file-table tr:last-child td { border-bottom: none; }
+.file-table code { color: var(--primary); font-family: monospace; font-size: 12px; }
+.file-table tr:hover td { background: rgba(var(--primary-rgb), 0.02); }
+
+/* ===== Footer ===== */
+.sys-footer { text-align: center; padding: 40px 0 20px; color: var(--text-secondary); font-size: 13px; opacity: 0.6; }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .hero-title { font-size: 36px; }
+  .dual-grid, .perm-grid, .mcp-cards, .mem-grid { grid-template-columns: 1fr; }
+  .doc-chain { flex-direction: column; align-items: center; }
+  .chain-arrow { transform: rotate(90deg); margin-top: 4px; }
+  .pipe-who { width: 100px; }
+}
+@media (max-width: 480px) {
+  .sys-container { padding: 40px 16px 30px; }
+  .hero-title { font-size: 28px; }
+  .arch-code { font-size: 10px; }
+  .pipe-who { width: 80px; font-size: 11px; }
+  .pipe-what { font-size: 12px; }
+}
+</style>
