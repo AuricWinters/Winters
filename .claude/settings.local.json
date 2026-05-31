@@ -2,12 +2,46 @@
   "permissions": {
     "allow": [
       "Bash(git init *)",
-      "Bash(ls -d Winters/frontend/node_modules)",
-      "Bash(ls -d Winters/backend/__pycache__)",
-      "Bash(ls -d Winters/backend/.venv)",
+      "Bash(ls -d frontend/node_modules)",
+      "Bash(ls -d backend/__pycache__)",
+      "Bash(ls -d backend/.venv)",
       "Bash(ls -d .trae)",
       "Bash(ls -d .codeartsdoer)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "WebFetch(domain:github.com)",
+      "Bash(git ls-remote *)",
+      "Bash(git branch *)",
+      "Bash(git commit --amend -m ' *)",
+      "Bash(gh pr *)",
+      "Bash(curl -s http://localhost:3001/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/register)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/reset-password)",
+      "Bash(npx vite *)",
+      "Bash(git *)",
+      "Bash(node *)",
+      "Bash(npx playwright *)",
+      "Bash(grep -v \"^total\\\\|^d.*\\\\.\\\\.$\\\\|^.git/\")",
+      "Read(//d/d/project/**)",
+      "Bash(mv /d/project/frontend /d/project/frontend)",
+      "Bash(mv /d/project/backend /d/project/backend)",
+      "Bash(mv /d/project/.trae /d/project/.trae)",
+      "Bash(mv /d/project/.codeartsdoer /d/project/.codeartsdoer)",
+      "Bash(mv /d/project/CLAUDE.md /d/project/CLAUDE.md)",
+      "Bash(kill 38420 29832 28020 9676 32448 24952)",
+      "Bash(tasklist)",
+      "Bash(rm /d/project/Winters/.gitignore)",
+      "Bash(rmdir /d/project/Winters/frontend/node_modules)",
+      "Bash(rmdir /d/project/Winters/frontend)",
+      "Bash(rmdir /d/project/Winters)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "github",
+    "sqlite"
+  ]
 }

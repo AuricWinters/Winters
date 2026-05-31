@@ -9,6 +9,8 @@ venv/
 dist/
 build/
 *.egg-info/
+.vite/
+.cache/
 
 # IDE / 编辑器
 .idea/
@@ -19,8 +21,8 @@ build/
 
 # 环境变量
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # 系统文件
 .DS_Store
@@ -28,3 +30,6 @@ Thumbs.db
 
 # 日志
 *.log
+
+# IDE specs
+.codeartsdoer/

@@ -1,0 +1,556 @@
+/* ============================================
+   认证页面公共样式
+   被 Login / Register / ResetPassword 共享
+   全部使用 CSS 变量，响应主题切换
+   ============================================ */
+
+/* ========== 页面基础布局 ========== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* ========== 粒子背景 ========== */
+.particles-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ========== 动态背景 + 浮动光球 ========== */
+.auth-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-main);
+}
+
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: float 20s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 600px;
+  height: 600px;
+  background: var(--primary-light);
+  top: -200px;
+  left: -200px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent);
+  bottom: -150px;
+  right: -150px;
+  animation-delay: -7s;
+}
+
+.orb-3 {
+  width: 400px;
+  height: 400px;
+  background: var(--primary-light);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+}
+
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--primary-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--primary-rgb), 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(20px, 30px) scale(1.02);
+  }
+}
+
+/* ========== 主容器（玻璃拟态卡片） ========== */
+.auth-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 600px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== 品牌区域（左侧渐变 + 图案叠加） ========== */
+.brand-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--secondary) 100%);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.brand-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* ========== 表单区域（右侧） ========== */
+.form-section {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.auth-card.shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+/* ========== 表单组件 ========== */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.has-error .input-wrapper {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.form-group.has-error .input-wrapper:focus-within {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.label-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--primary);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+  outline: none;
+}
+
+.input-wrapper input {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--text-main);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-wrapper input:focus-visible {
+  outline: none;
+}
+
+.input-wrapper input::placeholder {
+  color: var(--text-light);
+}
+
+.input-wrapper * {
+  box-sizing: border-box;
+}
+
+.phone-prefix {
+  padding-left: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-right: 1px solid var(--border-color);
+  padding-right: 12px;
+  margin-right: 12px;
+}
+
+.input-clear,
+.password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-right: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: color 0.2s ease;
+}
+
+.input-clear:hover,
+.password-toggle:hover {
+  color: var(--text-secondary);
+}
+
+.input-clear svg,
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.code-input input {
+  padding-right: 120px;
+}
+
+.code-btn {
+  position: absolute;
+  right: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.code-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+.code-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  font-size: 13px;
+  color: #ef4444;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== 提交按钮（粉红渐变 + 白色光晕） ========== */
+.submit-btn {
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 14px rgba(var(--primary-rgb), 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 25px rgba(255, 255, 255, 0.6),
+    0 0 50px rgba(var(--primary-rgb), 0.4),
+    0 8px 25px rgba(var(--primary-rgb), 0.5);
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+}
+
+.submit-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== 分隔线 + 第三方登录 + 底部链接 ========== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 28px 0;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+.social-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.social-btn:hover {
+  background: var(--bg-main);
+  border-color: var(--text-light);
+  transform: translateY(-1px);
+}
+
+.social-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.social-btn.wechat {
+  color: #07c160;
+}
+
+.social-btn.wechat:hover {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.social-btn.github {
+  color: #1f2937;
+}
+
+.social-btn.github:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.auth-bottom-link {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.auth-bottom-link a {
+  margin-left: 6px;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-bottom-link a:hover {
+  color: var(--primary-dark);
+}
+
+/* ========== 响应式布局 ========== */
+@media (max-width: 900px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .brand-section {
+    display: none;
+  }
+
+  .form-section {
+    padding: 40px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 0;
+    background: var(--bg-card);
+  }
+
+  .auth-background {
+    display: none;
+  }
+
+  .auth-container {
+    border-radius: 0;
+    min-height: 100vh;
+    box-shadow: none;
+  }
+
+  .form-section {
+    padding: 32px 24px;
+  }
+
+  .social-login {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========== 减少动画偏好 ========== */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-orb,
+  .auth-container,
+  .submit-btn::before,
+  .loading-spinner,
+  .error-message {
+    animation: none;
+  }
+
+  .auth-container {
+    opacity: 1;
+    transform: none;
+  }
+}

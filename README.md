@@ -98,7 +98,6 @@ WS   /ws/code/execute               # WebSocket 交互式终端
 ## 📁 项目结构
 
 ```
-Winters/
 ├── backend/                        # FastAPI 后端
 │   ├── main.py                     # 应用入口 + CORS + 路由挂载
 │   ├── models.py                   # Pydantic v2 数据模型

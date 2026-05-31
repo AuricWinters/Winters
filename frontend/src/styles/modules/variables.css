@@ -1,0 +1,238 @@
+:root {
+  /* 现代配色方案 */
+  --primary: #EC4899; /* 主色：亮粉色 */
+  --primary-rgb: 236, 72, 153;
+  --primary-light: #F9A8D4; /* 浅粉色 */
+  --primary-dark: #DB2777; /* 深粉色 */
+  --secondary: #F59E0B; /* 辅助色：琥珀金 */
+  --secondary-rgb: 245, 158, 11;
+  --accent: #F472B6; /* 点缀色：玫瑰粉 */
+  --accent-rgb: 244, 114, 182;
+
+  /* 背景色 */
+  --bg-main: #f8fafc; /* 极浅灰蓝背景 */
+  --bg-glass: rgba(255, 255, 255, 0.7); /* 玻璃背景 */
+  --bg-card: #ffffff; /* 卡片背景 */
+
+  /* 边框色 */
+  --border-color: #e2e8f0;
+
+  /* 文字色 */
+  --text-main: #1e293b; /* 主文字 */
+  --text-secondary: #64748b; /* 辅助文字 */
+  --text-light: #94a3b8; /* 极浅文字 */
+
+  /* 金色系列 */
+  --gold: #F59E0B;
+  --gold-light: #FCD34D;
+  --gold-dark: #D97706;
+
+  /* 阴影与圆角 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-pink: 0 10px 25px -5px rgba(236, 72, 153, 0.2);
+  --radius: 16px;
+
+  /* 功能色 */
+  --success: #22c55e;
+  --success-light: #f0fdf4;
+  --success-text: #15803d;
+  --danger: #ef4444;
+  --danger-light: #fef2f2;
+  --danger-text: #b91c1c;
+
+  /* 布局变量 */
+  --header-height: 70px;
+  --header-top: 20px;
+  --header-spacing: 60px;
+  --header-total-height: calc(var(--header-height) + var(--header-top) + var(--header-spacing));
+
+  /* 动画 */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 深色主题变量 */
+[data-theme="dark"],
+.dark {
+  --primary: #F472B6;
+  --primary-rgb: 244, 114, 182;
+  --primary-light: #FBCFE8;
+  --primary-dark: #DB2777;
+  --secondary: #FBBF24;
+  --secondary-rgb: 251, 191, 36;
+  --accent: #F9A8D4;
+  --accent-rgb: 249, 168, 212;
+
+  --bg-main: #0f172a;
+  --bg-glass: rgba(30, 41, 59, 0.8);
+  --bg-card: #1e293b;
+
+  --border-color: #334155;
+
+  --text-main: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-light: #64748b;
+
+  --gold: #FBBF24;
+  --gold-light: #FDE68A;
+  --gold-dark: #D97706;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-pink: 0 10px 25px -5px rgba(244, 114, 182, 0.2);
+
+  /* 功能色 — dark */
+  --success: #4ade80;
+  --success-light: rgba(34, 197, 94, 0.12);
+  --success-text: #86efac;
+  --danger: #f87171;
+  --danger-light: rgba(239, 68, 68, 0.12);
+  --danger-text: #fca5a5;
+}
+
+/* 金粉色主题变量 */
+[data-theme="pink-gold"],
+.pink-gold {
+  --primary: #EC4899;
+  --primary-rgb: 236, 72, 153;
+  --primary-light: #F9A8D4;
+  --primary-dark: #DB2777;
+  --secondary: #F59E0B;
+  --secondary-rgb: 245, 158, 11;
+  --accent: #F472B6;
+  --accent-rgb: 244, 114, 182;
+
+  --bg-main: #fef2f2;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+
+  --gold: #F59E0B;
+  --gold-light: #FCD34D;
+  --gold-dark: #D97706;
+
+  --shadow-pink: 0 10px 25px -5px rgba(236, 72, 153, 0.3);
+}
+
+/* 蓝紫色主题变量 */
+[data-theme="blue-purple"],
+.blue-purple {
+  --primary: #6366f1;
+  --primary-rgb: 99, 102, 241;
+  --primary-light: #a5b4fc;
+  --primary-dark: #4f46e5;
+  --secondary: #8b5cf6;
+  --secondary-rgb: 139, 92, 246;
+  --accent: #c4b5fd;
+  --accent-rgb: 196, 181, 253;
+
+  --bg-main: #f8faff;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+
+  --gold: #8b5cf6;
+  --gold-light: #c4b5fd;
+  --gold-dark: #7c3aed;
+
+  --shadow-pink: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+}
+
+/* 青绿色主题变量 */
+[data-theme="green-teal"],
+.green-teal {
+  --primary: #10b981;
+  --primary-rgb: 16, 185, 129;
+  --primary-light: #34d399;
+  --primary-dark: #059669;
+  --secondary: #0ea5e9;
+  --secondary-rgb: 14, 165, 233;
+  --accent: #60a5fa;
+  --accent-rgb: 96, 165, 250;
+
+  --bg-main: #f0fdf4;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+
+  --gold: #0ea5e9;
+  --gold-light: #60a5fa;
+  --gold-dark: #0284c7;
+
+  --shadow-pink: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+}
+
+/* 橙红色主题变量 */
+[data-theme="orange-red"],
+.orange-red {
+  --primary: #f97316;
+  --primary-rgb: 249, 115, 22;
+  --primary-light: #fdba74;
+  --primary-dark: #ea580c;
+  --secondary: #ef4444;
+  --secondary-rgb: 239, 68, 68;
+  --accent: #fca5a5;
+  --accent-rgb: 252, 165, 165;
+
+  --bg-main: #fff7ed;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+
+  --gold: #ef4444;
+  --gold-light: #fca5a5;
+  --gold-dark: #dc2626;
+
+  --shadow-pink: 0 10px 25px -5px rgba(249, 115, 22, 0.3);
+}
+
+/* 紫粉色主题变量 */
+[data-theme="purple-pink"],
+.purple-pink {
+  --primary: #8b5cf6;
+  --primary-rgb: 139, 92, 246;
+  --primary-light: #c4b5fd;
+  --primary-dark: #7c3aed;
+  --secondary: #ec4899;
+  --secondary-rgb: 236, 72, 153;
+  --accent: #f9a8d4;
+  --accent-rgb: 249, 168, 212;
+
+  --bg-main: #fdf4ff;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+
+  --gold: #ec4899;
+  --gold-light: #f9a8d4;
+  --gold-dark: #db2777;
+
+  --shadow-pink: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+}
+
+/* 减少动画 */
+.no-animation,
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
