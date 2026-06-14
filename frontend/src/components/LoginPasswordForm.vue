@@ -8,14 +8,14 @@
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           />
         </svg>
-        手机号
+        {{ t('手机号') }}
       </label>
       <div class="input-wrapper">
         <span class="phone-prefix">+86</span>
         <input
           :value="phone"
           type="tel"
-          placeholder="请输入手机号"
+          :placeholder="t('请输入手机号')"
           :disabled="isLoading"
           @blur="$emit('blur', 'phone')"
           @input="$emit('update:phone', $event.target.value)"
@@ -38,13 +38,13 @@
           <circle cx="12" cy="16" r="1" fill="currentColor" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
         </svg>
-        密码
+        {{ t('密码') }}
       </label>
       <div class="input-wrapper">
         <input
           :value="password"
           :type="showPassword ? 'text' : 'password'"
-          placeholder="请输入密码"
+          :placeholder="t('请输入密码')"
           :disabled="isLoading"
           @blur="$emit('blur', 'password')"
           @input="$emit('update:password', $event.target.value)"
@@ -68,19 +68,21 @@
       <label class="remember-me">
         <input :checked="remember" type="checkbox" @change="$emit('update:remember', $event.target.checked)">
         <span class="checkbox-custom" />
-        <span class="checkbox-label">记住我</span>
+        <span class="checkbox-label">{{ t('记住我') }}</span>
       </label>
-      <a href="#" class="forgot-link" @click.prevent="$emit('forgot')">忘记密码?</a>
+      <a href="#" class="forgot-link" @click.prevent="$emit('forgot')">{{ t('忘记密码?') }}</a>
     </div>
 
     <button type="submit" class="submit-btn" :disabled="isLoading">
-      <span v-if="!isLoading">登录</span>
+      <span v-if="!isLoading">{{ t('登录') }}</span>
       <span v-else class="loading-spinner" />
     </button>
   </form>
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 defineProps({
   phone: { type: String, default: '' },
   password: { type: String, default: '' },

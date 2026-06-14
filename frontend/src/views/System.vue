@@ -5,20 +5,17 @@
     <div class="sys-container">
       <!-- ===== Hero ===== -->
       <header class="sys-hero scroll-reveal">
-        <div class="hero-badge">🧠 内部文档</div>
+        <div class="hero-badge">🧠 {{ t('内部文档') }}</div>
         <h1 class="hero-title">
-          Claude Code<br /><span class="hero-accent">自驱工作站</span>
+          Claude Code<br /><span class="hero-accent">{{ t('自驱工作站') }}</span>
         </h1>
-        <p class="hero-sub">
-          一套让 AI 理解项目、自动干活、记住偏好的完整体系。
-          从开机扫描市场到写完代码推送 GitHub，每一步背后都有配置在驱动。
-        </p>
+        <p class="hero-sub">{{ t('一套让 AI 理解项目、自动干活、记住偏好的完整体系。从开机扫描市场到写完代码推送 GitHub，每一步背后都有配置在驱动。') }}</p>
       </header>
 
       <!-- ===== 全景图 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">01</span> 全景架构</h2>
-        <p class="block-desc">整个工作站由「全局大脑」+「项目躯体」+「外部手臂」三部分组成。</p>
+        <h2 class="block-title"><span class="block-num">01</span> {{ t('全景架构') }}</h2>
+        <p class="block-desc">{{ t('整个工作站由「全局大脑」+「项目躯体」+「外部手臂」三部分组成。') }}</p>
 
         <div class="arch-diagram">
           <pre class="arch-code"><code>┌─────────────────────────────────────────────────────────┐
@@ -48,17 +45,17 @@
 
       <!-- ===== 启动流程 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">02</span> 启动流程</h2>
-        <p class="block-desc">每次打开 Claude Code，背后都在自动做这些事：</p>
+        <h2 class="block-title"><span class="block-num">02</span> {{ t('启动流程') }}</h2>
+        <p class="block-desc">{{ t('每次打开 Claude Code，背后都在自动做这些事：') }}</p>
 
         <div class="flow-cards">
           <div class="flow-card" v-for="(step, i) in bootSteps" :key="i">
             <div class="flow-num">{{ i + 1 }}</div>
             <div class="flow-icon">{{ step.icon }}</div>
             <div class="flow-info">
-              <h4>{{ step.title }}</h4>
-              <p>{{ step.desc }}</p>
-              <code v-if="step.code">{{ step.code }}</code>
+              <h4>{{ t(step.title) }}</h4>
+              <p>{{ t(step.desc) }}</p>
+              <code v-if="step.code">{{ t(step.code) }}</code>
             </div>
           </div>
         </div>
@@ -66,45 +63,45 @@
 
       <!-- ===== 六层加载 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">03</span> 上下文加载</h2>
-        <p class="block-desc">开发时，每一条对话背后，AI 已经读了这 6 层上下文：</p>
+        <h2 class="block-title"><span class="block-num">03</span> {{ t('上下文加载') }}</h2>
+        <p class="block-desc">{{ t('开发时，每一条对话背后，AI 已经读了这 6 层上下文：') }}</p>
 
         <div class="layer-stack">
           <div class="layer" v-for="layer in layers" :key="layer.level" :style="{ '--layer-opacity': 0.4 + layer.level * 0.1 }">
             <div class="layer-head">
               <span class="layer-lv">L{{ layer.level }}</span>
-              <span class="layer-name">{{ layer.name }}</span>
-              <span class="layer-file">{{ layer.file }}</span>
+              <span class="layer-name">{{ t(layer.name) }}</span>
+              <span class="layer-file">{{ t(layer.file) }}</span>
             </div>
-            <p class="layer-what">{{ layer.what }}</p>
+            <p class="layer-what">{{ t(layer.what) }}</p>
           </div>
         </div>
       </section>
 
       <!-- ===== 双模型 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">04</span> 双模型调度</h2>
-        <p class="block-desc">一个快一个强，各干各的活：</p>
+        <h2 class="block-title"><span class="block-num">04</span> {{ t('双模型调度') }}</h2>
+        <p class="block-desc">{{ t('一个快一个强，各干各的活：') }}</p>
 
         <div class="dual-grid">
           <div class="dual-card primary-model">
-            <div class="dual-badge">主力</div>
+            <div class="dual-badge">{{ t('主力') }}</div>
             <h3>deepseek-v4-pro</h3>
             <ul>
-              <li>跟你直接对话</li>
-              <li>Plan 模式出方案</li>
-              <li>写代码 / 改代码</li>
-              <li>复杂决策判断</li>
+              <li>{{ t('跟你直接对话') }}</li>
+              <li>{{ t('Plan 模式出方案') }}</li>
+              <li>{{ t('写代码 / 改代码') }}</li>
+              <li>{{ t('复杂决策判断') }}</li>
             </ul>
           </div>
           <div class="dual-card secondary-model">
-            <div class="dual-badge">副手</div>
+            <div class="dual-badge">{{ t('副手') }}</div>
             <h3>deepseek-v4-flash</h3>
             <ul>
-              <li>SessionStart 扫描市场</li>
-              <li>子 Agent（审查/搜索）</li>
-              <li>Workflow 分发的工人</li>
-              <li>轻量重复任务</li>
+              <li>{{ t('SessionStart 扫描市场') }}</li>
+              <li>{{ t('子 Agent（审查/搜索）') }}</li>
+              <li>{{ t('Workflow 分发的工人') }}</li>
+              <li>{{ t('轻量重复任务') }}</li>
             </ul>
           </div>
         </div>
@@ -112,22 +109,22 @@
 
       <!-- ===== 权限系统 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">05</span> 权限系统</h2>
-        <p class="block-desc">Plan ↔ Auto 双模式 + 白名单机制，安全不碍事。</p>
+        <h2 class="block-title"><span class="block-num">05</span> {{ t('权限系统') }}</h2>
+        <p class="block-desc">{{ t('Plan ↔ Auto 双模式 + 白名单机制，安全不碍事。') }}</p>
 
         <div class="perm-grid">
           <div class="perm-card">
-            <h4>🧠 Plan 模式</h4>
-            <p>所有操作都要你确认。用来出方案、讨论架构。用完一次即切回 Auto。</p>
+            <h4>{{ t('🧠 Plan 模式') }}</h4>
+            <p>{{ t('所有操作都要你确认。用来出方案、讨论架构。用完一次即切回 Auto。') }}</p>
           </div>
           <div class="perm-card">
-            <h4>⚡ Auto 模式</h4>
-            <p>白名单里的命令直接跑。写代码、删文件、启动服务 —— 不打断你。</p>
+            <h4>{{ t('⚡ Auto 模式') }}</h4>
+            <p>{{ t('白名单里的命令直接跑。写代码、删文件、启动服务 —— 不打断你。') }}</p>
           </div>
         </div>
 
         <div class="perm-example">
-          <h4>📋 当前白名单</h4>
+          <h4>{{ t('📋 当前白名单') }}</h4>
           <div class="perm-tags">
             <span class="perm-tag">git *</span>
             <span class="perm-tag">npx vite *</span>
@@ -141,80 +138,80 @@
 
       <!-- ===== MCP ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">06</span> MCP 外部手臂</h2>
-        <p class="block-desc">Model Context Protocol —— 让 AI 能伸手操作外部系统。</p>
+        <h2 class="block-title"><span class="block-num">06</span> {{ t('MCP 外部手臂') }}</h2>
+        <p class="block-desc">{{ t('Model Context Protocol —— 让 AI 能伸手操作外部系统。') }}</p>
 
         <div class="mcp-cards">
           <div class="mcp-card">
             <div class="mcp-icon">🐙</div>
             <h3>GitHub MCP</h3>
-            <p>读仓库文件、搜代码、查 PR、管理 Issues —— 不需要你给 token，配置在 settings.json 里。</p>
+            <p>{{ t('读仓库文件、搜代码、查 PR、管理 Issues —— 不需要你给 token，配置在 settings.json 里。') }}</p>
             <code>$env:GITHUB_TOKEN</code>
           </div>
           <div class="mcp-card">
             <div class="mcp-icon">🗄️</div>
             <h3>SQLite MCP</h3>
-            <p>直连 winters.db，查用户数据、验证注册结果，不需要你导出 CSV。</p>
+            <p>{{ t('直连 winters.db，查用户数据、验证注册结果，不需要你导出 CSV。') }}</p>
             <code>backend/data/winters.db</code>
           </div>
           <div class="mcp-card">
             <div class="mcp-icon">💻</div>
             <h3>IDE MCP</h3>
-            <p>VS Code 集成 —— 获取诊断信息、在 Jupyter Notebook 里执行代码。</p>
-            <code>内置连接</code>
+            <p>{{ t('VS Code 集成 —— 获取诊断信息、在 Jupyter Notebook 里执行代码。') }}</p>
+            <code>{{ t('内置连接') }}</code>
           </div>
         </div>
       </section>
 
       <!-- ===== CLAUDE.md 链 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">07</span> CLAUDE.md 文档链</h2>
-        <p class="block-desc">一份文件，三个人看：</p>
+        <h2 class="block-title"><span class="block-num">07</span> {{ t('CLAUDE.md 文档链') }}</h2>
+        <p class="block-desc">{{ t('一份文件，三个人看：') }}</p>
 
         <div class="doc-chain">
           <div class="chain-step">
             <div class="chain-icon">🤖</div>
             <h4>TRAE IDE Agent</h4>
-            <p>读 CLAUDE.md → 了解技术栈和路由 → 生成精准的 spec.md</p>
+            <p>{{ t('读 CLAUDE.md → 了解技术栈和路由 → 生成精准的 spec.md') }}</p>
           </div>
           <div class="chain-arrow">→</div>
           <div class="chain-step">
             <div class="chain-icon">🧠</div>
             <h4>Claude Code</h4>
-            <p>读 CLAUDE.md → 知道架构约定 → 写出符合项目规范的代码</p>
+            <p>{{ t('读 CLAUDE.md → 知道架构约定 → 写出符合项目规范的代码') }}</p>
           </div>
           <div class="chain-arrow">→</div>
           <div class="chain-step">
             <div class="chain-icon">👤</div>
-            <h4>你（人类）</h4>
-            <p>读 README.md → 了解项目功能 → 快速上手启动</p>
+            <h4>{{ t('你（人类）') }}</h4>
+            <p>{{ t('读 README.md → 了解项目功能 → 快速上手启动') }}</p>
           </div>
         </div>
       </section>
 
       <!-- ===== 记忆系统 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">08</span> 记忆系统</h2>
-        <p class="block-desc">跨会话持久化。区分「什么项目都要遵守」vs「只对这个项目有意义」。</p>
+        <h2 class="block-title"><span class="block-num">08</span> {{ t('记忆系统') }}</h2>
+        <p class="block-desc">{{ t('跨会话持久化。区分「什么项目都要遵守」vs「只对这个项目有意义」。') }}</p>
 
         <div class="mem-grid">
           <div class="mem-card global-mem">
-            <h4>🌐 全局记忆</h4>
+            <h4>{{ t('🌐 全局记忆') }}</h4>
             <code>~/.claude/CLAUDE.md</code>
             <ul>
-              <li>永远用中文对话</li>
-              <li>7 步开发工作流</li>
-              <li>指令优先提醒规则</li>
-              <li>文档同步规则</li>
+              <li>{{ t('永远用中文对话') }}</li>
+              <li>{{ t('7 步开发工作流') }}</li>
+              <li>{{ t('指令优先提醒规则') }}</li>
+              <li>{{ t('文档同步规则') }}</li>
             </ul>
           </div>
           <div class="mem-card local-mem">
-            <h4>📁 项目记忆</h4>
+            <h4>{{ t('📁 项目记忆') }}</h4>
             <code>~/.claude/projects/D--project/memory/</code>
             <ul>
-              <li>CSS 变量必须用，禁止硬编码</li>
-              <li>桌面优先响应式策略</li>
-              <li>Winters 项目当前状态</li>
+              <li>{{ t('CSS 变量必须用，禁止硬编码') }}</li>
+              <li>{{ t('桌面优先响应式策略') }}</li>
+              <li>{{ t('Winters 项目当前状态') }}</li>
             </ul>
           </div>
         </div>
@@ -222,50 +219,53 @@
 
       <!-- ===== 完整开发流 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">09</span> 完整开发闭环</h2>
-        <p class="block-desc">从想法到上线的 7 步流水线，每步谁做什么，清清楚楚。</p>
+        <h2 class="block-title"><span class="block-num">09</span> {{ t('完整开发闭环') }}</h2>
+        <p class="block-desc">{{ t('从想法到上线的 7 步流水线，每步谁做什么，清清楚楚。') }}</p>
 
         <div class="pipeline">
           <div class="pipe-step" v-for="s in pipeline" :key="s.step">
             <div class="pipe-num">{{ s.step }}</div>
-            <div class="pipe-who">{{ s.who }}</div>
-            <div class="pipe-what">{{ s.what }}</div>
+            <div class="pipe-who">{{ t(s.who) }}</div>
+            <div class="pipe-what">{{ t(s.what) }}</div>
           </div>
         </div>
       </section>
 
       <!-- ===== 关键文件速查 ===== -->
       <section class="sys-block scroll-reveal">
-        <h2 class="block-title"><span class="block-num">10</span> 关键文件速查</h2>
+        <h2 class="block-title"><span class="block-num">10</span> {{ t('关键文件速查') }}</h2>
 
         <div class="file-table-wrap">
           <table class="file-table">
             <thead>
-              <tr><th>文件</th><th>作用</th><th>修改频率</th></tr>
+              <tr><th>{{ t('文件') }}</th><th>{{ t('作用') }}</th><th>{{ t('修改频率') }}</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>~/.claude/settings.json</code></td><td>全局配置（模型、密钥、Hook、市场）</td><td>几乎不改</td></tr>
-              <tr><td><code>~/.claude/CLAUDE.md</code></td><td>全局规则（工作流、指令、习惯）</td><td>偶尔补充</td></tr>
-              <tr><td><code>Winters/CLAUDE.md</code></td><td>AI 项目手册</td><td>每次加功能同步</td></tr>
-              <tr><td><code>Winters/README.md</code></td><td>人类项目介绍（GitHub 首页）</td><td>每次加功能同步</td></tr>
-              <tr><td><code>Winters/.claude/settings.local.json</code></td><td>项目权限白名单</td><td>遇到新命令时加</td></tr>
-              <tr><td><code>Winters/.mcp.json</code></td><td>外部工具连接配置</td><td>几乎不改</td></tr>
-              <tr><td><code>~/.claude/projects/D--project/memory/</code></td><td>项目专属持久记忆</td><td>发现新约定时写</td></tr>
+              <tr><td><code>~/.claude/settings.json</code></td><td>{{ t('全局配置（模型、密钥、Hook、市场）') }}</td><td>{{ t('几乎不改') }}</td></tr>
+              <tr><td><code>~/.claude/CLAUDE.md</code></td><td>{{ t('全局规则（工作流、指令、习惯）') }}</td><td>{{ t('偶尔补充') }}</td></tr>
+              <tr><td><code>Winters/CLAUDE.md</code></td><td>{{ t('AI 项目手册') }}</td><td>{{ t('每次加功能同步') }}</td></tr>
+              <tr><td><code>Winters/README.md</code></td><td>{{ t('人类项目介绍（GitHub 首页）') }}</td><td>{{ t('每次加功能同步') }}</td></tr>
+              <tr><td><code>Winters/.claude/settings.local.json</code></td><td>{{ t('项目权限白名单') }}</td><td>{{ t('遇到新命令时加') }}</td></tr>
+              <tr><td><code>Winters/.mcp.json</code></td><td>{{ t('外部工具连接配置') }}</td><td>{{ t('几乎不改') }}</td></tr>
+              <tr><td><code>~/.claude/projects/D--project/memory/</code></td><td>{{ t('项目专属持久记忆') }}</td><td>{{ t('发现新约定时写') }}</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
       <footer class="sys-footer">
-        <p>Made with ❤️ by Claude Code · 驱动 Winters 项目的自驱工作站</p>
+        <p>{{ t('Made with ❤️ by Claude Code · 驱动 Winters 项目的自驱工作站') }}</p>
       </footer>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
+
+const { t } = useI18n();
 
 useParticles('.particles-background');
 useScrollReveal();

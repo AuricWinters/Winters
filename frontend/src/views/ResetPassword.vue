@@ -21,8 +21,8 @@
       <div class="form-section">
         <div class="auth-card" :class="{ shake: shakeCard }">
           <div class="reset-header">
-            <h1 class="reset-title">重置密码</h1>
-            <p class="reset-subtitle">通过手机号验证码重置您的密码</p>
+            <h1 class="reset-title">{{ t('重置密码') }}</h1>
+            <p class="reset-subtitle">{{ t('通过手机号验证码重置您的密码') }}</p>
           </div>
 
           <form class="auth-form" @submit.prevent="handleResetPassword">
@@ -34,14 +34,14 @@
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   />
                 </svg>
-                手机号
+                {{ t('手机号') }}
               </label>
               <div class="input-wrapper">
                 <span class="phone-prefix">+86</span>
                 <input
                   v-model="form.phone"
                   type="tel"
-                  placeholder="请输入手机号"
+                  :placeholder="t('请输入手机号')"
                   :disabled="isLoading"
                   @blur="validateField('phone'); isTyping = false"
                   @input="clearError('phone')"
@@ -57,13 +57,13 @@
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                验证码
+                {{ t('验证码') }}
               </label>
               <div class="input-wrapper code-input">
                 <input
                   v-model="form.code"
                   type="text"
-                  placeholder="请输入验证码"
+                  :placeholder="t('请输入验证码')"
                   maxlength="6"
                   :disabled="isLoading"
                   @blur="validateField('code'); isTyping = false"
@@ -76,7 +76,7 @@
                   :disabled="codeCountdown > 0 || isLoading"
                   @click="sendCode"
                 >
-                  {{ codeCountdown > 0 ? `${codeCountdown}s` : '获取验证码' }}
+                  {{ codeCountdown > 0 ? `${codeCountdown}s` : t('获取验证码') }}
                 </button>
               </div>
               <span v-if="errors.code" class="error-message">{{ errors.code }}</span>
@@ -89,13 +89,13 @@
                   <circle cx="12" cy="16" r="1" fill="currentColor" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                新密码
+                {{ t('新密码') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.newPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请输入新密码"
+                  :placeholder="t('请输入新密码')"
                   :disabled="isLoading"
                   @blur="validateField('newPassword'); isTyping = false"
                   @input="clearError('newPassword')"
@@ -126,13 +126,13 @@
                   <circle cx="12" cy="16" r="1" fill="currentColor" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                确认新密码
+                {{ t('确认新密码') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.confirmPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请确认新密码"
+                  :placeholder="t('请确认新密码')"
                   :disabled="isLoading"
                   @blur="validateField('confirmPassword'); isTyping = false"
                   @input="clearError('confirmPassword')"
@@ -143,15 +143,15 @@
             </div>
 
             <button type="submit" class="submit-btn" :disabled="isLoading">
-              <span v-if="!isLoading">重置密码</span>
+              <span v-if="!isLoading">{{ t('重置密码') }}</span>
               <span v-else class="loading-spinner" />
             </button>
           </form>
 
           <div class="auth-bottom-link">
-            <span>想起密码了?</span>
+            <span>{{ t('想起密码了?') }}</span>
             <router-link to="/login">
-              立即登录
+              {{ t('立即登录') }}
             </router-link>
           </div>
         </div>
@@ -163,12 +163,14 @@
 <script setup>
 import { ref, reactive, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '../composables/useI18n.js';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import { API_BASE } from '../config.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useToast } from '../composables/useToast.js';
 
 const router = useRouter();
+const { t } = useI18n();
 const { showToast } = useToast();
 
 useParticles('.particles-background', true);
@@ -196,24 +198,24 @@ let countdownTimer = null;
 
 const validationRules = {
   phone: (value) => {
-    if (!value) return '请输入手机号';
-    if (!/^1[3-9]\d{9}$/.test(value)) return '请输入正确的手机号';
+    if (!value) return t('请输入手机号');
+    if (!/^1[3-9]\d{9}$/.test(value)) return t('请输入正确的手机号');
     return '';
   },
   code: (value) => {
-    if (!value) return '请输入验证码';
-    if (!/^\d{6}$/.test(value)) return '验证码为6位数字';
+    if (!value) return t('请输入验证码');
+    if (!/^\d{6}$/.test(value)) return t('验证码为6位数字');
     return '';
   },
   newPassword: (value) => {
-    if (!value) return '请输入新密码';
-    if (value.length < 6) return '密码至少6个字符';
-    if (value.length > 32) return '密码最多32个字符';
+    if (!value) return t('请输入新密码');
+    if (value.length < 6) return t('密码至少6个字符');
+    if (value.length > 32) return t('密码最多32个字符');
     return '';
   },
   confirmPassword: (value) => {
-    if (!value) return '请确认新密码';
-    if (value !== form.newPassword) return '两次输入的密码不一致';
+    if (!value) return t('请确认新密码');
+    if (value !== form.newPassword) return t('两次输入的密码不一致');
     return '';
   },
 };
@@ -264,7 +266,7 @@ const sendCode = async () => {
 
     if (response.ok) {
       codeCountdown.value = 60;
-      showToast('验证码已发送', 'success');
+      showToast(t('验证码已发送'), 'success');
 
       countdownTimer = setInterval(() => {
         codeCountdown.value--;
@@ -274,11 +276,11 @@ const sendCode = async () => {
       }, 1000);
     } else {
       const error = await response.json();
-      showToast(error.detail || '发送失败', 'error');
+      showToast(t('发送失败'), 'error');
     }
   } catch (error) {
     codeCountdown.value = 60;
-    showToast('验证码已发送（模拟）', 'success');
+    showToast(t('验证码已发送（模拟）'), 'success');
 
     countdownTimer = setInterval(() => {
       codeCountdown.value--;
@@ -312,17 +314,17 @@ const handleResetPassword = async () => {
     });
 
     if (response.ok) {
-      showToast('密码重置成功！请使用新密码登录', 'success');
+      showToast(t('密码重置成功！请使用新密码登录'), 'success');
       setTimeout(() => {
         router.push('/login');
       }, 2000);
     } else {
       const error = await response.json();
-      showToast(error.detail || '重置失败', 'error');
+      showToast(error.detail || t('重置失败'), 'error');
       triggerShake();
     }
   } catch (error) {
-    showToast('密码重置功能开发中', 'info');
+    showToast(t('密码重置功能开发中'), 'info');
   } finally {
     isLoading.value = false;
   }

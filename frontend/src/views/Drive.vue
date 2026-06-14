@@ -17,7 +17,7 @@
               margin-bottom: 20px;
             "
           >
-            <h3>我的文件</h3>
+            <h3>{{ t('我的文件') }}</h3>
             <input
               ref="fileInput"
               type="file"
@@ -30,7 +30,7 @@
               :disabled="uploading"
               @click="triggerFileUpload"
             >
-              {{ uploading ? '上传中...' : '上传文件' }}
+              {{ uploading ? t('上传中...') : t('上传文件') }}
             </button>
           </div>
 
@@ -58,9 +58,9 @@
             v-else-if="files.length === 0"
             style="text-align: center; padding: 40px; color: var(--text-secondary)"
           >
-            <p>暂无文件</p>
+            <p>{{ t('暂无文件') }}</p>
             <p style="font-size: 12px; margin-top: 8px">
-              点击"上传文件"按钮添加文件
+              {{ t('点击"上传文件"按钮添加文件') }}
             </p>
           </div>
 
@@ -94,14 +94,14 @@
                 </span>
                 <button
                   class="file-action-btn"
-                  title="下载"
+                  :title="t('下载')"
                   @click.stop="downloadFile(file)"
                 >
                   ⬇️
                 </button>
                 <button
                   class="file-action-btn delete"
-                  title="删除"
+                  :title="t('删除')"
                   @click.stop="deleteFile(file)"
                 >
                   🗑️
@@ -122,7 +122,7 @@
                 margin-bottom: 8px;
               "
             >
-              <span>存储空间 ({{ storageUsedStr }} / {{ storageTotalStr }})</span>
+              <span>{{ t('存储空间') }} ({{ storageUsedStr }} / {{ storageTotalStr }})</span>
               <span>{{ storagePercent }}%</span>
             </div>
             <div
@@ -150,6 +150,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from '../composables/useI18n.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
@@ -157,6 +158,7 @@ import { useToast } from '../composables/useToast.js';
 useParticles();
 useScrollReveal();
 
+const { t } = useI18n();
 const { showToast } = useToast();
 
 const files = ref([]);

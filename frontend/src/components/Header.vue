@@ -3,7 +3,7 @@
     <h1 id="navbar-title">WINTERS</h1>
     <nav
       role="navigation"
-      aria-label="主导航"
+      :aria-label="t('主导航')"
     >
       <div
         ref="navGroup"
@@ -21,7 +21,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          首页
+          {{ t('首页') }}
         </router-link>
         <router-link
           to="/blog"
@@ -32,7 +32,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          动态
+          {{ t('动态') }}
         </router-link>
         <router-link
           to="/drive"
@@ -43,7 +43,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          云盘
+          {{ t('云盘') }}
         </router-link>
         <router-link
           to="/lab"
@@ -54,7 +54,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          实验室
+          {{ t('实验室') }}
         </router-link>
         <router-link
           to="/ai"
@@ -65,7 +65,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          AI 聊天
+          {{ t('AI 聊天') }}
         </router-link>
         <router-link
           to="/projects"
@@ -76,7 +76,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          项目
+          {{ t('项目') }}
         </router-link>
 
         <router-link
@@ -88,7 +88,7 @@
           @mouseenter="moveGliderTo($event)"
           @focus="moveGliderTo($event)"
         >
-          联系我
+          {{ t('联系我') }}
         </router-link>
         <div
           class="glass-glider"
@@ -108,7 +108,7 @@
         class="login-btn"
         @click="goToLogin"
       >
-        登录
+        {{ t('登录') }}
       </button>
       <div
         v-else
@@ -172,7 +172,7 @@
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            设置
+            {{ t('设置') }}
           </button>
           <router-link
             to="/profile"
@@ -200,7 +200,7 @@
                 stroke-linejoin="round"
               />
             </svg>
-            个人中心
+            {{ t('个人中心') }}
           </router-link>
           <div class="dropdown-divider"></div>
           <button
@@ -235,14 +235,14 @@
                 stroke-linejoin="round"
               />
             </svg>
-            退出登录
+            {{ t('退出登录') }}
           </button>
         </div>
       </div>
     </div>
     <button
       class="mobile-menu-toggle"
-      aria-label="打开菜单"
+      :aria-label="t('打开菜单')"
       :aria-expanded="mobileMenuOpen"
       aria-controls="mobile-nav"
       @click="toggleMobileMenu"
@@ -268,7 +268,7 @@
     id="mobile-nav"
     class="mobile-nav"
     role="navigation"
-    aria-label="移动端导航"
+    :aria-label="t('移动端导航')"
     :class="{ show: mobileMenuOpen }"
   >
     <router-link
@@ -277,7 +277,7 @@
       :class="{ active: $route.path === '/' }"
       @click="closeMobileMenu"
     >
-      首页
+      {{ t('首页') }}
     </router-link>
     <router-link
       to="/blog"
@@ -285,7 +285,7 @@
       :class="{ active: $route.path === '/blog' }"
       @click="closeMobileMenu"
     >
-      动态
+      {{ t('动态') }}
     </router-link>
     <router-link
       to="/drive"
@@ -293,7 +293,7 @@
       :class="{ active: $route.path === '/drive' }"
       @click="closeMobileMenu"
     >
-      云盘
+      {{ t('云盘') }}
     </router-link>
     <router-link
       to="/lab"
@@ -301,7 +301,7 @@
       :class="{ active: $route.path.startsWith('/lab') }"
       @click="closeMobileMenu"
     >
-      实验室
+      {{ t('实验室') }}
     </router-link>
     <router-link
       to="/ai"
@@ -309,7 +309,7 @@
       :class="{ active: $route.path === '/ai' }"
       @click="closeMobileMenu"
     >
-      AI 聊天
+      {{ t('AI 聊天') }}
     </router-link>
     <router-link
       to="/projects"
@@ -317,7 +317,7 @@
       :class="{ active: $route.path.startsWith('/projects') }"
       @click="closeMobileMenu"
     >
-      项目
+      {{ t('项目') }}
     </router-link>
 
     <router-link
@@ -326,7 +326,7 @@
       :class="{ active: $route.path === '/contact' }"
       @click="closeMobileMenu"
     >
-      联系我
+      {{ t('联系我') }}
     </router-link>
   </nav>
 </template>
@@ -336,6 +336,8 @@ import { ref, reactive, onMounted, watch, onUnmounted, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user.js';
 import { useToast } from '../composables/useToast.js';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const router = useRouter();
 const route = useRoute();
@@ -433,7 +435,7 @@ const closeUserMenu = () => {
 
 const logout = () => {
   userStore.logout();
-  showToast('已成功登出', 'success');
+  showToast(t('已成功登出'), 'success');
   closeUserMenu();
   setTimeout(() => {
     router.push('/');
@@ -506,26 +508,26 @@ watch(
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   position: relative;
   z-index: 10001;
   min-width: 100px;
 }
 
 .user-avatar:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(var(--primary-rgb), 0.12);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .user-avatar.active {
-  background: rgba(236, 72, 153, 0.1);
-  border-color: rgba(236, 72, 153, 0.3);
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: rgba(var(--primary-rgb), 0.3);
 }
 
 .avatar-img {
@@ -657,39 +659,4 @@ watch(
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .user-avatar {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .user-avatar:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  .user-avatar .username {
-    color: #f1f5f9;
-  }
-
-  .menu-arrow {
-    border-top-color: #94a3b8;
-  }
-
-  .user-dropdown {
-    background: #1e293b;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .dropdown-item {
-    color: #f1f5f9;
-  }
-
-  .dropdown-item:hover {
-    background: rgba(236, 72, 153, 0.15);
-  }
-
-  .dropdown-divider {
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
 </style>

@@ -4,7 +4,7 @@
       <!-- 侧边栏语言选择 -->
       <aside class="sidebar" :class="{ 'sidebar-collapsed': isSidebarCollapsed }">
         <div class="sidebar-header">
-          <h3>编程语言</h3>
+          <h3>{{ t('编程语言') }}</h3>
           <button class="toggle-btn" @click="toggleSidebar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -23,7 +23,7 @@
               />
               <label :for="`lang-${lang.id}`" class="language-item">
                 <span class="lang-icon">{{ lang.icon }}</span>
-                <span class="lang-name">{{ lang.name }}</span>
+                <span class="lang-name">{{ t(lang.name) }}</span>
               </label>
             </template>
             <div class="glider-container">
@@ -40,22 +40,22 @@
           class="back-btn"
           @click="$router.push('/lab')"
         >
-          ← 返回实验室
+          ← {{ t('返回实验室') }}
         </button>
 
         <!-- 头部 -->
         <header class="code-lab-header">
           <h1 v-if="currentLanguage">
-            {{ currentLanguage.name }} {{ currentLanguage.version }}
+            {{ t(currentLanguage.name) }} {{ t(currentLanguage.version) }}
           </h1>
           <p v-if="currentLanguage" class="lang-desc">
-            {{ currentLanguage.description }}
+            {{ t(currentLanguage.description) }}
           </p>
         </header>
 
         <!-- 学习任务 -->
         <section class="tasks-section" v-if="currentLanguage">
-          <h2>学习任务</h2>
+          <h2>{{ t('学习任务') }}</h2>
           <div class="tasks-grid">
             <div
               class="task-card"
@@ -64,8 +64,8 @@
               @click="showTutorial(task)"
             >
               <div class="task-icon">{{ task.icon }}</div>
-              <h3>{{ task.title }}</h3>
-              <p>{{ task.description }}</p>
+              <h3>{{ t(task.title) }}</h3>
+              <p>{{ t(task.description) }}</p>
               <span class="difficulty" :class="task.difficulty">
                 {{ getDifficultyText(task.difficulty) }}
               </span>
@@ -88,24 +88,24 @@
                 <article class="md-document" :key="currentTutorial.id">
                   <!-- 文档标题区 -->
                   <header class="doc-header">
-                    <h1 class="doc-title">{{ currentTutorial.title }}</h1>
+                    <h1 class="doc-title">{{ t(currentTutorial.title) }}</h1>
                     <p class="doc-meta">
                       <span class="difficulty-badge" :class="currentTutorial.difficulty">{{ getDifficultyText(currentTutorial.difficulty) }}</span>
-                      {{ currentTutorial.description }}
+                      {{ t(currentTutorial.description) }}
                     </p>
                   </header>
 
                   <!-- 正文内容：像MD文档一样的自然流 -->
                   <div class="doc-content" v-for="(example, index) in currentTutorial.examples" :key="index">
                     <!-- 章节标题 (对应 ### ) -->
-                    <h3 class="section-title">{{ example.title }}</h3>
+                    <h3 class="section-title">{{ t(example.title) }}</h3>
 
                     <!-- 代码块 (对应 ``` ) -->
                     <figure class="code-figure">
                       <!-- 顶部工具栏：语言标签 + 复制按钮 -->
                       <div class="code-header">
                         <span class="code-language">{{ detectLanguage(example) }}</span>
-                        <button class="copy-btn" @click="copyCode(example.code)" :title="'复制代码'">
+                        <button class="copy-btn" @click="copyCode(example.code)" :title="t('复制代码')">
                           <svg v-if="copiedCode !== example.code" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -134,7 +134,7 @@
                     v-if="hasPrevTutorial && !isAnimating"
                     @click="prevTutorial"
                   >
-                    ← {{ getPrevTutorialTitle() }}
+                    ← {{ t(getPrevTutorialTitle()) }}
                   </button>
                 </div>
                 <div class="tutorial-nav-right">
@@ -143,7 +143,7 @@
                     v-if="hasNextTutorial && !isAnimating"
                     @click="nextTutorial"
                   >
-                    {{ getNextTutorialTitle() }} →
+                    {{ t(getNextTutorialTitle()) }} →
                   </button>
                 </div>
               </div>
@@ -161,15 +161,15 @@
                 </div>
                 <div class="toolbar-right">
                   <button class="tool-btn run-btn" @click="runCode" :disabled="isRunning">
-                    <span v-if="!isRunning">▶ 运行</span>
-                    <span v-else-if="executionMode === 'backend'">⏳ 连接后端...</span>
-                    <span v-else>⏳ 运行中...</span>
+                    <span v-if="!isRunning">{{ t('▶ 运行') }}</span>
+                    <span v-else-if="executionMode === 'backend'">{{ t('⏳ 连接后端...') }}</span>
+                    <span v-else>{{ t('⏳ 运行中...') }}</span>
                   </button>
-                  <button class="tool-btn" @click="resetEditor" title="重置为示例代码">
-                    ↺ 重置
+                  <button class="tool-btn" @click="resetEditor" :title="t('重置为示例代码')">
+                    ↺ {{ t('重置') }}
                   </button>
-                  <button class="tool-btn" @click="clearEditor" title="清空编辑器">
-                    🗑 清空
+                  <button class="tool-btn" @click="clearEditor" :title="t('清空编辑器')">
+                    🗑 {{ t('清空') }}
                   </button>
                 </div>
               </div>
@@ -189,7 +189,7 @@
               <!-- 交互式终端区域 -->
               <div class="terminal-container" ref="terminalContainer">
                 <div class="terminal-header">
-                  <span class="terminal-title">🖥️ 终端</span>
+                  <span class="terminal-title">🖥️ {{ t('终端') }}</span>
                   <span class="terminal-status" :class="terminalStatusClass">
                     {{ terminalStatusText }}
                   </span>
@@ -207,6 +207,8 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '../../composables/useI18n.js';
+const { t } = useI18n();
 import { languages as languagesData } from './tutorials/index.js';
 import hljs from 'highlight.js/lib/core'
 import c from 'highlight.js/lib/languages/c'
@@ -371,9 +373,9 @@ const closeModal = () => {
 
 const getDifficultyText = (difficulty) => {
   const map = {
-    'beginner': '入门',
-    'intermediate': '进阶',
-    'advanced': '高级'
+    'beginner': t('入门'),
+    'intermediate': t('进阶'),
+    'advanced': t('高级')
   };
   return map[difficulty] || difficulty;
 };
@@ -511,7 +513,7 @@ const runCode = async () => {
       const fn = new Function(editorCode.value);
       const result = fn();
       if (result !== undefined) logs.push(String(result));
-      output.value = logs.join('\n') || '(无输出)';
+      output.value = logs.join('\n') || t('无输出');
     } catch (e) {
       error.value = e.message;
     } finally {
@@ -530,7 +532,7 @@ const runCode = async () => {
 
   // 清空终端并显示启动信息
   terminal.clear();
-  terminal.writeln(`\x1b[1;33m>>> 执行 ${lang.toUpperCase()} 代码...\x1b[0m`);
+  terminal.writeln(`\x1b[1;33m${t('>>> 执行 {lang} 代码...', { lang: lang.toUpperCase() })}\x1b[0m`);
   terminal.writeln('');
 
   try {
@@ -564,8 +566,8 @@ const runCode = async () => {
     };
 
     wsConnection.onerror = () => {
-      terminal.write('\x1b[31m[错误] 无法连接到后端服务\x1b[0m\r\n');
-      terminal.write(`\x1b[90m请确保后端已在 ${API_BASE || window.location.origin} 启动\x1b[0m\r\n`);
+      terminal.write('\x1b[31m[' + t('错误') + '] ' + t('无法连接到后端服务') + '\x1b[0m\r\n');
+      terminal.write(`\x1b[90m` + t('请确保后端已在 {host} 启动', { host: API_BASE || window.location.origin }) + `\x1b[0m\r\n`);
       terminalStatus.value = 'disconnected';
       isRunning.value = false;
     };
@@ -579,7 +581,7 @@ const runCode = async () => {
     };
 
   } catch (err) {
-    terminal.write('\x1b[31m[错误] ' + err.message + '\x1b[0m\r\n');
+    terminal.write('\x1b[31m[' + t('错误') + '] ' + err.message + '\x1b[0m\r\n');
     terminalStatus.value = 'disconnected';
     isRunning.value = false;
   }
@@ -609,9 +611,9 @@ const terminalStatusClass = computed(() => ({
 }));
 
 const terminalStatusText = computed(() => ({
-  'idle': '● 就绪',
-  'running': '● 运行中...',
-  'disconnected': '✕ 断开'
+  'idle': t('● 就绪'),
+  'running': t('● 运行中...'),
+  'disconnected': t('✕ 断开')
 })[terminalStatus.value] || '');
 
 // ========== 生命周期钩子 ==========

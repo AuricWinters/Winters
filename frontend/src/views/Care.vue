@@ -5,8 +5,8 @@
     <div class="care-content">
       <!-- 标题区 -->
       <div class="care-hero">
-        <h1 class="care-title">暖心关怀</h1>
-        <p class="care-subtitle">点一下按钮，收获一份温暖 ✨</p>
+        <h1 class="care-title">{{ t('care.title') }}</h1>
+        <p class="care-subtitle">{{ t('care.subtitle') }}</p>
       </div>
 
       <!-- 按钮区 -->
@@ -15,9 +15,9 @@
         class="care-btn"
         @click="startMessages"
       >
-        开始
+        {{ t('care.start') }}
       </button>
-      <p v-else class="care-hint">暖心话语正在飘落……</p>
+      <p v-else class="care-hint">{{ t('care.hint') }}</p>
 
       <!-- 弹窗容器 -->
       <div id="care-popup-container"></div>
@@ -28,6 +28,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const started = ref(false);
 let intervalId = null;
@@ -291,7 +293,7 @@ function createPopup() {
 
   const msgEl = document.createElement('p');
   msgEl.className = 'care-popup-msg';
-  msgEl.textContent = msg;
+  msgEl.textContent = t(msg);
   msgEl.style.background = grad;
   msgEl.style.webkitBackgroundClip = 'text';
   msgEl.style.backgroundClip = 'text';
@@ -367,10 +369,10 @@ onUnmounted(() => {
 
 /* 按钮 */
 .care-btn {
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--bg-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-color);
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
   color: var(--text-main);
   padding: 22px 52px;
@@ -383,7 +385,7 @@ onUnmounted(() => {
 }
 
 .care-btn:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--bg-glass);
   transform: translateY(-3px);
   box-shadow: 0 12px 40px rgba(var(--primary-rgb), 0.2);
 }
@@ -422,7 +424,7 @@ onUnmounted(() => {
   opacity: 0;
   transform: scale(0.8);
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--bg-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 6px 24px rgba(31, 38, 135, 0.06);

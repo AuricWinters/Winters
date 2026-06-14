@@ -21,8 +21,8 @@
       <div class="form-section">
         <div class="auth-card" :class="{ shake: shakeCard }">
           <div class="register-header">
-            <h2 class="register-title">创建账号</h2>
-            <p class="register-subtitle">加入 Winters 社区，开启您的数字之旅</p>
+            <h2 class="register-title">{{ t('创建账号') }}</h2>
+            <p class="register-subtitle">{{ t('加入 Winters 社区，开启您的数字之旅') }}</p>
           </div>
 
           <form class="auth-form" @submit.prevent="handleRegister">
@@ -34,13 +34,13 @@
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   />
                 </svg>
-                手机号
+                {{ t('手机号') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.phone"
                   type="tel"
-                  placeholder="请输入手机号"
+                  :placeholder="t('请输入手机号')"
                   :disabled="isLoading"
                   @blur="validateField('phone'); isTyping = false"
                   @input="clearError('phone')"
@@ -65,13 +65,13 @@
                   />
                   <polyline points="22,6 12,13 2,6" stroke-width="2" />
                 </svg>
-                邮箱
+                {{ t('邮箱') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.email"
                   type="email"
-                  placeholder="请输入邮箱"
+                  :placeholder="t('请输入邮箱')"
                   :disabled="isLoading"
                   @blur="validateField('email'); isTyping = false"
                   @input="clearError('email')"
@@ -94,13 +94,13 @@
                   <circle cx="12" cy="16" r="1" fill="currentColor" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                密码
+                {{ t('密码') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.password"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请输入密码"
+                  :placeholder="t('请输入密码')"
                   :disabled="isLoading"
                   @blur="validateField('password'); isTyping = false"
                   @input="clearError('password')"
@@ -131,13 +131,13 @@
                   <circle cx="12" cy="16" r="1" fill="currentColor" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                确认密码
+                {{ t('确认密码') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.confirmPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请再次输入密码"
+                  :placeholder="t('请再次输入密码')"
                   :disabled="isLoading"
                   @blur="validateField('confirmPassword'); isTyping = false"
                   @input="clearError('confirmPassword')"
@@ -162,13 +162,13 @@
             </div>
 
             <button type="submit" class="submit-btn" :disabled="isLoading">
-              <span v-if="!isLoading">注册</span>
+              <span v-if="!isLoading">{{ t('注册') }}</span>
               <span v-else class="loading-spinner" />
             </button>
           </form>
 
           <div class="divider">
-            <span>或者</span>
+            <span>{{ t('或者') }}</span>
           </div>
 
           <div class="social-login">
@@ -176,7 +176,7 @@
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.269-.03-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z" />
               </svg>
-              <span>微信登录</span>
+              <span>{{ t('微信登录') }}</span>
             </button>
             <button type="button" class="social-btn github" @click="socialRegister('github')">
               <svg viewBox="0 0 24 24" fill="currentColor">
@@ -187,9 +187,9 @@
           </div>
 
           <div class="auth-bottom-link">
-            <span>已有账号?</span>
+            <span>{{ t('已有账号?') }}</span>
             <router-link to="/login">
-              立即登录
+              {{ t('立即登录') }}
             </router-link>
           </div>
         </div>
@@ -201,11 +201,13 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '../composables/useI18n.js';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import { useUserStore } from '../stores/user.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useToast } from '../composables/useToast.js';
 
+const { t } = useI18n();
 const router = useRouter();
 const userStore = useUserStore();
 const { showToast } = useToast();
@@ -232,24 +234,24 @@ const isTyping = ref(false);
 
 const validationRules = {
   phone: (value) => {
-    if (!value) return '请输入手机号';
-    if (!/^1[3-9]\d{9}$/.test(value)) return '请输入正确的手机号';
+    if (!value) return t('请输入手机号');
+    if (!/^1[3-9]\d{9}$/.test(value)) return t('请输入正确的手机号');
     return '';
   },
   email: (value) => {
-    if (!value) return '请输入邮箱';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return '请输入正确的邮箱地址';
+    if (!value) return t('请输入邮箱');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('请输入正确的邮箱地址');
     return '';
   },
   password: (value) => {
-    if (!value) return '请输入密码';
-    if (value.length < 4) return '密码至少4个字符';
-    if (value.length > 32) return '密码最多32个字符';
+    if (!value) return t('请输入密码');
+    if (value.length < 4) return t('密码至少4个字符');
+    if (value.length > 32) return t('密码最多32个字符');
     return '';
   },
   confirmPassword: (value) => {
-    if (!value) return '请确认密码';
-    if (value !== form.password) return '两次输入的密码不一致';
+    if (!value) return t('请确认密码');
+    if (value !== form.password) return t('两次输入的密码不一致');
     return '';
   },
 };
@@ -295,15 +297,15 @@ const handleRegister = async () => {
     const result = await userStore.register(form.phone, form.email, form.password);
 
     if (result.success) {
-      showToast('注册成功！正在跳转...', 'success');
+      showToast(t('注册成功！正在跳转...'), 'success');
       setTimeout(() => {
         router.push('/');
       }, 1000);
     } else {
       const errorMsg = result.error;
-      if (errorMsg.includes('手机号')) {
+      if (errorMsg.includes(t('手机号'))) {
         errors.phone = errorMsg;
-      } else if (errorMsg.includes('邮箱')) {
+      } else if (errorMsg.includes(t('邮箱'))) {
         errors.email = errorMsg;
       } else {
         showToast(errorMsg, 'error');
@@ -311,7 +313,7 @@ const handleRegister = async () => {
       triggerShake();
     }
   } catch {
-    showToast('注册失败，请重试', 'error');
+    showToast(t('注册失败，请重试'), 'error');
     triggerShake();
   } finally {
     isLoading.value = false;
@@ -319,7 +321,7 @@ const handleRegister = async () => {
 };
 
 const socialRegister = (type) => {
-  showToast(`${type === 'wechat' ? '微信' : 'GitHub'}注册功能开发中`, 'info');
+  showToast(`${type === 'wechat' ? t('微信') : 'GitHub'}${t('注册功能开发中')}`, 'info');
 };
 </script>
 

@@ -1,0 +1,208 @@
+/* ================================================================
+   手账风格 (Journal Theme) — 激进版
+   设计语言：实体手账本 —— 胶带、折角、衬线、虚线、纸纹
+   ================================================================ */
+
+/* ═══════════════════════════════════════════════════════════════
+   1. 全局底色 — 暖黄纸感
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] body {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(139, 125, 107, 0.04) 28px,
+      rgba(139, 125, 107, 0.04) 29px
+    ),
+    var(--bg-main);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   2. 卡片 — 纸质感 + 折角 + 胶带（全站所有卡片）
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .file-item, .timeline-item, .project-item, .profile-card-inner, .profile-header, .timeline-container, .contact-card, .chat-container, .chat-message) {
+  position: relative;
+  overflow: visible !important;
+  border: 1px solid rgba(139, 125, 107, 0.15) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 4px),
+    var(--bg-card) !important;
+  box-shadow:
+    0 3px 12px rgba(61, 50, 41, 0.08),
+    0 1px 2px rgba(61, 50, 41, 0.05) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   2.5 圆角控制 — 独立于主题风格
+   ═══════════════════════════════════════════════════════════════ */
+[data-corner-style="sharp"] *,
+[data-corner-style="sharp"] button,
+[data-corner-style="sharp"] input {
+  border-radius: 0 !important;
+}
+
+/* ── 大折角 ── */
+[data-theme-style="journal"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .timeline-container, .profile-header, .chat-container)::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 32px 32px 0;
+  border-color: transparent var(--border-color) transparent transparent;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.06));
+}
+
+/* ── 胶带1（主） ── */
+[data-theme-style="journal"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .timeline-container, .profile-header, .chat-container)::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 30%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 80px;
+  height: 22px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0) 0px,
+      rgba(255,255,255,0) 6px,
+      rgba(255,255,255,0.3) 6px,
+      rgba(255,255,255,0.3) 7px
+    ),
+    rgba(var(--primary-rgb), 0.2);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ── 悬浮旋转 — 覆盖全站所有卡片 ── */
+[data-theme-style="journal"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .file-item, .timeline-item, .project-item, .profile-card-inner, .profile-header, .timeline-container, .contact-card, .chat-container, .chat-message):hover {
+  transform: rotate(0.4deg) translateY(-4px) !important;
+  box-shadow:
+    0 10px 30px rgba(61, 50, 41, 0.14),
+    0 2px 6px rgba(61, 50, 41, 0.08) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3. 标题 — 衬线 + 颜色渐变
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] h1,
+[data-theme-style="journal"] h2,
+[data-theme-style="journal"] h3,
+[data-theme-style="journal"] h4,
+[data-theme-style="journal"] .card-title,
+[data-theme-style="journal"] .section-title,
+[data-theme-style="journal"] .settings-title,
+[data-theme-style="journal"] .page-title,
+[data-theme-style="journal"] .hero-title {
+  font-family: Georgia, 'Noto Serif SC', serif !important;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+/* 标题下划线装饰 */
+[data-theme-style="journal"] h3::after,
+[data-theme-style="journal"] .card-title::after,
+[data-theme-style="journal"] .section-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   4. 虚线化
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] .card-header,
+[data-theme-style="journal"] .setting-item {
+  border-bottom: 1.5px dashed var(--border-color) !important;
+}
+
+[data-theme-style="journal"] hr,
+[data-theme-style="journal"] .divider,
+[data-theme-style="journal"] .section-divider {
+  border: none;
+  border-top: 1.5px dashed var(--border-color) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   5. 按钮 — 渐变纸感
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] .btn-primary,
+[data-theme-style="journal"] .theme-btn.active,
+[data-theme-style="journal"] .dark-mode-btn.active,
+[data-theme-style="journal"] .language-btn.active,
+[data-theme-style="journal"] .font-size-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.3) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   6. 输入框 — 手写感虚线
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"] input[type="text"],
+[data-theme-style="journal"] input[type="email"],
+[data-theme-style="journal"] input[type="password"],
+[data-theme-style="journal"] input[type="search"],
+[data-theme-style="journal"] textarea {
+  border: none !important;
+  border-bottom: 2px dashed var(--border-color) !important;
+  background: transparent !important;
+  padding: 10px 4px !important;
+  font-family: Georgia, 'Noto Serif SC', serif !important;
+}
+
+[data-theme-style="journal"] input:focus,
+[data-theme-style="journal"] textarea:focus {
+  border-bottom-color: var(--primary) !important;
+  outline: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   7. 暗色模式
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme-style="journal"][data-theme="dark"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .timeline-container, .profile-header, .chat-container, .chat-message) {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 6px), var(--bg-card) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme-style="journal"][data-theme="dark"] body {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(255,255,255,0.02) 28px,
+      rgba(255,255,255,0.02) 29px
+    ),
+    var(--bg-main);
+}
+
+[data-theme-style="journal"][data-theme="dark"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .timeline-container, .profile-header, .chat-container)::after {
+  border-color: transparent rgba(255,255,255,0.08) transparent transparent;
+}
+
+[data-theme-style="journal"][data-theme="dark"] :is(.settings-card, .section-card, .bento-card, .project-card, .glass-card, .auth-card, .phase-card, .week-card, .task-card, .flow-card, .dual-card, .perm-card, .mcp-card, .mem-card, .timeline-container, .profile-header, .chat-container)::before {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(255,255,255,0.15) 6px,
+      rgba(255,255,255,0.15) 7px
+    ),
+    rgba(var(--primary-rgb), 0.25);
+}

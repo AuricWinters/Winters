@@ -6,6 +6,8 @@ export function useSettings() {
 
   const language = computed(() => settingsStore.language);
   const theme = computed(() => settingsStore.theme);
+  const themeStyle = computed(() => settingsStore.themeStyle);
+  const cornerStyle = computed(() => settingsStore.cornerStyle);
   const darkMode = computed(() => settingsStore.darkMode);
   const animationEnabled = computed(() => settingsStore.animationEnabled);
   const fontSize = computed(() => settingsStore.fontSize);
@@ -19,7 +21,7 @@ export function useSettings() {
   });
 
   const isCustomTheme = computed(() => {
-    return theme.value === 'pink-gold' || theme.value === 'blue-purple' || theme.value === 'custom';
+    return theme.value === 'custom';
   });
 
   const currentDarkMode = computed(() => {
@@ -30,18 +32,31 @@ export function useSettings() {
   });
 
   const languageOptions = [
-    { value: 'zh-CN', label: '中文' },
+    { value: 'zh-CN', label: '简体中文' },
+    { value: 'zh-TW', label: '繁體中文' },
     { value: 'en-US', label: 'English' }
   ];
 
   const themeOptions = [
-    { value: 'default', label: '默认', icon: 'system' },
-    { value: 'pink-gold', label: '金粉色', icon: 'system' },
-    { value: 'blue-purple', label: '蓝紫色', icon: 'system' },
-    { value: 'green-teal', label: '青绿色', icon: 'system' },
-    { value: 'orange-red', label: '橙红色', icon: 'system' },
-    { value: 'purple-pink', label: '紫粉色', icon: 'system' },
-    { value: 'custom', label: '自定义', icon: 'system' }
+    { value: 'journal',  label: '手账',   desc: '温暖纸质 · 怀旧手账' },
+    { value: 'ink',      label: '墨韵',   desc: '中式水墨 · 典雅沉静' },
+    { value: 'aurora',   label: '极光',   desc: '北境极光 · 空灵迷幻' },
+    { value: 'sakura',   label: '樱吹雪', desc: '落樱缤纷 · 温柔轻盈' },
+    { value: 'forest',   label: '森语',   desc: '深林大地 · 沉稳自然' },
+    { value: 'midnight', label: '午夜',   desc: '深海午夜 · 专业锐利' },
+    { value: 'twilight', label: '暮光',   desc: '日落微光 · 温暖浓郁' },
+    { value: 'minimal',  label: '极简',   desc: '纯粹设计 · 字体驱动' },
+    { value: 'custom',   label: '自定义', desc: '自由搭配颜色' }
+  ];
+
+  const themeStyleOptions = [
+    { value: 'journal',  label: '手账风格', desc: '纸质质感 · 温暖怀旧' },
+    { value: 'standard', label: '普通风格', desc: '简洁现代 · 干净利落' }
+  ];
+
+  const cornerStyleOptions = [
+    { value: 'rounded', label: '圆角', desc: '柔和圆润' },
+    { value: 'sharp',   label: '直角', desc: '锐利硬朗' }
   ];
 
   const darkModeOptions = [
@@ -91,6 +106,14 @@ export function useSettings() {
     settingsStore.setTheme(newTheme);
   };
 
+  const setThemeStyle = (newStyle) => {
+    settingsStore.setThemeStyle(newStyle);
+  };
+
+  const setCornerStyle = (newStyle) => {
+    settingsStore.setCornerStyle(newStyle);
+  };
+
   const setDarkMode = (newDarkMode) => {
     settingsStore.setDarkMode(newDarkMode);
   };
@@ -129,6 +152,8 @@ export function useSettings() {
   return {
     language,
     theme,
+    themeStyle,
+    cornerStyle,
     darkMode,
     animationEnabled,
     fontSize,
@@ -138,10 +163,14 @@ export function useSettings() {
     customTheme,
     languageOptions,
     themeOptions,
+    themeStyleOptions,
+    cornerStyleOptions,
     darkModeOptions,
     fontSizeOptions,
     setLanguage,
     setTheme,
+    setThemeStyle,
+    setCornerStyle,
     setDarkMode,
     setAnimationEnabled,
     setFontSize,

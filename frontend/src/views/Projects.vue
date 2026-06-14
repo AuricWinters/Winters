@@ -9,7 +9,7 @@
     >
       <div class="content-container">
         <div class="section-card scroll-reveal">
-          <h3>项目作品集</h3>
+          <h3>{{ t('项目作品集') }}</h3>
           <div
             class="projects-grid"
             style="
@@ -31,7 +31,7 @@
                 class="project-status"
                 :class="project.status || 'completed'"
               >
-                {{ project.status === 'in-progress' ? '进行中' : '已完成' }}
+                {{ project.status === 'in-progress' ? t('进行中') : t('已完成') }}
               </div>
 
               <!-- 项目内容 -->
@@ -58,7 +58,7 @@
               <!-- 操作按钮 -->
               <div class="project-actions">
                 <span class="project-btn primary">
-                  查看详情
+                  {{ t('查看详情') }}
                 </span>
                 <a
                   v-if="project.github"
@@ -84,6 +84,9 @@ import { computed } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useDataStore } from '../stores/data.js';
+import { useI18n } from '../composables/useI18n.js';
+
+const { t } = useI18n();
 
 useParticles();
 useScrollReveal();

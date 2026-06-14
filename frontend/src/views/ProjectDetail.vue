@@ -9,7 +9,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          返回项目列表
+          {{ t('返回项目列表') }}
         </router-link>
       </div>
 
@@ -17,7 +17,7 @@
         <header class="detail-header">
           <div class="header-top">
             <div class="status-badge" :class="project.status || 'completed'">
-              {{ project.status === 'in-progress' ? '进行中' : '已完成' }}
+              {{ project.status === 'in-progress' ? t('进行中') : t('已完成') }}
             </div>
           </div>
           <h1>{{ project.title }}</h1>
@@ -33,12 +33,12 @@
         <div class="detail-body">
           <section class="main-content">
             <div class="content-section">
-              <h3>项目介绍</h3>
+              <h3>{{ t('项目介绍') }}</h3>
               <p>{{ project.fullDesc || project.desc }}</p>
             </div>
 
             <div class="content-section" v-if="project.features">
-              <h3>核心功能</h3>
+              <h3>{{ t('核心功能') }}</h3>
               <ul class="features-list">
                 <li v-for="feature in project.features" :key="feature">{{ feature }}</li>
               </ul>
@@ -47,13 +47,13 @@
 
           <aside class="sidebar-section">
             <div class="content-section">
-              <h3>项目链接</h3>
+              <h3>{{ t('项目链接') }}</h3>
               <div class="project-links">
                 <router-link v-if="project.link" :to="project.link" class="link-btn primary">
-                  查看项目
+                  {{ t('查看项目') }}
                 </router-link>
                 <a v-if="project.github" :href="project.github" target="_blank" class="link-btn secondary">
-                  查看 GitHub 源码
+                  {{ t('查看 GitHub 源码') }}
                 </a>
               </div>
             </div>
@@ -64,19 +64,22 @@
 
     <div class="container" v-else>
       <div class="not-found">
-        <h2>未找到该项目</h2>
-        <router-link to="/projects">返回列表</router-link>
+        <h2>{{ t('未找到该项目') }}</h2>
+        <router-link to="/projects">{{ t('返回列表') }}</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDataStore } from '../stores/data.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
+
+const { t } = useI18n();
 
 const route = useRoute();
 const dataStore = useDataStore();

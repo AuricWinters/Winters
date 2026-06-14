@@ -18,11 +18,11 @@
                 class="chat-status"
                 :class="{ connected: isConnected }"
               />
-              <span>{{ isConnected ? '已连接' : '未连接' }}</span>
+              <span>{{ isConnected ? t('已连接') : t('未连接') }}</span>
             </div>
             <button
               class="settings-btn"
-              title="AI设置"
+              :title="t('AI设置')"
               @click="showSettings = true"
             >
               <svg
@@ -50,14 +50,14 @@
             class="chat-messages"
             role="log"
             aria-live="polite"
-            aria-label="聊天消息"
+            :aria-label="t('聊天消息')"
           >
             <div
               v-if="uiMessages.length === 0"
               class="chat-welcome"
             >
-              <h3>👋 欢迎使用 AI 聊天</h3>
-              <p>请先在设置中配置 AI 提供商，然后开始聊天</p>
+              <h3>{{ t('👋 欢迎使用 AI 聊天') }}</h3>
+              <p>{{ t('请先在设置中配置 AI 提供商，然后开始聊天') }}</p>
             </div>
             <div
               v-for="(msg, index) in uiMessages"
@@ -81,18 +81,18 @@
               v-model="inputMessage"
               type="text"
               class="chat-input"
-              placeholder="输入消息..."
-              aria-label="消息输入框"
+              :placeholder="t('输入消息...')"
+              :aria-label="t('消息输入框')"
               :disabled="!isConnected || isLoading"
               @keyup.enter="sendMessage"
             >
             <button
               class="chat-send-btn"
-              aria-label="发送消息"
+              :aria-label="t('发送消息')"
               :disabled="!isConnected || isLoading || !inputMessage.trim()"
               @click="sendMessage"
             >
-              {{ isLoading ? '发送中...' : '发送' }}
+              {{ isLoading ? t('发送中...') : t('发送') }}
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@
     >
       <div class="settings-modal">
         <div class="settings-header">
-          <h3>⚙️ AI 设置</h3>
+          <h3>{{ t('⚙️ AI 设置') }}</h3>
           <button
             class="close-btn"
             @click="showSettings = false"
@@ -119,19 +119,19 @@
         <div class="settings-content">
           <!-- 提供商选择 -->
           <div class="setting-group">
-            <label>AI 提供商</label>
+            <label>{{ t('AI 提供商') }}</label>
             <div class="provider-tabs">
               <button
                 :class="{ active: settings.provider === 'ollama' }"
                 @click="settings.provider = 'ollama'"
               >
-                🦙 Ollama (本地)
+                🦙 {{ t('Ollama (本地)') }}
               </button>
               <button
                 :class="{ active: settings.provider === 'openai' }"
                 @click="settings.provider = 'openai'"
               >
-                🤖 OpenAI API
+                🤖 {{ t('OpenAI API') }}
               </button>
             </div>
           </div>
@@ -141,13 +141,13 @@
             v-if="settings.provider === 'ollama'"
             class="setting-group"
           >
-            <label>服务器地址</label>
+            <label>{{ t('服务器地址') }}</label>
             <input
               v-model="settings.ollamaBaseUrl"
               type="text"
               placeholder="http://localhost:11434"
             >
-            <small>本地 Ollama 服务地址</small>
+            <small>{{ t('本地 Ollama 服务地址') }}</small>
           </div>
 
           <!-- OpenAI 配置 -->
@@ -155,13 +155,13 @@
             v-if="settings.provider === 'openai'"
             class="setting-group"
           >
-            <label>API 地址</label>
+            <label>{{ t('API 地址') }}</label>
             <input
               v-model="settings.openaiBaseUrl"
               type="text"
               placeholder="https://api.openai.com/v1"
             >
-            <small>OpenAI 兼容 API 地址</small>
+            <small>{{ t('OpenAI 兼容 API 地址') }}</small>
           </div>
 
           <div
@@ -174,12 +174,12 @@
               type="password"
               placeholder="sk-..."
             >
-            <small>你的 API 密钥</small>
+            <small>{{ t('你的 API 密钥') }}</small>
           </div>
 
           <!-- 模型选择 -->
           <div class="setting-group">
-            <label>模型</label>
+            <label>{{ t('模型') }}</label>
             <div class="model-input">
               <input
                 v-model="settings.model"
@@ -190,11 +190,11 @@
                 :disabled="isLoadingModels"
                 @click="loadModels"
               >
-                {{ isLoadingModels ? '加载中...' : '🔄' }}
+                {{ isLoadingModels ? t('加载中...') : '🔄' }}
               </button>
             </div>
             <small v-if="availableModels.length > 0">
-              可用模型: {{ availableModels.join(', ') }}
+              {{ t('可用模型') }}: {{ availableModels.join(', ') }}
             </small>
           </div>
 
@@ -205,7 +205,7 @@
               :disabled="isTesting"
               @click="testConnection"
             >
-              {{ isTesting ? '测试中...' : '🧪 测试连接' }}
+              {{ isTesting ? t('测试中...') : t('🧪 测试连接') }}
             </button>
             <div
               v-if="testResult"
@@ -221,13 +221,13 @@
             class="cancel-btn"
             @click="showSettings = false"
           >
-            取消
+            {{ t('取消') }}
           </button>
           <button
             class="save-btn"
             @click="saveSettings"
           >
-            💾 保存设置
+            {{ t('💾 保存设置') }}
           </button>
         </div>
       </div>
@@ -240,7 +240,10 @@ import { ref, computed, onMounted, nextTick } from 'vue';
 import { useAIStore } from '../stores/ai.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
+import { useI18n } from '../composables/useI18n.js';
 import { storeToRefs } from 'pinia';
+
+const { t } = useI18n();
 
 const aiStore = useAIStore();
 useParticles();
@@ -265,7 +268,7 @@ const uiMessages = ref([]);
 const saveSettings = () => {
   aiStore.saveSettings(settings.value);
   showSettings.value = false;
-  uiMessages.value.push({ type: 'system', content: '设置已保存' });
+  uiMessages.value.push({ type: 'system', content: t('设置已保存') });
   scrollToBottom();
 };
 
@@ -291,7 +294,7 @@ const loadModels = async () => {
     }
   } catch (e) {
     console.error('加载模型列表失败:', e);
-    uiMessages.value.push({ type: 'error', content: '无法获取模型列表' });
+    uiMessages.value.push({ type: 'error', content: t('无法获取模型列表') });
     scrollToBottom();
   }
   isLoadingModels.value = false;
@@ -314,17 +317,17 @@ const testConnection = async () => {
     if (data.status === 'ok') {
       testResult.value = {
         success: true,
-        message: `✅ AI 服务正常运行`,
+        message: t('✅ AI 服务正常运行'),
       };
       aiStore.checkConnection();
     } else {
-      testResult.value = { success: false, message: `❌ 服务异常` };
+      testResult.value = { success: false, message: t('❌ 服务异常') };
     }
   } catch (e) {
     console.error('测试连接失败:', e);
     testResult.value = {
       success: false,
-      message: `❌ 连接失败: ${e.message}`,
+      message: t('❌ 连接失败') + ': ' + e.message,
     };
   }
 
@@ -368,7 +371,7 @@ const sendMessage = async () => {
   if (result.success) {
     uiMessages.value.push({ type: 'ai', content: result.response });
   } else {
-    uiMessages.value.push({ type: 'error', content: `错误: ${result.error}` });
+    uiMessages.value.push({ type: 'error', content: t('错误') + ': ' + result.error });
   }
   scrollToBottom();
 };
@@ -378,7 +381,7 @@ const loadChatHistory = () => {
   if (messages.value.length === 0) {
     uiMessages.value.push({
       type: 'system',
-      content: '👋 欢迎！请先点击右上角 ⚙️ 设置 AI 提供商',
+      content: t('👋 欢迎！请先点击右上角 ⚙️ 设置 AI 提供商'),
     });
   } else {
     messages.value.forEach((msg) => {
@@ -441,7 +444,7 @@ onMounted(() => {
 
 /* 设置按钮 */
 .settings-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
   border: none;
   padding: 8px;
   border-radius: 8px;
@@ -484,13 +487,13 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .close-btn {
@@ -524,10 +527,10 @@ onMounted(() => {
 .setting-group input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: var(--bg-glass);
+  color: var(--text-main);
   font-size: 14px;
   box-sizing: border-box;
 }
@@ -553,9 +556,9 @@ onMounted(() => {
 .provider-tabs button {
   flex: 1;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   color: #a1a1aa;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -564,11 +567,11 @@ onMounted(() => {
 .provider-tabs button.active {
   background: rgba(var(--primary-rgb), 0.2);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--text-main);
 }
 
 .provider-tabs button:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
 }
 
 /* 模型输入 */
@@ -583,9 +586,9 @@ onMounted(() => {
 
 .model-input button {
   padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-glass);
   color: var(--primary);
   cursor: pointer;
 }
@@ -641,7 +644,7 @@ onMounted(() => {
   display: flex;
   gap: 12px;
   padding: 20px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
 }
 
 .cancel-btn,
@@ -655,19 +658,19 @@ onMounted(() => {
 }
 
 .cancel-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
   color: #a1a1aa;
 }
 
 .cancel-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
 }
 
 .save-btn {
   background: var(--primary);
   border: none;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .save-btn:hover {
@@ -683,7 +686,7 @@ onMounted(() => {
 
 .chat-welcome h3 {
   margin: 0 0 12px;
-  color: #fff;
+  color: var(--text-main);
   font-size: 20px;
 }
 

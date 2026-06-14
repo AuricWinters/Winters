@@ -2,7 +2,7 @@
   <button
     class="back-to-top"
     :class="{ show: isVisible }"
-    aria-label="回到顶部"
+    :aria-label="t('回到顶部')"
     @click="scrollToTop"
   >
     <svg
@@ -20,6 +20,8 @@
 
 <script setup>
 import { useBackToTop } from '../composables/useBackToTop.js';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const { isVisible, scrollToTop } = useBackToTop();
 </script>

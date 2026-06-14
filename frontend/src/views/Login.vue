@@ -27,14 +27,14 @@
               :class="{ active: loginType === 'password' }"
               @click="loginType = 'password'"
             >
-              密码登录
+              {{ t('密码登录') }}
             </button>
             <button
               class="tab-btn"
               :class="{ active: loginType === 'code' }"
               @click="loginType = 'code'"
             >
-              验证码登录
+              {{ t('验证码登录') }}
             </button>
             <div class="tab-indicator" :style="indicatorStyle" />
           </div>
@@ -89,13 +89,13 @@
                   />
                   <circle cx="12" cy="7" r="4" stroke-width="2" />
                 </svg>
-                用户名
+                {{ t('用户名') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.username"
                   type="text"
-                  placeholder="请输入用户名"
+                  :placeholder="t('请输入用户名')"
                   :disabled="isLoading"
                   @blur="validateField('username'); isTyping = false"
                   @input="clearError('username')"
@@ -120,13 +120,13 @@
                   />
                   <polyline points="22,6 12,13 2,6" stroke-width="2" />
                 </svg>
-                邮箱
+                {{ t('邮箱') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.email"
                   type="email"
-                  placeholder="请输入邮箱"
+                  :placeholder="t('请输入邮箱')"
                   :disabled="isLoading"
                   @blur="validateField('email'); isTyping = false"
                   @input="clearError('email')"
@@ -149,13 +149,13 @@
                   <circle cx="12" cy="16" r="1" fill="currentColor" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" />
                 </svg>
-                密码
+                {{ t('密码') }}
               </label>
               <div class="input-wrapper">
                 <input
                   v-model="form.password"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请输入密码"
+                  :placeholder="t('请输入密码')"
                   :disabled="isLoading"
                   @blur="validateField('password'); isTyping = false"
                   @input="clearError('password')"
@@ -180,14 +180,14 @@
             </div>
 
             <button type="submit" class="submit-btn" :disabled="isLoading">
-              <span v-if="!isLoading">注册</span>
+              <span v-if="!isLoading">{{ t('注册') }}</span>
               <span v-else class="loading-spinner" />
             </button>
           </form>
 
           <!-- 分隔线 -->
           <div class="divider">
-            <span>或者</span>
+            <span>{{ t('或者') }}</span>
           </div>
 
           <!-- 第三方登录 -->
@@ -196,7 +196,7 @@
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.269-.03-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z" />
               </svg>
-              <span>微信登录</span>
+              <span>{{ t('微信登录') }}</span>
             </button>
             <button type="button" class="social-btn github" @click="socialLogin('github')">
               <svg viewBox="0 0 24 24" fill="currentColor">
@@ -208,9 +208,9 @@
 
           <!-- 注册链接 -->
           <div class="auth-bottom-link">
-            <span>还没有账号?</span>
+            <span>{{ t('还没有账号?') }}</span>
             <router-link to="/register">
-              立即注册
+              {{ t('立即注册') }}
             </router-link>
           </div>
         </div>
@@ -220,6 +220,8 @@
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
@@ -268,31 +270,31 @@ const indicatorStyle = computed(() => ({
 
 const validationRules = {
   username: (value) => {
-    if (!value) return '请输入用户名';
-    if (value.length < 3) return '用户名至少3个字符';
-    if (value.length > 20) return '用户名最多20个字符';
-    if (!/^[a-zA-Z0-9_一-龥]+$/.test(value)) return '用户名只能包含字母、数字、下划线';
+    if (!value) return t('请输入用户名');
+    if (value.length < 3) return t('用户名至少3个字符');
+    if (value.length > 20) return t('用户名最多20个字符');
+    if (!/^[a-zA-Z0-9_一-龥]+$/.test(value)) return t('用户名只能包含字母、数字、下划线');
     return '';
   },
   password: (value) => {
-    if (!value) return '请输入密码';
-    if (value.length < 4) return '密码至少4个字符';
-    if (value.length > 32) return '密码最多32个字符';
+    if (!value) return t('请输入密码');
+    if (value.length < 4) return t('密码至少4个字符');
+    if (value.length > 32) return t('密码最多32个字符');
     return '';
   },
   email: (value) => {
-    if (!value) return '请输入邮箱';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return '请输入正确的邮箱地址';
+    if (!value) return t('请输入邮箱');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('请输入正确的邮箱地址');
     return '';
   },
   phone: (value) => {
-    if (!value) return '请输入手机号';
-    if (!/^1[3-9]\d{9}$/.test(value)) return '请输入正确的手机号';
+    if (!value) return t('请输入手机号');
+    if (!/^1[3-9]\d{9}$/.test(value)) return t('请输入正确的手机号');
     return '';
   },
   code: (value) => {
-    if (!value) return '请输入验证码';
-    if (!/^\d{6}$/.test(value)) return '验证码为6位数字';
+    if (!value) return t('请输入验证码');
+    if (!/^\d{6}$/.test(value)) return t('验证码为6位数字');
     return '';
   },
 };
@@ -358,7 +360,7 @@ const handleLogin = async () => {
         localStorage.removeItem('rememberMe');
       }
 
-      showToast('登录成功！正在跳转...', 'success');
+      showToast(t('登录成功！正在跳转...'), 'success');
 
       setTimeout(() => {
         router.push('/');
@@ -375,7 +377,7 @@ const handleLogin = async () => {
       triggerShake();
     }
   } catch (error) {
-    showToast('登录失败，请重试', 'error');
+    showToast(t('登录失败，请重试'), 'error');
     triggerShake();
   } finally {
     isLoading.value = false;
@@ -401,7 +403,7 @@ const handleCodeLogin = async () => {
       const result = await userStore.login(form.phone, form.code, true);
 
       if (result.success) {
-        showToast('登录成功！正在跳转...', 'success');
+        showToast(t('登录成功！正在跳转...'), 'success');
         setTimeout(() => {
           router.push('/');
         }, 1000);
@@ -411,11 +413,11 @@ const handleCodeLogin = async () => {
       }
     } else {
       const error = await response.json();
-      showToast(error.detail || '登录失败', 'error');
+      showToast(error.detail || t('登录失败'), 'error');
       triggerShake();
     }
   } catch (error) {
-    showToast('验证码登录功能开发中', 'info');
+    showToast(t('验证码登录功能开发中'), 'info');
   } finally {
     isLoading.value = false;
   }
@@ -438,7 +440,7 @@ const sendCode = async () => {
 
     if (response.ok) {
       codeCountdown.value = 60;
-      showToast('验证码已发送', 'success');
+      showToast(t('验证码已发送'), 'success');
 
       countdownTimer = setInterval(() => {
         codeCountdown.value--;
@@ -448,11 +450,11 @@ const sendCode = async () => {
       }, 1000);
     } else {
       const error = await response.json();
-      showToast(error.detail || '发送失败', 'error');
+      showToast(error.detail || t('发送失败'), 'error');
     }
   } catch (error) {
     codeCountdown.value = 60;
-    showToast('验证码已发送（模拟）', 'success');
+    showToast(t('验证码已发送（模拟）'), 'success');
 
     countdownTimer = setInterval(() => {
       codeCountdown.value--;
@@ -483,8 +485,8 @@ const socialLogin = async (type) => {
 
       const mockUser = {
         id: Date.now(),
-        username: type === 'wechat' ? '微信用户' : 'GitHub用户',
-        nickname: type === 'wechat' ? '微信用户' : 'GitHub用户',
+        username: type === 'wechat' ? t('微信用户') : t('GitHub用户'),
+        nickname: type === 'wechat' ? t('微信用户') : t('GitHub用户'),
       };
 
       const mockData = {
@@ -503,15 +505,15 @@ const socialLogin = async (type) => {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', mockData.user.username);
 
-      showToast(`${type === 'wechat' ? '微信' : 'GitHub'}登录成功！`, 'success');
+      showToast(`${type === 'wechat' ? t('微信') : 'GitHub'}登录成功！`, 'success');
       setTimeout(() => {
         router.push('/');
       }, 1000);
     } else {
-      showToast('登录失败', 'error');
+      showToast(t('登录失败'), 'error');
     }
   } catch (error) {
-    showToast(`${type === 'wechat' ? '微信' : 'GitHub'}登录功能开发中`, 'info');
+    showToast(`${type === 'wechat' ? t('微信') : 'GitHub'}登录功能开发中`, 'info');
   }
 };
 
@@ -531,7 +533,7 @@ const handleRegister = async () => {
     const result = await userStore.register(form.username, form.email, form.password);
 
     if (result.success) {
-      showToast('注册成功！正在跳转...', 'success');
+      showToast(t('注册成功！正在跳转...'), 'success');
       setTimeout(() => {
         router.push('/');
       }, 1000);
@@ -547,7 +549,7 @@ const handleRegister = async () => {
       triggerShake();
     }
   } catch {
-    showToast('注册失败，请重试', 'error');
+    showToast(t('注册失败，请重试'), 'error');
     triggerShake();
   } finally {
     isLoading.value = false;

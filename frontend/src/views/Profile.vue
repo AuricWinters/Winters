@@ -24,7 +24,7 @@
         <div class="profile-card-inner">
           <!-- 头像 + 信息 -->
           <div class="profile-main">
-            <div class="avatar-upload" @click="triggerAvatarUpload" title="点击更换头像">
+            <div class="avatar-upload" @click="triggerAvatarUpload" :title="t('点击更换头像')">
               <div class="avatar-ring">
                 <div v-if="user.avatar" class="avatar-img" :style="{ backgroundImage: `url(${user.avatar})` }" />
                 <svg v-else class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -36,16 +36,16 @@
             </div>
             <input ref="avatarInput" type="file" accept="image/*" hidden @change="handleAvatarChange" />
             <div class="profile-info">
-              <h2 class="j-name">{{ user.nickname || user.username || '用户' }}</h2>
-              <p class="j-bio">{{ user.bio || '还没有写简介，点击档案标签添加吧 ✍️' }}</p>
-              <p class="j-meta">{{ user.email || user.phone || '未设置联系方式' }}</p>
+              <h2 class="j-name">{{ user.nickname || user.username || t('用户') }}</h2>
+              <p class="j-bio">{{ user.bio || t('还没有写简介，点击档案标签添加吧 ✍️') }}</p>
+              <p class="j-meta">{{ user.email || user.phone || t('未设置联系方式') }}</p>
             </div>
           </div>
           <!-- 统计 -->
           <div class="profile-stats">
-            <div class="stat-chip"><span class="chip-num">{{ stats.days }}</span><span class="chip-label">天</span></div>
-            <div class="stat-chip"><span class="chip-num">{{ stats.projects }}</span><span class="chip-label">项目</span></div>
-            <div class="stat-chip"><span class="chip-num">{{ stats.active }}</span><span class="chip-label">活跃</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.days }}</span><span class="chip-label">{{ t('天') }}</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.projects }}</span><span class="chip-label">{{ t('项目') }}</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.active }}</span><span class="chip-label">{{ t('活跃') }}</span></div>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
           :key="tab.key"
           :class="{ active: activeTab === tab.key }"
           @click="activeTab = tab.key"
-        >{{ tab.label }}</button>
+        >{{ t(tab.label) }}</button>
       </div>
 
       <!-- 内容便利贴 -->
@@ -67,18 +67,18 @@
 
         <!-- ===== 📋 档案 ===== -->
         <div v-if="activeTab === 'profile'" class="tab-profile">
-          <h3 class="sticky-title">📋 个人信息</h3>
+          <h3 class="sticky-title">{{ t('📋 个人信息') }}</h3>
           <form @submit.prevent="handleUpdateProfile" class="j-form">
             <div class="field-row">
               <span class="field-emoji">📝</span>
-              <input v-model="form.nickname" placeholder="昵称" :disabled="saving"
+              <input v-model="form.nickname" :placeholder="t('昵称')" :disabled="saving"
                 @blur="validateField('nickname')" @input="clearError('nickname')" />
             </div>
             <p v-if="errors.nickname" class="field-error">{{ errors.nickname }}</p>
 
             <div class="field-row">
               <span class="field-emoji">💬</span>
-              <textarea v-model="form.bio" placeholder="写一句自我介绍…" :disabled="saving"
+              <textarea v-model="form.bio" :placeholder="t('写一句自我介绍…')" :disabled="saving"
                 maxlength="200" rows="2"
                 @blur="validateField('bio')" @input="clearError('bio')" />
             </div>
@@ -87,24 +87,24 @@
 
             <div class="field-row">
               <span class="field-emoji">📱</span>
-              <input v-model="form.phone" placeholder="手机号" :disabled="saving"
+              <input v-model="form.phone" :placeholder="t('手机号')" :disabled="saving"
                 @blur="validateField('phone')" @input="clearError('phone')" />
-              <span v-if="user.phone" class="field-badge ok">已绑定</span>
+              <span v-if="user.phone" class="field-badge ok">{{ t('已绑定') }}</span>
             </div>
             <p v-if="errors.phone" class="field-error">{{ errors.phone }}</p>
 
             <div class="field-row">
               <span class="field-emoji">📧</span>
-              <input v-model="form.email" placeholder="邮箱" :disabled="saving"
+              <input v-model="form.email" :placeholder="t('邮箱')" :disabled="saving"
                 @blur="validateField('email')" @input="clearError('email')" />
-              <span v-if="user.email" class="field-badge ok">已绑定</span>
+              <span v-if="user.email" class="field-badge ok">{{ t('已绑定') }}</span>
             </div>
             <p v-if="errors.email" class="field-error">{{ errors.email }}</p>
 
             <div class="form-actions">
-              <button type="button" class="j-btn-cancel" @click="resetForm" :disabled="saving">撤销 ✗</button>
+              <button type="button" class="j-btn-cancel" @click="resetForm" :disabled="saving">{{ t('撤销 ✗') }}</button>
               <button type="submit" class="j-btn" :disabled="saving">
-                {{ saving ? '保存中…' : '记下来 ✍️' }}
+                {{ saving ? t('保存中…') : t('记下来 ✍️') }}
               </button>
             </div>
           </form>
@@ -116,23 +116,23 @@
             <!-- 左栏：密码修改 -->
             <div class="sec-column">
               <div class="sec-section">
-                <h3 class="sticky-title">🔑 修改密码</h3>
+                <h3 class="sticky-title">{{ t('🔑 修改密码') }}</h3>
                 <form @submit.prevent="handleChangePassword" class="j-form">
                   <div class="field-row">
                     <span class="field-emoji">🔒</span>
-                    <input v-model="pwdForm.current" type="password" placeholder="当前密码" :disabled="saving" />
+                    <input v-model="pwdForm.current" type="password" :placeholder="t('当前密码')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">🆕</span>
-                    <input v-model="pwdForm.newPwd" type="password" placeholder="新密码（至少6位）" :disabled="saving" />
+                    <input v-model="pwdForm.newPwd" type="password" :placeholder="t('新密码（至少6位）')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">✅</span>
-                    <input v-model="pwdForm.confirm" type="password" placeholder="确认新密码" :disabled="saving" />
+                    <input v-model="pwdForm.confirm" type="password" :placeholder="t('确认新密码')" :disabled="saving" />
                   </div>
                   <p v-if="pwdError" class="field-error">{{ pwdError }}</p>
                   <button type="submit" class="j-btn-sm" :disabled="saving">
-                    {{ saving ? '…' : '更新密码 🔒' }}
+                    {{ saving ? '…' : t('更新密码 🔒') }}
                   </button>
                 </form>
               </div>
@@ -141,52 +141,52 @@
             <!-- 右栏：手机 + 邮箱绑定 -->
             <div class="sec-column">
               <div class="sec-section">
-                <h3 class="sticky-title">📱 手机管理</h3>
+                <h3 class="sticky-title">{{ t('📱 手机管理') }}</h3>
                 <div class="sec-row-display">
-                  <span>{{ user.phone ? maskPhone(user.phone) : '未绑定手机号' }}</span>
+                  <span>{{ user.phone ? maskPhone(user.phone) : t('未绑定手机号') }}</span>
                   <button class="sec-link" @click="toggleBind('phone')">
-                    {{ bindPanel.phoneOpen ? '收起' : user.phone ? '换绑' : '绑定' }}
+                    {{ bindPanel.phoneOpen ? t('收起') : user.phone ? t('换绑') : t('绑定') }}
                   </button>
                 </div>
                 <div v-if="bindPanel.phoneOpen" class="bind-inline">
                   <div class="field-row">
                     <span class="field-emoji">📱</span>
-                    <input v-model="bindPanel.phone" placeholder="输入新手机号" :disabled="saving" />
+                    <input v-model="bindPanel.phone" :placeholder="t('输入新手机号')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">📨</span>
-                    <input v-model="bindPanel.phoneCode" placeholder="验证码" :disabled="saving" />
+                    <input v-model="bindPanel.phoneCode" :placeholder="t('验证码')" :disabled="saving" />
                     <button type="button" class="code-btn-inline" @click="sendCode('phone')" :disabled="codeSending">
-                      {{ codeCountdown > 0 ? codeCountdown + 's' : '发送' }}
+                      {{ codeCountdown > 0 ? codeCountdown + 's' : t('发送') }}
                     </button>
                   </div>
-                  <button class="j-btn-sm" @click="handleBindPhone" :disabled="saving">确认绑定</button>
+                  <button class="j-btn-sm" @click="handleBindPhone" :disabled="saving">{{ t('确认绑定') }}</button>
                 </div>
               </div>
 
               <div class="sec-divider" />
 
               <div class="sec-section">
-                <h3 class="sticky-title">📧 邮箱管理</h3>
+                <h3 class="sticky-title">{{ t('📧 邮箱管理') }}</h3>
                 <div class="sec-row-display">
-                  <span>{{ user.email || '未绑定邮箱' }}</span>
+                  <span>{{ user.email || t('未绑定邮箱') }}</span>
                   <button class="sec-link" @click="toggleBind('email')">
-                    {{ bindPanel.emailOpen ? '收起' : user.email ? '换绑' : '绑定' }}
+                    {{ bindPanel.emailOpen ? t('收起') : user.email ? t('换绑') : t('绑定') }}
                   </button>
                 </div>
                 <div v-if="bindPanel.emailOpen" class="bind-inline">
                   <div class="field-row">
                     <span class="field-emoji">📧</span>
-                    <input v-model="bindPanel.email" placeholder="输入新邮箱" :disabled="saving" />
+                    <input v-model="bindPanel.email" :placeholder="t('输入新邮箱')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">📨</span>
-                    <input v-model="bindPanel.emailCode" placeholder="验证码" :disabled="saving" />
+                    <input v-model="bindPanel.emailCode" :placeholder="t('验证码')" :disabled="saving" />
                     <button type="button" class="code-btn-inline" @click="sendCode('email')" :disabled="codeSending">
-                      {{ codeCountdown > 0 ? codeCountdown + 's' : '发送' }}
+                      {{ codeCountdown > 0 ? codeCountdown + 's' : t('发送') }}
                     </button>
                   </div>
-                  <button class="j-btn-sm" @click="handleBindEmail" :disabled="saving">确认绑定</button>
+                  <button class="j-btn-sm" @click="handleBindEmail" :disabled="saving">{{ t('确认绑定') }}</button>
                 </div>
               </div>
             </div>
@@ -197,47 +197,47 @@
         <div v-if="activeTab === 'preferences'" class="tab-preferences">
           <div class="pref-grid-2">
             <div class="pref-section">
-              <h3 class="sticky-title">🎨 主题色</h3>
+              <h3 class="sticky-title">{{ t('🎨 主题色') }}</h3>
               <div class="theme-grid">
                 <button
                   v-for="t in themeOptions"
                   :key="t.value"
                   :class="['theme-dot', { active: settingsStore.theme === t.value }]"
                   :style="{ background: t.color }"
-                  :title="t.label"
+                  :title="t(t.label)"
                   @click="settingsStore.setTheme(t.value)"
                 />
               </div>
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">🌗 深色模式</h3>
+              <h3 class="sticky-title">{{ t('🌗 深色模式') }}</h3>
               <div class="option-row">
                 <button
                   v-for="dm in darkModeOptions"
                   :key="dm.value"
                   :class="['opt-btn', { active: settingsStore.darkMode === dm.value }]"
                   @click="settingsStore.setDarkMode(dm.value)"
-                >{{ dm.label }}</button>
+                >{{ t(dm.label) }}</button>
               </div>
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">🔤 字体大小</h3>
+              <h3 class="sticky-title">{{ t('🔤 字体大小') }}</h3>
               <div class="option-row">
                 <button
                   v-for="fs in fontSizeOptions"
                   :key="fs.value"
                   :class="['opt-btn', { active: settingsStore.fontSize === fs.value }]"
                   @click="settingsStore.setFontSize(fs.value)"
-                >{{ fs.label }}</button>
+                >{{ t(fs.label) }}</button>
               </div>
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">✨ 动画效果</h3>
+              <h3 class="sticky-title">{{ t('✨ 动画效果') }}</h3>
               <div class="toggle-row">
-                <span>{{ settingsStore.animationEnabled ? '已开启' : '已关闭' }}</span>
+                <span>{{ settingsStore.animationEnabled ? t('已开启') : t('已关闭') }}</span>
                 <button
                   :class="['toggle-switch', { on: settingsStore.animationEnabled }]"
                   @click="settingsStore.setAnimationEnabled(!settingsStore.animationEnabled)"
@@ -246,14 +246,14 @@
             </div>
 
             <div class="pref-section pref-full">
-              <h3 class="sticky-title">🌐 语言</h3>
+              <h3 class="sticky-title">{{ t('🌐 语言') }}</h3>
               <div class="option-row">
                 <button
                   v-for="lang in languageOptions"
                   :key="lang.value"
                   :class="['opt-btn', { active: settingsStore.language === lang.value }]"
                   @click="settingsStore.setLanguage(lang.value)"
-                >{{ lang.label }}</button>
+                >{{ t(lang.label) }}</button>
               </div>
             </div>
           </div>
@@ -263,7 +263,7 @@
         <div v-if="activeTab === 'data'" class="tab-data">
           <!-- 活动热力图（全宽） -->
           <div class="data-section data-full">
-            <h3 class="sticky-title">🔥 活动热力图</h3>
+            <h3 class="sticky-title">{{ t('🔥 活动热力图') }}</h3>
             <ContributionHeatmap :embedded="true" />
           </div>
 
@@ -272,7 +272,7 @@
           <!-- 桌面双栏：项目 + 存储 -->
           <div class="data-grid-2">
             <div class="data-section">
-              <h3 class="sticky-title">📂 我的项目</h3>
+              <h3 class="sticky-title">{{ t('📂 我的项目') }}</h3>
               <div class="project-minilist">
                 <router-link
                   v-for="p in dataStore.projects.slice(0, 3)"
@@ -283,23 +283,23 @@
                   <span class="proj-dot" /> {{ p.title }}
                 </router-link>
               </div>
-              <router-link to="/projects" class="view-all">查看全部项目 →</router-link>
+              <router-link to="/projects" class="view-all">{{ t('查看全部项目 →') }}</router-link>
             </div>
 
             <div class="data-section">
-              <h3 class="sticky-title">💾 存储概览</h3>
+              <h3 class="sticky-title">{{ t('💾 存储概览') }}</h3>
               <div class="storage-bar-container">
                 <div class="storage-bar">
-                  <div class="storage-seg seg-avatar" :style="{ width: '15%' }" title="头像" />
-                  <div class="storage-seg seg-files" :style="{ width: '25%' }" title="文件" />
-                  <div class="storage-seg seg-cache" :style="{ width: '8%' }" title="缓存" />
+                  <div class="storage-seg seg-avatar" :style="{ width: '15%' }" :title="t('头像')" />
+                  <div class="storage-seg seg-files" :style="{ width: '25%' }" :title="t('文件')" />
+                  <div class="storage-seg seg-cache" :style="{ width: '8%' }" :title="t('缓存')" />
                 </div>
               </div>
               <div class="storage-legend">
-                <span>🖼️ 头像 1.5MB</span>
-                <span>📄 文件 2.5MB</span>
-                <span>🗑️ 缓存 0.8MB</span>
-                <span class="storage-free">剩余 95.2MB</span>
+                <span>{{ t('🖼️ 头像 1.5MB') }}</span>
+                <span>{{ t('📄 文件 2.5MB') }}</span>
+                <span>{{ t('🗑️ 缓存 0.8MB') }}</span>
+                <span class="storage-free">{{ t('剩余 95.2MB') }}</span>
               </div>
             </div>
           </div>
@@ -308,16 +308,16 @@
 
           <!-- 数据操作（全宽） -->
           <div class="data-section data-full">
-            <h3 class="sticky-title">⚙️ 数据管理</h3>
+            <h3 class="sticky-title">{{ t('⚙️ 数据管理') }}</h3>
             <div class="data-actions">
-              <button class="j-btn-sm" @click="exportData">📥 导出我的数据</button>
-              <button class="j-btn-sm danger" @click="confirmClearCache">🗑️ 清除本地缓存</button>
+              <button class="j-btn-sm" @click="exportData">{{ t('📥 导出我的数据') }}</button>
+              <button class="j-btn-sm danger" @click="confirmClearCache">{{ t('🗑️ 清除本地缓存') }}</button>
             </div>
             <div v-if="showClearConfirm" class="confirm-inline">
-              <p>确定要清除本地缓存吗？主题设置将保留。</p>
+              <p>{{ t('确定要清除本地缓存吗？主题设置将保留。') }}</p>
               <div class="confirm-buttons">
-                <button class="j-btn-cancel" @click="showClearConfirm = false">取消</button>
-                <button class="j-btn-sm danger" @click="clearCache">确认清除</button>
+                <button class="j-btn-cancel" @click="showClearConfirm = false">{{ t('取消') }}</button>
+                <button class="j-btn-sm danger" @click="clearCache">{{ t('确认清除') }}</button>
               </div>
             </div>
           </div>
@@ -333,27 +333,27 @@
               :class="['action-btn', 'logout-btn', { confirming: showLogoutConfirm }]"
               @click="triggerLogout"
             >
-              {{ showLogoutConfirm ? '再次点击确认退出' : '🚪 退出登录' }}
+              {{ showLogoutConfirm ? t('再次点击确认退出') : t('🚪 退出登录') }}
             </button>
-            <button v-if="showLogoutConfirm" class="action-cancel" @click="showLogoutConfirm = false">取消</button>
+            <button v-if="showLogoutConfirm" class="action-cancel" @click="showLogoutConfirm = false">{{ t('取消') }}</button>
           </div>
           <div class="action-row">
             <button
               :class="['action-btn', 'delete-btn', { confirming: showDeleteConfirm }]"
               @click="triggerDelete"
             >
-              {{ showDeleteConfirm ? '⚠️ 此操作不可撤销，再次点击确认' : '⚠️ 注销账户' }}
+              {{ showDeleteConfirm ? t('⚠️ 此操作不可撤销，再次点击确认') : t('⚠️ 注销账户') }}
             </button>
           </div>
         </div>
         <div v-if="showDeleteConfirm" class="delete-verify">
           <div class="field-row">
             <span class="field-emoji">🔑</span>
-            <input v-model="deletePassword" type="password" placeholder="输入密码确认注销" />
+            <input v-model="deletePassword" type="password" :placeholder="t('输入密码确认注销')" />
           </div>
           <div class="confirm-buttons">
-            <button class="j-btn-cancel" @click="showDeleteConfirm = false; deletePassword = ''">取消</button>
-            <button class="j-btn-sm danger" @click="handleDeleteAccount" :disabled="saving">确认注销</button>
+            <button class="j-btn-cancel" @click="showDeleteConfirm = false; deletePassword = ''">{{ t('取消') }}</button>
+            <button class="j-btn-sm danger" @click="handleDeleteAccount" :disabled="saving">{{ t('确认注销') }}</button>
           </div>
         </div>
       </div>
@@ -364,6 +364,8 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 import { useUserStore } from '../stores/user.js';
 import { useSettingsStore } from '../stores/settings.js';
 import { useDataStore } from '../stores/data.js';
@@ -392,13 +394,15 @@ const tabs = [
 ];
 
 const themeOptions = [
-  { value: 'default', label: '默认', color: 'linear-gradient(135deg, #EC4899, #F59E0B)' },
-  { value: 'pink-gold', label: '金粉', color: 'linear-gradient(135deg, #EC4899, #F59E0B)' },
-  { value: 'blue-purple', label: '蓝紫', color: 'linear-gradient(135deg, #6366F1, #A855F7)' },
-  { value: 'green-teal', label: '青翠', color: 'linear-gradient(135deg, #10B981, #06B6D4)' },
-  { value: 'orange-red', label: '暖橙', color: 'linear-gradient(135deg, #F97316, #EF4444)' },
-  { value: 'purple-pink', label: '紫粉', color: 'linear-gradient(135deg, #A855F7, #EC4899)' },
-  { value: 'custom', label: '自定义', color: 'linear-gradient(135deg, #6366F1, #EC4899, #F59E0B)' },
+  { value: 'journal',  label: '手账', color: 'linear-gradient(135deg, #C4737A, #B8956A)' },
+  { value: 'ink',      label: '墨韵', color: 'linear-gradient(135deg, #3A3A3A, #C8493A)' },
+  { value: 'aurora',   label: '极光', color: 'linear-gradient(135deg, #0D9488, #7C3AED)' },
+  { value: 'sakura',   label: '樱吹雪', color: 'linear-gradient(135deg, #E890A0, #8FA88A)' },
+  { value: 'forest',   label: '森语', color: 'linear-gradient(135deg, #7A8A60, #8B735A)' },
+  { value: 'midnight', label: '午夜', color: 'linear-gradient(135deg, #1E3A5F, #C89840)' },
+  { value: 'twilight', label: '暮光', color: 'linear-gradient(135deg, #E87A5E, #7A5E8B)' },
+  { value: 'minimal',  label: '极简', color: 'linear-gradient(135deg, #2A2A2A, #4A7A9A)' },
+  { value: 'custom',   label: '自定义', color: 'linear-gradient(135deg, #6366F1, #EC4899, #F59E0B)' },
 ];
 
 const darkModeOptions = [
@@ -419,10 +423,10 @@ const languageOptions = [
 ];
 
 const validationRules = {
-  nickname: (v) => (!v ? '' : v.length < 2 ? '昵称至少2个字符' : v.length > 20 ? '昵称最多20个字符' : ''),
-  phone: (v) => (!v ? '' : !/^1[3-9]\d{9}$/.test(v) ? '请输入正确的手机号' : ''),
-  email: (v) => (!v ? '' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '请输入正确的邮箱地址' : ''),
-  bio: (v) => (!v ? '' : v.length > 200 ? '简介不能超过200字' : ''),
+  nickname: (v) => (!v ? '' : v.length < 2 ? t('昵称至少2个字符') : v.length > 20 ? t('昵称最多20个字符') : ''),
+  phone: (v) => (!v ? '' : !/^1[3-9]\d{9}$/.test(v) ? t('请输入正确的手机号') : ''),
+  email: (v) => (!v ? '' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? t('请输入正确的邮箱地址') : ''),
+  bio: (v) => (!v ? '' : v.length > 200 ? t('简介不能超过200字') : ''),
 };
 
 const validateField = (field) => { const v = form[field]; const validator = validationRules[field]; if (validator) errors[field] = validator(v); return !errors[field]; };
@@ -444,9 +448,9 @@ const triggerAvatarUpload = () => { avatarInput.value?.click(); };
 const handleAvatarChange = (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
-  if (file.size > 1 * 1024 * 1024) { showToast('图片不能超过 1MB', 'warning'); return; }
+  if (file.size > 1 * 1024 * 1024) { showToast(t('图片不能超过 1MB'), 'warning'); return; }
   const reader = new FileReader();
-  reader.onload = (ev) => { user.avatar = ev.target.result; showToast('头像已更新 ✨', 'success'); persistUser(); };
+  reader.onload = (ev) => { user.avatar = ev.target.result; showToast(t('头像已更新 ✨'), 'success'); persistUser(); };
   reader.readAsDataURL(file);
   e.target.value = '';
 };
@@ -457,12 +461,12 @@ const loadUserProfile = async () => {
     await new Promise(r => setTimeout(r, 300));
     const info = userStore.user;
     if (info) {
-      user.username = info.username || info.phone || '用户';
+      user.username = info.username || info.phone || t('用户');
       user.nickname = info.nickname || ''; user.phone = info.phone || ''; user.email = info.email || '';
       user.avatar = info.avatar || ''; user.bio = info.bio || '';
       form.nickname = user.nickname; form.phone = user.phone; form.email = user.email; form.bio = user.bio;
     }
-  } catch { showToast('加载用户信息失败', 'error'); }
+  } catch { showToast(t('加载用户信息失败'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -473,14 +477,14 @@ const persistUser = () => {
 };
 
 const handleUpdateProfile = async () => {
-  if (!validateForm()) { showToast('请检查表单信息', 'warning'); return; }
+  if (!validateForm()) { showToast(t('请检查表单信息'), 'warning'); return; }
   saving.value = true;
   try {
     await new Promise(r => setTimeout(r, 500));
     user.nickname = form.nickname; user.phone = form.phone; user.email = form.email; user.bio = form.bio;
     persistUser();
-    showToast('个人信息更新成功 ✨', 'success');
-  } catch { showToast('更新失败，请重试', 'error'); }
+    showToast(t('个人信息更新成功 ✨'), 'success');
+  } catch { showToast(t('更新失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -493,15 +497,15 @@ const pwdForm = reactive({ current: '', newPwd: '', confirm: '' });
 const pwdError = ref('');
 const handleChangePassword = async () => {
   pwdError.value = '';
-  if (!pwdForm.current) { pwdError.value = '请输入当前密码'; return; }
-  if (pwdForm.newPwd.length < 6) { pwdError.value = '新密码至少6个字符'; return; }
-  if (pwdForm.newPwd !== pwdForm.confirm) { pwdError.value = '两次输入的密码不一致'; return; }
+  if (!pwdForm.current) { pwdError.value = t('请输入当前密码'); return; }
+  if (pwdForm.newPwd.length < 6) { pwdError.value = t('新密码至少6个字符'); return; }
+  if (pwdForm.newPwd !== pwdForm.confirm) { pwdError.value = t('两次输入的密码不一致'); return; }
   saving.value = true;
   try {
     await new Promise(r => setTimeout(r, 600));
     pwdForm.current = ''; pwdForm.newPwd = ''; pwdForm.confirm = '';
-    showToast('密码修改成功 🔒', 'success');
-  } catch { showToast('修改失败，请重试', 'error'); }
+    showToast(t('密码修改成功 🔒'), 'success');
+  } catch { showToast(t('修改失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -519,36 +523,36 @@ const sendCode = async (type) => {
     await new Promise(r => setTimeout(r, 300));
     codeCountdown.value = 60;
     codeTimer = setInterval(() => { codeCountdown.value--; if (codeCountdown.value <= 0) { clearInterval(codeTimer); codeTimer = null; } }, 1000);
-    showToast('验证码已发送 📨', 'success');
-  } catch { showToast('发送失败，请重试', 'error'); }
+    showToast(t('验证码已发送 📨'), 'success');
+  } catch { showToast(t('发送失败，请重试'), 'error'); }
   finally { codeSending.value = false; }
 };
 
 const maskPhone = (phone) => { if (!phone || phone.length < 7) return phone; return phone.slice(0, 3) + '****' + phone.slice(-4); };
 
 const handleBindPhone = async () => {
-  if (!bindPanel.phone || !bindPanel.phoneCode) { showToast('请填写手机号和验证码', 'warning'); return; }
+  if (!bindPanel.phone || !bindPanel.phoneCode) { showToast(t('请填写手机号和验证码'), 'warning'); return; }
   saving.value = true;
   try {
     await new Promise(r => setTimeout(r, 500));
     user.phone = bindPanel.phone; form.phone = bindPanel.phone;
     bindPanel.phone = ''; bindPanel.phoneCode = ''; bindPanel.phoneOpen = false;
     persistUser();
-    showToast('手机号绑定成功 📱', 'success');
-  } catch { showToast('绑定失败，请重试', 'error'); }
+    showToast(t('手机号绑定成功 📱'), 'success');
+  } catch { showToast(t('绑定失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
 
 const handleBindEmail = async () => {
-  if (!bindPanel.email || !bindPanel.emailCode) { showToast('请填写邮箱和验证码', 'warning'); return; }
+  if (!bindPanel.email || !bindPanel.emailCode) { showToast(t('请填写邮箱和验证码'), 'warning'); return; }
   saving.value = true;
   try {
     await new Promise(r => setTimeout(r, 500));
     user.email = bindPanel.email; form.email = bindPanel.email;
     bindPanel.email = ''; bindPanel.emailCode = ''; bindPanel.emailOpen = false;
     persistUser();
-    showToast('邮箱绑定成功 📧', 'success');
-  } catch { showToast('绑定失败，请重试', 'error'); }
+    showToast(t('邮箱绑定成功 📧'), 'success');
+  } catch { showToast(t('绑定失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -559,7 +563,7 @@ const exportData = () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'winters-data-export.json'; a.click();
   URL.revokeObjectURL(url);
-  showToast('数据导出成功 📥', 'success');
+  showToast(t('数据导出成功 📥'), 'success');
 };
 
 const confirmClearCache = () => { showClearConfirm.value = true; };
@@ -575,7 +579,7 @@ const clearCache = () => {
   }
   keysToRemove.forEach(k => localStorage.removeItem(k));
   showClearConfirm.value = false;
-  showToast('缓存已清除 🧹', 'success');
+  showToast(t('缓存已清除 🧹'), 'success');
   localStorage.setItem('winters_active_days', '0');
   localStorage.removeItem('winters_last_active');
 };
@@ -584,7 +588,7 @@ const showLogoutConfirm = ref(false);
 const triggerLogout = () => {
   if (!showLogoutConfirm.value) { showLogoutConfirm.value = true; return; }
   userStore.logout();
-  showToast('已安全退出 👋', 'success');
+  showToast(t('已安全退出 👋'), 'success');
   setTimeout(() => router.push('/'), 500);
 };
 
@@ -592,7 +596,7 @@ const showDeleteConfirm = ref(false);
 const deletePassword = ref('');
 const triggerDelete = () => { if (!showDeleteConfirm.value) { showDeleteConfirm.value = true; return; } };
 const handleDeleteAccount = async () => {
-  if (!deletePassword.value) { showToast('请输入密码确认', 'warning'); return; }
+  if (!deletePassword.value) { showToast(t('请输入密码确认'), 'warning'); return; }
   saving.value = true;
   try {
     await new Promise(r => setTimeout(r, 800));
@@ -600,9 +604,9 @@ const handleDeleteAccount = async () => {
     userStore.logout();
     localStorage.removeItem('winters_active_days');
     localStorage.removeItem('winters_last_active');
-    showToast('本地账户数据已清除 💔', 'info');
+    showToast(t('本地账户数据已清除 💔'), 'info');
     setTimeout(() => router.push('/'), 500);
-  } catch { showToast('注销失败，请重试', 'error'); }
+  } catch { showToast(t('注销失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
 

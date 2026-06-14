@@ -5,13 +5,14 @@
   >
     <p>&copy; 2026 AuricWinters. All rights reserved.</p>
     <p style="margin-top: 8px; opacity: 0.5;">
-      <router-link to="/system" style="color: var(--text-light); text-decoration: none;">🧠 自驱工作站</router-link>
+      <router-link to="/system" style="color: var(--text-light); text-decoration: none;">{{ t('自驱工作站') }}</router-link>
     </p>
   </footer>
 </template>
 
 <script setup>
-// Footer组件逻辑
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 </script>
 
 <style scoped>

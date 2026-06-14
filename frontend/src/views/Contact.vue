@@ -9,9 +9,9 @@
     >
       <div class="content-container">
         <div class="section-card scroll-reveal">
-          <h3>联系方式</h3>
+          <h3>{{ t('联系方式') }}</h3>
           <p style="color: var(--text-secondary); margin-bottom: 20px; padding: 0 20px">
-            如果你有任何问题或合作意向，欢迎通过以下方式联系我：
+            {{ t('如果你有任何问题或合作意向，欢迎通过以下方式联系我：') }}
           </p>
 
           <div style="display: flex; flex-direction: column; gap: 12px; padding: 0 20px">
@@ -23,7 +23,7 @@
             >
               <div class="contact-icon">💬</div>
               <div class="contact-info">
-                <h4>QQ</h4>
+                <h4>{{ t('QQ') }}</h4>
                 <p>2412880317</p>
               </div>
             </a>
@@ -34,7 +34,7 @@
             >
               <div class="contact-icon">📧</div>
               <div class="contact-info">
-                <h4>邮箱</h4>
+                <h4>{{ t('邮箱') }}</h4>
                 <p>y2412880317@163.com</p>
               </div>
             </a>
@@ -47,7 +47,7 @@
             >
               <div class="contact-icon">🐙</div>
               <div class="contact-info">
-                <h4>GitHub</h4>
+                <h4>{{ t('GitHub') }}</h4>
                 <p>@AuricWinters</p>
               </div>
             </a>
@@ -55,20 +55,20 @@
         </div>
 
         <div class="section-card scroll-reveal">
-          <h3>发送消息</h3>
+          <h3>{{ t('发送消息') }}</h3>
           <form
             class="contact-form"
             novalidate
             @submit.prevent="submitForm"
           >
             <div class="contact-form-group">
-              <label for="contact-name">姓名 *</label>
+              <label for="contact-name">{{ t('姓名 *') }}</label>
               <input
                 id="contact-name"
                 v-model="form.name"
                 type="text"
                 name="name"
-                placeholder="请输入您的姓名"
+                :placeholder="t('请输入您的姓名')"
                 required
               >
               <span
@@ -78,13 +78,13 @@
             </div>
 
             <div class="contact-form-group">
-              <label for="contact-email">邮箱 *</label>
+              <label for="contact-email">{{ t('邮箱 *') }}</label>
               <input
                 id="contact-email"
                 v-model="form.email"
                 type="email"
                 name="email"
-                placeholder="请输入您的邮箱"
+                :placeholder="t('请输入您的邮箱')"
                 required
               >
               <span
@@ -94,12 +94,12 @@
             </div>
 
             <div class="contact-form-group">
-              <label for="contact-message">留言 *</label>
+              <label for="contact-message">{{ t('留言 *') }}</label>
               <textarea
                 id="contact-message"
                 v-model="form.message"
                 name="message"
-                placeholder="请输入您的留言内容"
+                :placeholder="t('请输入您的留言内容')"
                 required
               />
               <span
@@ -112,7 +112,7 @@
               type="submit"
               class="submit-btn"
             >
-              发送消息
+              {{ t('发送消息') }}
             </button>
           </form>
         </div>
@@ -126,6 +126,9 @@ import { ref } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
+import { useI18n } from '../composables/useI18n.js';
+
+const { t } = useI18n();
 
 useParticles();
 useScrollReveal();

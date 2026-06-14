@@ -1,8 +1,8 @@
 <template>
   <div class="heatmap-container" :class="{ embedded: embedded }">
     <div class="heatmap-header">
-      <h4>活动情况</h4>
-      <span class="heatmap-subtitle">{{ currentMonthName }} · {{ totalContributions }} 次活动</span>
+      <h4>{{ t('活动情况') }}</h4>
+      <span class="heatmap-subtitle">{{ currentMonthName }} · {{ totalContributions }}{{ t('次活动') }}</span>
     </div>
 
     <div class="heatmap-calendar">
@@ -26,7 +26,7 @@
     </div>
 
     <div class="heatmap-legend">
-      <span>少</span>
+      <span>{{ t('少') }}</span>
       <div class="legend-cells">
         <div class="legend-cell level-0" />
         <div class="legend-cell level-1" />
@@ -34,12 +34,12 @@
         <div class="legend-cell level-3" />
         <div class="legend-cell level-4" />
       </div>
-      <span>多</span>
+      <span>{{ t('多') }}</span>
     </div>
 
     <div class="heatmap-progress">
       <div class="progress-header">
-        <span>半年活跃度</span>
+        <span>{{ t('半年活跃度') }}</span>
         <span class="progress-percentage">{{ progressPercentage }}%</span>
       </div>
       <div class="progress-bar-container">
@@ -49,8 +49,8 @@
         />
       </div>
       <div class="progress-stats">
-        <span>活跃 {{ activeWorkdays }} 个工作日 / 目标 {{ workdayGoal }} 个</span>
-        <span>共 {{ totalWorkdays }} 个工作日</span>
+        <span>{{ t('活跃 {count} 个工作日 / 目标 {goal} 个', { count: activeWorkdays, goal: workdayGoal }) }}</span>
+        <span>{{ t('共 {count} 个工作日', { count: totalWorkdays }) }}</span>
       </div>
     </div>
   </div>
@@ -58,6 +58,8 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const props = defineProps({
   workdayGoalPercentage: {
@@ -122,21 +124,12 @@ const generateSampleData = () => {
 
 const monthsData = computed(() => {
   const monthNames = [
-    '1 月',
-    '2 月',
-    '3 月',
-    '4 月',
-    '5 月',
-    '6 月',
-    '7 月',
-    '8 月',
-    '9 月',
-    '10 月',
-    '11 月',
-    '12 月',
+    '1 月', '2 月', '3 月', '4 月',
+    '5 月', '6 月', '7 月', '8 月',
+    '9 月', '10 月', '11 月', '12 月',
   ];
   return contributionData.value.map((m) => ({
-    name: monthNames[m.month],
+    name: t(monthNames[m.month]),
     days: m.days,
   }));
 });

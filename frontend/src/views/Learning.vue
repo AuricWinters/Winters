@@ -5,8 +5,8 @@
     <div class="learning-content">
       <!-- 标题 -->
       <header class="learning-hero">
-        <h1>🧠 AI赋能全栈开发</h1>
-        <p>从职校生到AI全栈工程师｜2026.1–2028.6</p>
+        <h1>{{ t('🧠 AI赋能全栈开发') }}</h1>
+        <p>{{ t('从职校生到AI全栈工程师｜2026.1–2028.6') }}</p>
       </header>
 
       <!-- 设备选择 -->
@@ -18,16 +18,16 @@
           :class="{ active: currentDevice === d.key }"
           @click="currentDevice = d.key"
         >
-          <span>{{ d.icon }} {{ d.name }}</span>
+          <span>{{ d.icon }} {{ t(d.name) }}</span>
         </button>
       </div>
 
       <!-- 进度条 -->
       <div class="progress-box">
         <div class="progress-head">
-          <span>进度: {{ progressPercent }}%</span>
-          <span>已完成: {{ completedSteps }}/{{ totalSteps }}</span>
-          <button class="reset-btn" @click="resetProgress">重置</button>
+          <span>{{ t('进度') }}: {{ progressPercent }}%</span>
+          <span>{{ t('已完成') }}: {{ completedSteps }}/{{ totalSteps }}</span>
+          <button class="reset-btn" @click="resetProgress">{{ t('重置') }}</button>
         </div>
         <div class="progress-track">
           <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
@@ -69,7 +69,7 @@
                   </div>
                   <div class="task-head-right">
                     <span class="task-badge" :class="{ done: isTaskDone(pi, wi, ti) }">
-                      {{ isTaskDone(pi, wi, ti) ? '已完成' : '未完成' }}
+                      {{ isTaskDone(pi, wi, ti) ? t('已完成') : t('未完成') }}
                     </span>
                     <span v-if="task.steps?.length" class="task-arrow" :class="{ open: !tasksCollapsed[taskKey(pi, wi, ti)] }">▲</span>
                   </div>
@@ -86,7 +86,7 @@
                     <span class="step-num">{{ si + 1 }}</span>
                     <span class="step-text">{{ step }}</span>
                     <span class="step-badge" :class="{ done: progress[stepKey(pi, wi, ti, si)] }">
-                      {{ progress[stepKey(pi, wi, ti, si)] ? '已完成' : '未完成' }}
+                      {{ progress[stepKey(pi, wi, ti, si)] ? t('已完成') : t('未完成') }}
                     </span>
                   </li>
                 </ul>
@@ -98,12 +98,12 @@
 
       <!-- 底部说明 -->
       <div class="insight-box">
-        <h4>💡 为什么这个计划能让你"不被AI取代"？</h4>
+        <h4>{{ t('💡 为什么这个计划能让你"不被AI取代"？') }}</h4>
         <ul>
-          <li>"会写React，但不会集成AI"→"纯手动开发社区应用，用API轻量集成AI"</li>
-          <li>"用AI生成代码"→"所有代码手写，AI仅做本地测试"</li>
-          <li>"项目无技术深度"→"开源社区应用+AI机器人（GitHub 500+ stars）"</li>
-          <li>"简历写'会用AI'"→"简历写'通过API集成本地AI模型，支持群聊机器人'"</li>
+          <li>{{ t('"会写React，但不会集成AI"→"纯手动开发社区应用，用API轻量集成AI"') }}</li>
+          <li>{{ t('"用AI生成代码"→"所有代码手写，AI仅做本地测试"') }}</li>
+          <li>{{ t('"项目无技术深度"→"开源社区应用+AI机器人（GitHub 500+ stars）"') }}</li>
+          <li>{{ t('"简历写\'会用AI\'"→"简历写\'通过API集成本地AI模型，支持群聊机器人\'"') }}</li>
         </ul>
       </div>
     </div>
@@ -113,7 +113,10 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
+import { useI18n } from '../composables/useI18n.js';
 import { plan } from '../data/learning-plan.js';
+
+const { t } = useI18n();
 
 useParticles('.particles-background', false);
 

@@ -9,7 +9,7 @@
         <div class="profile-header scroll-reveal">
           <img
             src="/img/tx.jpg"
-            alt="AuricWinters头像"
+            :alt="t('AuricWinters头像')"
             class="avatar"
             loading="lazy"
           >
@@ -19,14 +19,14 @@
               {{ profile.bio }}
             </p>
             <div class="motto">
-              <span class="motto-visible">珍妮机的出现引起了纺织工人的不满。</span>
+              <span class="motto-visible">{{ t('珍妮机的出现引起了纺织工人的不满。') }}</span>
               <div
                 class="motto-hidden"
                 :class="{ show: isMottoExpanded }"
                 :style="{ maxHeight: isMottoExpanded ? '500px' : '0' }"
               >
-                <br>目前就读于广州信息技术职业学校 <br>计算机应用专业
-                <br>喜欢听歌、骑车、羽毛球 <br>喜欢与不同的人交流不同的经历
+                <br>{{ t('目前就读于广州信息技术职业学校') }} <br>{{ t('计算机应用专业') }}
+                <br>{{ t('喜欢听歌、骑车、羽毛球') }} <br>{{ t('喜欢与不同的人交流不同的经历') }}
               </div>
               <button
                 type="button"
@@ -34,7 +34,7 @@
                 :aria-expanded="isMottoExpanded"
                 @click="toggleMotto"
               >
-                {{ isMottoExpanded ? '收起' : '更多' }}
+                {{ isMottoExpanded ? t('收起') : t('更多') }}
               </button>
             </div>
             <div class="location">
@@ -48,7 +48,7 @@
                   d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
                 />
               </svg>
-              <span>中国 广东 广州</span>
+              <span>{{ t('中国 广东 广州') }}</span>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
               />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            时间线
+            {{ t('时间线') }}
           </h3>
           <div
             v-if="loadingTimeline"
@@ -121,11 +121,11 @@
 
         <div class="skills-split-section scroll-reveal">
           <div class="skills-left">
-            <h3>技能专长</h3>
+            <h3>{{ t('技能专长') }}</h3>
             <div class="skill-bars">
               <div class="skill-bar-item">
                 <div class="skill-bar-header">
-                  <span class="skill-name">前端开发</span>
+                  <span class="skill-name">{{ t('前端开发') }}</span>
                   <span class="skill-percent">85%</span>
                 </div>
                 <div class="skill-bar-track">
@@ -137,7 +137,7 @@
               </div>
               <div class="skill-bar-item">
                 <div class="skill-bar-header">
-                  <span class="skill-name">UI/UX 设计</span>
+                  <span class="skill-name">{{ t('UI/UX 设计') }}</span>
                   <span class="skill-percent">75%</span>
                 </div>
                 <div class="skill-bar-track">
@@ -149,7 +149,7 @@
               </div>
               <div class="skill-bar-item">
                 <div class="skill-bar-header">
-                  <span class="skill-name">Python 脚本</span>
+                  <span class="skill-name">{{ t('Python 脚本') }}</span>
                   <span class="skill-percent">70%</span>
                 </div>
                 <div class="skill-bar-track">
@@ -161,7 +161,7 @@
               </div>
               <div class="skill-bar-item">
                 <div class="skill-bar-header">
-                  <span class="skill-name">AI 应用</span>
+                  <span class="skill-name">{{ t('AI 应用') }}</span>
                   <span class="skill-percent">80%</span>
                 </div>
                 <div class="skill-bar-track">
@@ -190,7 +190,7 @@
       <!-- 右侧：技能专长、项目与兴趣 -->
       <div class="sidebar-container">
         <div class="section-card scroll-reveal">
-          <h3>我的项目</h3>
+          <h3>{{ t('我的项目') }}</h3>
           <div class="projects-grid">
             <router-link
               v-for="project in projects"
@@ -205,46 +205,46 @@
         </div>
 
         <div class="section-card scroll-reveal">
-          <h3>兴趣爱好</h3>
+          <h3>{{ t('兴趣爱好') }}</h3>
           <div class="skills-grid">
             <div class="skill-item">
-              🎵 听歌
+              🎵 {{ t('听歌') }}
             </div>
             <div class="skill-item">
-              🚲 骑车
+              🚲 {{ t('骑车') }}
             </div>
             <div class="skill-item">
-              🏸 羽毛球
+              🏸 {{ t('羽毛球') }}
             </div>
             <div class="skill-item">
-              💬 交流
+              💬 {{ t('交流') }}
             </div>
           </div>
         </div>
 
         <div class="section-card scroll-reveal">
-          <h3>网站数据</h3>
+          <h3>{{ t('网站数据') }}</h3>
           <div class="stats-grid">
             <div style="font-size: 13px; color: var(--text-secondary)">
               <p>
-                安全运行:
+                {{ t('安全运行:') }}
                 <span
                   id="stat-safe-days"
                   style="color: var(--primary); font-weight: 700"
                 >{{
                   safeDays
                 }}</span>
-                天
+                {{ t('天') }}
               </p>
               <p>
-                访客总量:
+                {{ t('访客总量:') }}
                 <span
                   id="stat-views"
                   style="color: var(--primary); font-weight: 700"
                 >{{
                   formattedViews
                 }}</span>
-                次
+                {{ t('次') }}
               </p>
             </div>
           </div>
@@ -255,6 +255,7 @@
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
@@ -265,6 +266,7 @@ import { useDataStore } from '../stores/data.js';
 
 useParticles();
 useScrollReveal();
+const { t } = useI18n();
 const { showToast } = useToast();
 const dataStore = useDataStore();
 

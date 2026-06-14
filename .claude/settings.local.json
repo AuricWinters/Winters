@@ -37,7 +37,10 @@
       "Bash(rm /d/project/Winters/.gitignore)",
       "Bash(rmdir /d/project/Winters/frontend/node_modules)",
       "Bash(rmdir /d/project/Winters/frontend)",
-      "Bash(rmdir /d/project/Winters)"
+      "Bash(rmdir /d/project/Winters)",
+      "Read(//c/Users/y2412/.claude/projects/**)",
+      "Read(//c/Users/y2412/.claude/**)",
+      "Read(//c/Users/y2412/.claude/projects/D--project-Winters//**)"
     ]
   },
   "enabledMcpjsonServers": [

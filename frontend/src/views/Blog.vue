@@ -9,7 +9,7 @@
     >
       <div class="content-container">
         <div class="section-card scroll-reveal">
-          <h3>最近动态</h3>
+          <h3>{{ t('最近动态') }}</h3>
 
           <!-- 分类筛选按钮 -->
           <div class="category-filter">
@@ -66,7 +66,7 @@
               v-if="filteredPosts.length === 0"
               class="empty-state"
             >
-              暂无内容
+              {{ t('暂无内容') }}
             </div>
           </div>
         </div>
@@ -76,6 +76,8 @@
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 import { reactive, computed, onMounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
@@ -167,9 +169,9 @@ onMounted(() => {
 
 .filter-btn {
   padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  border: 1px solid var(--border-color);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -177,13 +179,15 @@ onMounted(() => {
 }
 
 .filter-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .filter-btn.active {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(var(--primary-rgb), 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* 骨架屏样式 */
@@ -201,9 +205,9 @@ onMounted(() => {
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 75%
+    var(--border-color) 25%,
+    rgba(var(--primary-rgb), 0.08) 50%,
+    var(--border-color) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
@@ -247,7 +251,7 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-light);
   font-size: 14px;
 }
 </style>

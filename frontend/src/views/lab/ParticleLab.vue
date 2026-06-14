@@ -1,17 +1,15 @@
 <template>
   <div class="particle-lab-page">
-    <!-- 粒子画布 -->
     <canvas
       ref="canvasRef"
       class="particle-canvas"
     />
 
-    <!-- 控制面板 -->
     <div class="control-panel">
-      <h3>粒子控制面板</h3>
+      <h3>{{ t('粒子控制面板') }}</h3>
 
       <div class="control-group">
-        <label>粒子数量: {{ config.maxParticles }}</label>
+        <label>{{ t('粒子数量') }}: {{ config.maxParticles }}</label>
         <input
           v-model.number="config.maxParticles"
           type="range"
@@ -23,7 +21,7 @@
       </div>
 
       <div class="control-group">
-        <label>连线距离: {{ config.minDistance }}px</label>
+        <label>{{ t('连线距离') }}: {{ config.minDistance }}px</label>
         <input
           v-model.number="config.minDistance"
           type="range"
@@ -35,7 +33,7 @@
       </div>
 
       <div class="control-group">
-        <label>粒子速度: {{ config.speed }}</label>
+        <label>{{ t('粒子速度') }}: {{ config.speed }}</label>
         <input
           v-model.number="config.speed"
           type="range"
@@ -47,7 +45,7 @@
       </div>
 
       <div class="control-group">
-        <label>粒子颜色</label>
+        <label>{{ t('粒子颜色') }}</label>
         <div class="color-picker">
           <button
             v-for="color in colorPresets"
@@ -61,28 +59,28 @@
       </div>
 
       <div class="control-group">
-        <label>鼠标交互模式</label>
+        <label>{{ t('鼠标交互模式') }}</label>
         <div class="mode-buttons">
           <button
             class="mode-btn"
             :class="{ active: config.mouseMode === 'attract' }"
             @click="config.mouseMode = 'attract'"
           >
-            吸引
+            {{ t('吸引') }}
           </button>
           <button
             class="mode-btn"
             :class="{ active: config.mouseMode === 'repel' }"
             @click="config.mouseMode = 'repel'"
           >
-            排斥
+            {{ t('排斥') }}
           </button>
           <button
             class="mode-btn"
             :class="{ active: config.mouseMode === 'none' }"
             @click="config.mouseMode = 'none'"
           >
-            无
+            {{ t('无') }}
           </button>
         </div>
       </div>
@@ -94,7 +92,7 @@
             type="checkbox"
             @change="updateParticles"
           >
-          显示连线
+          {{ t('显示连线') }}
         </label>
       </div>
 
@@ -102,16 +100,15 @@
         class="reset-btn"
         @click="resetConfig"
       >
-        重置配置
+        {{ t('重置配置') }}
       </button>
     </div>
 
-    <!-- 返回按钮 -->
     <button
       class="back-btn"
       @click="$router.push('/lab')"
     >
-      ← 返回实验室
+      ← {{ t('返回实验室') }}
     </button>
   </div>
 </template>
@@ -119,6 +116,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from '../../composables/useI18n.js';
+const { t } = useI18n();
 
 const router = useRouter();
 const canvasRef = ref(null);

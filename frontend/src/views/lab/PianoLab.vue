@@ -4,9 +4,9 @@
     <canvas class="particles-background" />
 
     <div class="piano-container">
-      <h2>Web Audio 钢琴</h2>
+      <h2>{{ t('Web Audio 钢琴') }}</h2>
       <p class="subtitle">
-        使用键盘 A-L 演奏白键，W/E/T/Y/U 演奏黑键
+        {{ t('使用键盘 A-L 演奏白键，W/E/T/Y/U 演奏黑键') }}
       </p>
 
       <!-- 可视化效果 -->
@@ -56,28 +56,28 @@
       <!-- 控制面板 -->
       <div class="control-panel">
         <div class="control-group">
-          <label>波形</label>
+          <label>{{ t('波形') }}</label>
           <select
             v-model="waveform"
             @change="updateWaveform"
           >
             <option value="sine">
-              正弦波 (Sine)
+              {{ t('正弦波 (Sine)') }}
             </option>
             <option value="square">
-              方波 (Square)
+              {{ t('方波 (Square)') }}
             </option>
             <option value="sawtooth">
-              锯齿波 (Sawtooth)
+              {{ t('锯齿波 (Sawtooth)') }}
             </option>
             <option value="triangle">
-              三角波 (Triangle)
+              {{ t('三角波 (Triangle)') }}
             </option>
           </select>
         </div>
 
         <div class="control-group">
-          <label>音量: {{ Math.round(volume * 100) }}%</label>
+          <label>{{ t('音量') }}: {{ Math.round(volume * 100) }}%</label>
           <input
             v-model.number="volume"
             type="range"
@@ -88,7 +88,7 @@
         </div>
 
         <div class="control-group">
-          <label>混响: {{ Math.round(reverb * 100) }}%</label>
+          <label>{{ t('混响') }}: {{ Math.round(reverb * 100) }}%</label>
           <input
             v-model.number="reverb"
             type="range"
@@ -105,14 +105,17 @@
       class="back-btn"
       @click="$router.push('/lab')"
     >
-      ← 返回实验室
+      {{ t('← 返回实验室') }}
     </button>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useI18n } from '../../composables/useI18n.js';
 import { useParticles } from '../../composables/useParticles.js';
+
+const { t } = useI18n();
 
 useParticles();
 

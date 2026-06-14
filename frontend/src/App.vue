@@ -36,7 +36,11 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useSettingsStore } from './stores/settings.js';
 import Header from './components/Header.vue';
+
+// 确保 store 在应用启动时立即初始化，刷新页面不会丢设置
+useSettingsStore();
 import Footer from './components/Footer.vue';
 import BackToTop from './components/BackToTop.vue';
 import ToastNotification from './components/ToastNotification.vue';

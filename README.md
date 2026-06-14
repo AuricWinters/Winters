@@ -7,19 +7,19 @@
 - **个人主页** — 三栏布局，展示个人资料、技能、项目、贡献热力图
 - **博客系统** — 时间线风格，分类筛选（全部/项目/学习/生活）
 - **项目展示** — 响应式网格，技术栈标签，详情页
-- **实验室** — Bento Grid 入口，包含 3 个子实验室：
+- **暖心关怀** — 200+ 条暖心话语弹窗，液态玻璃拟态，温暖每一天
+- **AI 学习路线** — 6 阶段 21 周完整学习计划，进度跟踪 + 本地持久化
+- **自驱工作站** — Claude Code 完整架构文档，精美可视化展示
+- **实验室** — 3 个子实验室：
   - 🎨 **粒子实验室** — Canvas 粒子系统，鼠标交互，实时参数调节
   - 🎹 **钢琴实验室** — Web Audio API 合成器，键盘映射，频率可视化
   - 💻 **CodeLab** — Monaco Editor + xterm.js 在线 IDE，支持 7 种编程语言
 - **AI 聊天** — 支持 Ollama / OpenAI 双后端切换
 - **云盘** — 文件上传/下载/删除管理
 - **认证系统** — 密码登录 / 验证码登录 / 第三方登录（微信、GitHub），密码重置
-- **主题系统** — 6 套预设主题 + 自定义配色（单色/双拼/三色），深色模式
+- **主题系统** — 8 套设计师主题 + 自定义配色（单色/双拼/三色），深色模式
 - **粒子特效** — 雪花飘落（普通页）+ 鼠标吸引/爆炸（登录页）
-- **全响应式** — 6 个断点，适配手机/平板/桌面
-- **暖心关怀** — 200+ 条暖心话语弹窗，液态玻璃拟态，温暖每一天
-- **AI 学习路线** — 6 阶段 21 周完整学习计划，进度跟踪 + 本地持久化
-- **自驱工作站** — Claude Code 完整架构文档，精美可视化展示
+- **全响应式** — 桌面优先，适配手机/平板/桌面
 
 ## 🛠️ 技术栈
 
@@ -29,12 +29,12 @@
 |------|------|
 | Vue 3 | Composition API (`<script setup>`) |
 | Vite 5 | 构建工具，HMR 热更新 |
-| Vue Router 4 | 14 条路由，懒加载，路由守卫 |
+| Vue Router 4 | 18 条路由，懒加载，路由守卫 |
 | Pinia 3 | 状态管理（4 个 store） |
 | Monaco Editor | 在线代码编辑器 |
 | xterm.js | WebSocket 交互式终端 |
 | highlight.js | 代码语法高亮（8 种语言） |
-| 原生 CSS | CSS Variables + 7 套主题 + 玻璃拟态 |
+| 原生 CSS | CSS Variables + 8 套主题 + 玻璃拟态 |
 
 ### 后端
 
@@ -56,7 +56,7 @@
 ### 后端启动
 
 ```bash
-cd Winters/backend
+cd backend
 pip install -r requirements.txt
 python main.py
 # 服务运行在 http://localhost:8000
@@ -66,7 +66,7 @@ python main.py
 ### 前端启动
 
 ```bash
-cd Winters/frontend
+cd frontend
 npm install
 npm run dev
 # 开发服务器运行在 http://localhost:3000
@@ -76,7 +76,7 @@ npm run dev
 ### 生产构建
 
 ```bash
-cd Winters/frontend
+cd frontend
 npm run build
 # 构建产物在 dist/ 目录
 ```
@@ -118,36 +118,35 @@ WS   /ws/code/execute               # WebSocket 交互式终端
 │   └── src/
 │       ├── main.js                 # 应用入口
 │       ├── App.vue                 # 根组件
-│       ├── router/index.js         # 路由配置 (14 条)
-│       ├── stores/                 # Pinia 状态管理
-│       ├── components/             # 全局组件 (11 个)
-│       ├── views/                  # 页面视图 (15 个)
+│       ├── router/index.js         # 路由配置 (18 条)
+│       ├── stores/                 # Pinia 状态管理 (4 个)
+│       ├── components/             # 全局组件 (10 个)
+│       ├── views/                  # 页面视图 (18 个)
 │       │   └── lab/
 │       │       ├── ParticleLab.vue # Canvas 粒子实验室
 │       │       ├── PianoLab.vue    # Web Audio 钢琴
-│       │       ├── CodeLab.vue     # 在线 IDE
-│       │       └── tutorials/     # 7 个编程语言教程
+│       │       └── CodeLab.vue     # 在线 IDE
 │       ├── composables/            # 组合式函数 (5 个)
-│       ├── utils/                  # 工具函数
-│       ├── data/                   # 静态 JSON 数据
+│       ├── utils/                  # 工具函数 (2 个)
+│       ├── data/                   # 静态 JSON 数据 (4 个)
 │       └── styles/                 # CSS 样式
-│           └── modules/            # 7 个样式模块
+│           └── modules/            # 8 个样式模块
 │
-└── .trae/                          # 项目规范文档 (25 个)
-    └── skills/ex-skill/            # ex-skill 开源项目
+└── .trae/                          # 项目规范文档
 ```
 
 ## 🎨 主题系统
 
-支持 7 套主题色，通过 CSS Variables 动态切换：
+支持 8 套主题色，通过 CSS Variables 动态切换：
 
-- **Default** — 靛蓝+粉红
-- **Dark** — 深色模式
-- **Pink-Gold** — 粉金搭配
-- **Blue-Purple** — 蓝紫渐变
-- **Green-Teal** — 绿青清新
-- **Orange-Red** — 橙红活力
-- **Purple-Pink** — 紫粉梦幻
+- **手账 (Journal)** — 温暖纸质 · 怀旧手账
+- **墨韵 (Ink)** — 中式水墨 · 典雅沉静
+- **极光 (Aurora)** — 北境极光 · 空灵迷幻
+- **樱吹雪 (Sakura)** — 落樱缤纷 · 温柔轻盈
+- **森语 (Forest)** — 深林大地 · 沉稳自然
+- **午夜 (Midnight)** — 深海午夜 · 专业锐利
+- **暮光 (Twilight)** — 日落微光 · 温暖浓郁
+- **极简 (Minimal)** — 纯粹设计 · 字体驱动
 - **Custom** — 自定义（单色/双拼/三色自由搭配）
 
 ## 🎹 PianoLab 键盘映射

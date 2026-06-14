@@ -9,7 +9,7 @@
           <span class="badge">Experimental</span>
         </h1>
         <p class="subtitle">
-          一个用于探索创意编程、交互设计与前沿 Web 技术的游乐场。
+          {{ t('一个用于探索创意编程、交互设计与前沿 Web 技术的游乐场。') }}
         </p>
       </header>
 
@@ -34,8 +34,8 @@
             </div>
           </div>
           <div class="card-bottom">
-            <h2>Canvas 粒子动画</h2>
-            <p>基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。</p>
+            <h2>{{ t('Canvas 粒子动画') }}</h2>
+            <p>{{ t('基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。') }}</p>
           </div>
         </div>
       </article>
@@ -52,7 +52,7 @@
         <div class="card-content">
           <div class="card-top">
             <!-- <span class="tag">Audio API</span> -->
-            <span class="tag wip">开发中</span>
+            <span class="tag wip">{{ t('开发中') }}</span>
             <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -60,8 +60,8 @@
             </div>
           </div>
           <div class="card-bottom">
-            <h2>Web Audio 钢琴</h2>
-            <p>利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。</p>
+            <h2>{{ t('Web Audio 钢琴') }}</h2>
+            <p>{{ t('利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。') }}</p>
           </div>
         </div>
       </article>
@@ -75,7 +75,7 @@
         <div class="card-bg"></div>
         <div class="card-content">
           <div class="card-top">
-            <span class="tag wip">开发中</span>
+            <span class="tag wip">{{ t('开发中') }}</span>
             <!-- <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -83,8 +83,8 @@
             </div> -->
           </div>
           <div class="card-bottom">
-            <h2>2D 物理引擎</h2>
-            <p>使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。</p>
+            <h2>{{ t('2D 物理引擎') }}</h2>
+            <p>{{ t('使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。') }}</p>
           </div>
         </div>
       </article>
@@ -101,7 +101,7 @@
         <div class="card-content">
           <div class="card-top">
             <!-- <span class="tag">Code Lab</span> -->
-            <span class="tag wip">开发中</span>
+            <span class="tag wip">{{ t('开发中') }}</span>
             <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -109,8 +109,8 @@
             </div>
           </div>
           <div class="card-bottom">
-            <h2>编程学习实验室</h2>
-            <p>学习C、Python、JavaScript等多种编程语言的基础知识，通过交互式教程和示例代码快速掌握编程技能。</p>
+            <h2>{{ t('编程学习实验室') }}</h2>
+            <p>{{ t('学习C、Python、JavaScript等多种编程语言的基础知识，通过交互式教程和示例代码快速掌握编程技能。') }}</p>
           </div>
         </div>
       </article>
@@ -124,7 +124,7 @@
         <div class="card-bg"></div>
         <div class="card-content">
           <div class="card-top">
-            <span class="tag wip">开发中</span>
+            <span class="tag wip">{{ t('开发中') }}</span>
             <!-- <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -132,8 +132,8 @@
             </div> -->
           </div>
           <div class="card-bottom">
-            <h2>正则表达式可视化</h2>
-            <p>将复杂的正则表达式逻辑结构图形化，支持在线编辑与实时语法树生成，极大提升调试效率。</p>
+            <h2>{{ t('正则表达式可视化') }}</h2>
+            <p>{{ t('将复杂的正则表达式逻辑结构图形化，支持在线编辑与实时语法树生成，极大提升调试效率。') }}</p>
           </div>
         </div>
       </article>
@@ -143,6 +143,8 @@
 </template>
 
 <script setup>
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 import { useRouter } from 'vue-router';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
@@ -226,7 +228,7 @@ function showDevelopingToast() {
 
 .badge {
   background: var(--text-main);
-  color: #fff;
+  color: var(--text-on-primary);
   padding: 6px 14px;
   border-radius: 12px;
   font-size: 12px;
@@ -311,14 +313,14 @@ function showDevelopingToast() {
 .bento-card {
   position: relative;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg-glass);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 
+  border: 1px solid var(--border-color);
+  box-shadow:
     0 12px 32px -10px rgba(0,0,0,0.05),
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 -1px 0 rgba(255,255,255,0.4);
+    inset 0 1px 0 var(--bg-card),
+    inset 0 -1px 0 var(--border-color);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -419,7 +421,7 @@ function showDevelopingToast() {
 }
 
 .tag {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-glass);
   padding: 8px 18px;
   border-radius: 100px;
   font-size: 13px;
@@ -461,7 +463,7 @@ function showDevelopingToast() {
   background: var(--primary);
   /* 白色光晕效果 */
   box-shadow:
-    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(var(--primary-rgb), 0.3),
     0 0 40px rgba(236, 72, 153, 0.4),
     0 12px 30px rgba(236, 72, 153, 0.3);
 }

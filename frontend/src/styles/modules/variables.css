@@ -1,234 +1,458 @@
+/* ================================================================
+   Winters 主题系统 — 8 套设计师主题 × 亮暗双模式
+   ================================================================ */
+
+/* ── :root 布局变量 + 默认主题（手账/亮色） ── */
 :root {
-  /* 现代配色方案 */
-  --primary: #EC4899; /* 主色：亮粉色 */
-  --primary-rgb: 236, 72, 153;
-  --primary-light: #F9A8D4; /* 浅粉色 */
-  --primary-dark: #DB2777; /* 深粉色 */
-  --secondary: #F59E0B; /* 辅助色：琥珀金 */
-  --secondary-rgb: 245, 158, 11;
-  --accent: #F472B6; /* 点缀色：玫瑰粉 */
-  --accent-rgb: 244, 114, 182;
-
-  /* 背景色 */
-  --bg-main: #f8fafc; /* 极浅灰蓝背景 */
-  --bg-glass: rgba(255, 255, 255, 0.7); /* 玻璃背景 */
-  --bg-card: #ffffff; /* 卡片背景 */
-
-  /* 边框色 */
-  --border-color: #e2e8f0;
-
-  /* 文字色 */
-  --text-main: #1e293b; /* 主文字 */
-  --text-secondary: #64748b; /* 辅助文字 */
-  --text-light: #94a3b8; /* 极浅文字 */
-
-  /* 金色系列 */
-  --gold: #F59E0B;
-  --gold-light: #FCD34D;
-  --gold-dark: #D97706;
-
-  /* 阴影与圆角 */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-pink: 0 10px 25px -5px rgba(236, 72, 153, 0.2);
-  --radius: 16px;
-
-  /* 功能色 */
-  --success: #22c55e;
-  --success-light: #f0fdf4;
-  --success-text: #15803d;
-  --danger: #ef4444;
-  --danger-light: #fef2f2;
-  --danger-text: #b91c1c;
-
-  /* 布局变量 */
+  /* 布局 */
   --header-height: 70px;
   --header-top: 20px;
   --header-spacing: 60px;
   --header-total-height: calc(var(--header-height) + var(--header-top) + var(--header-spacing));
 
-  /* 动画 */
+  /* 圆角 & 动画 */
+  --radius: 16px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 排版新增 */
+  --text-on-primary: #ffffff;
+  --serif-font: 'Georgia', 'Noto Serif SC', serif;
+
+  /* ═══ 默认主题：手账（亮色） ═══ */
+  --primary: #C4737A;
+  --primary-rgb: 196, 115, 122;
+  --primary-light: #E8C4C8;
+  --primary-dark: #A85D64;
+  --secondary: #B8956A;
+  --secondary-rgb: 184, 149, 106;
+  --accent: #D4A0A7;
+  --accent-rgb: 212, 160, 167;
+
+  --bg-main: #F5F0E8;
+  --bg-glass: rgba(245, 240, 232, 0.75);
+  --bg-card: #FDF8F0;
+
+  --border-color: #E2D5C5;
+  --text-main: #3D3229;
+  --text-secondary: #8B7D6B;
+  --text-light: #B5A892;
+
+  --gold: #C9A86A;
+  --gold-light: #E8D5A8;
+  --gold-dark: #A8894A;
+
+  --shadow-sm: 0 1px 3px rgba(61, 50, 41, 0.06);
+  --shadow-md: 0 4px 12px rgba(61, 50, 41, 0.08);
+  --shadow-lg: 0 10px 25px rgba(61, 50, 41, 0.12);
+  --shadow-pink: 0 10px 25px rgba(196, 115, 122, 0.2);
+
+  --success: #7A9A6A;
+  --success-light: rgba(122, 154, 106, 0.12);
+  --success-text: #5A7A4A;
+  --danger: #C47A7A;
+  --danger-light: rgba(196, 122, 122, 0.12);
+  --danger-text: #A85A5A;
 }
 
-/* 深色主题变量 */
+
+/* ================================================================
+   1. 手账 (Journal) — 温暖纸质 · 怀旧手账
+   ================================================================ */
+[data-color-theme="journal"] {
+  --primary: #C4737A;            --primary-rgb: 196, 115, 122;
+  --primary-light: #E8C4C8;      --primary-dark: #A85D64;
+  --secondary: #B8956A;          --secondary-rgb: 184, 149, 106;
+  --accent: #D4A0A7;             --accent-rgb: 212, 160, 167;
+  --bg-main: #F5F0E8;            --bg-glass: rgba(245, 240, 232, 0.75);
+  --bg-card: #FDF8F0;            --border-color: #E2D5C5;
+  --text-main: #3D3229;          --text-secondary: #8B7D6B;
+  --text-light: #B5A892;
+  --gold: #C9A86A;               --gold-light: #E8D5A8;
+  --gold-dark: #A8894A;
+  --shadow-sm: 0 1px 3px rgba(61,50,41,0.06);
+  --shadow-md: 0 4px 12px rgba(61,50,41,0.08);
+  --shadow-lg: 0 10px 25px rgba(61,50,41,0.12);
+  --shadow-pink: 0 10px 25px rgba(196,115,122,0.2);
+  --success: #7A9A6A;            --success-light: rgba(122,154,106,0.12);
+  --success-text: #5A7A4A;
+  --danger: #C47A7A;             --danger-light: rgba(196,122,122,0.12);
+  --danger-text: #A85A5A;
+}
+[data-color-theme="journal"][data-theme="dark"],
+.dark[data-color-theme="journal"] {
+  --primary: #D4949A;            --primary-rgb: 212, 148, 154;
+  --primary-light: #F0D0D4;      --primary-dark: #B87076;
+  --secondary: #D4B88A;          --secondary-rgb: 212, 184, 138;
+  --accent: #E0B0B6;             --accent-rgb: 224, 176, 182;
+  --bg-main: #2A2520;            --bg-glass: rgba(42, 37, 32, 0.85);
+  --bg-card: #363028;            --border-color: #4A4238;
+  --text-main: #EDE0D0;          --text-secondary: #A89888;
+  --text-light: #7A7068;
+  --gold: #D4B88A;               --gold-light: #E8D5A8;
+  --gold-dark: #B89860;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+  --shadow-pink: 0 10px 25px rgba(212,148,154,0.25);
+  --success: #8AAA78;            --success-light: rgba(138,170,120,0.15);
+  --success-text: #A8C898;
+  --danger: #D48A8A;             --danger-light: rgba(212,138,138,0.15);
+  --danger-text: #E8AAAA;
+}
+
+
+/* ================================================================
+   2. 墨韵 (Ink) — 中式水墨 · 典雅沉静
+   ================================================================ */
+[data-color-theme="ink"] {
+  --primary: #3A3A3A;            --primary-rgb: 58, 58, 58;
+  --primary-light: #E0E0E0;      --primary-dark: #1A1A1A;
+  --secondary: #8B7D6B;          --secondary-rgb: 139, 125, 107;
+  --accent: #C8493A;             --accent-rgb: 200, 73, 58;
+  --bg-main: #F7F5F0;            --bg-glass: rgba(247, 245, 240, 0.8);
+  --bg-card: #FCFAF5;            --border-color: #E5E0D5;
+  --text-main: #2A2520;          --text-secondary: #8B8070;
+  --text-light: #B5ACA0;
+  --gold: #C89840;               --gold-light: #E8D098;
+  --gold-dark: #A87828;
+  --shadow-sm: 0 1px 3px rgba(42,37,32,0.05);
+  --shadow-md: 0 4px 12px rgba(42,37,32,0.07);
+  --shadow-lg: 0 10px 25px rgba(42,37,32,0.1);
+  --shadow-pink: 0 10px 25px rgba(200,73,58,0.15);
+  --success: #6A8A5A;            --success-light: rgba(106,138,90,0.12);
+  --success-text: #4A6A3A;
+  --danger: #C8493A;             --danger-light: rgba(200,73,58,0.1);
+  --danger-text: #A83828;
+}
+[data-color-theme="ink"][data-theme="dark"],
+.dark[data-color-theme="ink"] {
+  --primary: #D4C8B8;            --primary-rgb: 212, 200, 184;
+  --primary-light: #F0E8D8;      --primary-dark: #B8A898;
+  --secondary: #A09080;          --secondary-rgb: 160, 144, 128;
+  --accent: #E87868;             --accent-rgb: 232, 120, 104;
+  --bg-main: #1A1A1E;            --bg-glass: rgba(26, 26, 30, 0.85);
+  --bg-card: #26242A;            --border-color: #3A3838;
+  --text-main: #EDE8E0;          --text-secondary: #A09888;
+  --text-light: #706858;
+  --gold: #D4B070;               --gold-light: #E8D098;
+  --gold-dark: #B89840;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.45);
+  --shadow-pink: 0 10px 25px rgba(200,73,58,0.2);
+  --success: #7A9A6A;            --success-light: rgba(122,154,106,0.15);
+  --success-text: #A0C080;
+  --danger: #E87868;             --danger-light: rgba(232,120,104,0.15);
+  --danger-text: #F0A098;
+}
+
+
+/* ================================================================
+   3. 极光 (Aurora) — 北境极光 · 空灵迷幻
+   ================================================================ */
+[data-color-theme="aurora"] {
+  --primary: #0D9488;            --primary-rgb: 13, 148, 136;
+  --primary-light: #99F6E4;      --primary-dark: #0F766E;
+  --secondary: #7C3AED;          --secondary-rgb: 124, 58, 237;
+  --accent: #06B6D4;             --accent-rgb: 6, 182, 212;
+  --bg-main: #F0F4F8;            --bg-glass: rgba(240, 244, 248, 0.8);
+  --bg-card: #F8FAFC;            --border-color: #E0E8F0;
+  --text-main: #1E293B;          --text-secondary: #64748B;
+  --text-light: #94A3B8;
+  --gold: #F59E0B;               --gold-light: #FCD34D;
+  --gold-dark: #D97706;
+  --shadow-sm: 0 1px 3px rgba(30,41,59,0.04);
+  --shadow-md: 0 4px 12px rgba(30,41,59,0.06);
+  --shadow-lg: 0 10px 25px rgba(30,41,59,0.1);
+  --shadow-pink: 0 10px 25px rgba(124,58,237,0.15);
+  --success: #10B981;            --success-light: rgba(16,185,129,0.12);
+  --success-text: #059669;
+  --danger: #EF4444;             --danger-light: rgba(239,68,68,0.12);
+  --danger-text: #DC2626;
+}
+[data-color-theme="aurora"][data-theme="dark"],
+.dark[data-color-theme="aurora"] {
+  --primary: #2DD4BF;            --primary-rgb: 45, 212, 191;
+  --primary-light: #5EEAD4;      --primary-dark: #14B8A6;
+  --secondary: #A78BFA;          --secondary-rgb: 167, 139, 250;
+  --accent: #22D3EE;             --accent-rgb: 34, 211, 238;
+  --bg-main: #0A1628;            --bg-glass: rgba(10, 22, 40, 0.85);
+  --bg-card: #0F1F35;            --border-color: #1E3A5F;
+  --text-main: #E2E8F0;          --text-secondary: #94A3B8;
+  --text-light: #64748B;
+  --gold: #FBBF24;               --gold-light: #FDE68A;
+  --gold-dark: #D97706;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.45);
+  --shadow-pink: 0 10px 25px rgba(167,139,250,0.25);
+  --success: #34D399;            --success-light: rgba(52,211,153,0.15);
+  --success-text: #6EE7B7;
+  --danger: #F87171;             --danger-light: rgba(248,113,113,0.15);
+  --danger-text: #FCA5A5;
+}
+
+
+/* ================================================================
+   4. 樱吹雪 (Sakura) — 落樱缤纷 · 温柔轻盈
+   ================================================================ */
+[data-color-theme="sakura"] {
+  --primary: #E890A0;            --primary-rgb: 232, 144, 160;
+  --primary-light: #F4CCD4;      --primary-dark: #D07080;
+  --secondary: #8FA88A;          --secondary-rgb: 143, 168, 138;
+  --accent: #F0C0C8;             --accent-rgb: 240, 192, 200;
+  --bg-main: #FFF8F8;            --bg-glass: rgba(255, 248, 248, 0.8);
+  --bg-card: #FFFCFC;            --border-color: #F0E0E4;
+  --text-main: #4A3038;          --text-secondary: #8B7078;
+  --text-light: #B8A0A8;
+  --gold: #D4A0A8;               --gold-light: #E8C8D0;
+  --gold-dark: #B88088;
+  --shadow-sm: 0 1px 3px rgba(74,48,56,0.04);
+  --shadow-md: 0 4px 12px rgba(74,48,56,0.06);
+  --shadow-lg: 0 10px 25px rgba(74,48,56,0.1);
+  --shadow-pink: 0 10px 25px rgba(232,144,160,0.25);
+  --success: #7AAA78;            --success-light: rgba(122,170,120,0.12);
+  --success-text: #5A8A58;
+  --danger: #D48080;             --danger-light: rgba(212,128,128,0.12);
+  --danger-text: #B06060;
+}
+[data-color-theme="sakura"][data-theme="dark"],
+.dark[data-color-theme="sakura"] {
+  --primary: #C88090;            --primary-rgb: 200, 128, 144;
+  --primary-light: #E0B0B8;      --primary-dark: #A86070;
+  --secondary: #7A9878;          --secondary-rgb: 122, 152, 120;
+  --accent: #D4A0B0;             --accent-rgb: 212, 160, 176;
+  --bg-main: #2A1A20;            --bg-glass: rgba(42, 26, 32, 0.85);
+  --bg-card: #36242A;            --border-color: #4A3038;
+  --text-main: #F0E0E4;          --text-secondary: #B898A0;
+  --text-light: #8B7078;
+  --gold: #C89098;               --gold-light: #E0B8C0;
+  --gold-dark: #A87078;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+  --shadow-pink: 0 10px 25px rgba(200,128,144,0.25);
+  --success: #8AAA80;            --success-light: rgba(138,170,128,0.15);
+  --success-text: #A8C898;
+  --danger: #D48A8A;             --danger-light: rgba(212,138,138,0.15);
+  --danger-text: #E8A8A8;
+}
+
+
+/* ================================================================
+   5. 森语 (Forest) — 深林大地 · 沉稳自然
+   ================================================================ */
+[data-color-theme="forest"] {
+  --primary: #7A8A60;            --primary-rgb: 122, 138, 96;
+  --primary-light: #B8C8A0;      --primary-dark: #5A6A40;
+  --secondary: #8B735A;          --secondary-rgb: 139, 115, 90;
+  --accent: #9AB87A;             --accent-rgb: 154, 184, 122;
+  --bg-main: #F5F1EA;            --bg-glass: rgba(245, 241, 234, 0.8);
+  --bg-card: #FDF8F0;            --border-color: #E0D8C8;
+  --text-main: #3A3028;          --text-secondary: #7A7060;
+  --text-light: #A89880;
+  --gold: #B89860;               --gold-light: #D8C098;
+  --gold-dark: #987840;
+  --shadow-sm: 0 1px 3px rgba(58,48,40,0.05);
+  --shadow-md: 0 4px 12px rgba(58,48,40,0.07);
+  --shadow-lg: 0 10px 25px rgba(58,48,40,0.1);
+  --shadow-pink: 0 10px 25px rgba(122,138,96,0.2);
+  --success: #7AAA70;            --success-light: rgba(122,170,112,0.12);
+  --success-text: #5A8A50;
+  --danger: #C48A70;             --danger-light: rgba(196,138,112,0.12);
+  --danger-text: #A46A50;
+}
+[data-color-theme="forest"][data-theme="dark"],
+.dark[data-color-theme="forest"] {
+  --primary: #8AAA78;            --primary-rgb: 138, 170, 120;
+  --primary-light: #B0D0A0;      --primary-dark: #6A8A58;
+  --secondary: #A08870;          --secondary-rgb: 160, 136, 112;
+  --accent: #A8C890;             --accent-rgb: 168, 200, 144;
+  --bg-main: #0F1A10;            --bg-glass: rgba(15, 26, 16, 0.85);
+  --bg-card: #1A2A18;            --border-color: #2A3A28;
+  --text-main: #E8F0E0;          --text-secondary: #A0B898;
+  --text-light: #708860;
+  --gold: #C8A870;               --gold-light: #E0C898;
+  --gold-dark: #A88850;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.45);
+  --shadow-pink: 0 10px 25px rgba(138,170,120,0.2);
+  --success: #8ABA80;            --success-light: rgba(138,186,128,0.15);
+  --success-text: #A8D098;
+  --danger: #D09A80;             --danger-light: rgba(208,154,128,0.15);
+  --danger-text: #E8B8A0;
+}
+
+
+/* ================================================================
+   6. 午夜 (Midnight) — 深海午夜 · 专业锐利
+   ================================================================ */
+[data-color-theme="midnight"] {
+  --primary: #1E3A5F;            --primary-rgb: 30, 58, 95;
+  --primary-light: #B0C8E0;      --primary-dark: #0F2040;
+  --secondary: #C89840;          --secondary-rgb: 200, 152, 64;
+  --accent: #3A6090;             --accent-rgb: 58, 96, 144;
+  --bg-main: #FAFAFC;            --bg-glass: rgba(250, 250, 252, 0.8);
+  --bg-card: #FFFFFF;            --border-color: #E8ECF0;
+  --text-main: #1A2A3A;          --text-secondary: #607080;
+  --text-light: #90A0B0;
+  --gold: #C89840;               --gold-light: #E8C878;
+  --gold-dark: #A87828;
+  --shadow-sm: 0 1px 3px rgba(26,42,58,0.04);
+  --shadow-md: 0 4px 12px rgba(26,42,58,0.06);
+  --shadow-lg: 0 10px 25px rgba(26,42,58,0.1);
+  --shadow-pink: 0 10px 25px rgba(30,58,95,0.15);
+  --success: #3A9060;            --success-light: rgba(58,144,96,0.12);
+  --success-text: #2A7040;
+  --danger: #C84040;             --danger-light: rgba(200,64,64,0.12);
+  --danger-text: #A82020;
+}
+[data-color-theme="midnight"][data-theme="dark"],
+.dark[data-color-theme="midnight"] {
+  --primary: #4A80B8;            --primary-rgb: 74, 128, 184;
+  --primary-light: #80B0E0;      --primary-dark: #2A6098;
+  --secondary: #D4A848;          --secondary-rgb: 212, 168, 72;
+  --accent: #6098D0;             --accent-rgb: 96, 152, 208;
+  --bg-main: #0A1428;            --bg-glass: rgba(10, 20, 40, 0.85);
+  --bg-card: #101C35;            --border-color: #1E3050;
+  --text-main: #E8ECF0;          --text-secondary: #A0B0C0;
+  --text-light: #6A8098;
+  --gold: #D4A848;               --gold-light: #E8C878;
+  --gold-dark: #B88828;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.45);
+  --shadow-pink: 0 10px 25px rgba(74,128,184,0.2);
+  --success: #4AA070;            --success-light: rgba(74,160,112,0.15);
+  --success-text: #80C8A0;
+  --danger: #E06050;             --danger-light: rgba(224,96,80,0.15);
+  --danger-text: #F09080;
+}
+
+
+/* ================================================================
+   7. 暮光 (Twilight) — 日落微光 · 温暖浓郁
+   ================================================================ */
+[data-color-theme="twilight"] {
+  --primary: #E87A5E;            --primary-rgb: 232, 122, 94;
+  --primary-light: #F4B8A0;      --primary-dark: #C85A3E;
+  --secondary: #7A5E8B;          --secondary-rgb: 122, 94, 139;
+  --accent: #F0A878;             --accent-rgb: 240, 168, 120;
+  --bg-main: #FFF5F0;            --bg-glass: rgba(255, 245, 240, 0.8);
+  --bg-card: #FFF8F5;            --border-color: #F0E0D8;
+  --text-main: #3A2820;          --text-secondary: #8B7060;
+  --text-light: #B8A090;
+  --gold: #E89060;               --gold-light: #F0C098;
+  --gold-dark: #C87040;
+  --shadow-sm: 0 1px 3px rgba(58,40,32,0.05);
+  --shadow-md: 0 4px 12px rgba(58,40,32,0.07);
+  --shadow-lg: 0 10px 25px rgba(58,40,32,0.1);
+  --shadow-pink: 0 10px 25px rgba(232,122,94,0.2);
+  --success: #7A9A60;            --success-light: rgba(122,154,96,0.12);
+  --success-text: #5A7A40;
+  --danger: #D47060;             --danger-light: rgba(212,112,96,0.12);
+  --danger-text: #B45040;
+}
+[data-color-theme="twilight"][data-theme="dark"],
+.dark[data-color-theme="twilight"] {
+  --primary: #E89878;            --primary-rgb: 232, 152, 120;
+  --primary-light: #F0C0A8;      --primary-dark: #D07858;
+  --secondary: #9A7EA8;          --secondary-rgb: 154, 126, 168;
+  --accent: #F0B890;             --accent-rgb: 240, 184, 144;
+  --bg-main: #1E1428;            --bg-glass: rgba(30, 20, 40, 0.85);
+  --bg-card: #2A1E35;            --border-color: #3A2A48;
+  --text-main: #F0E8F0;          --text-secondary: #B8A0B8;
+  --text-light: #887898;
+  --gold: #E8A878;               --gold-light: #F0C8A0;
+  --gold-dark: #C88858;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.45);
+  --shadow-pink: 0 10px 25px rgba(232,152,120,0.25);
+  --success: #8AAA70;            --success-light: rgba(138,170,112,0.15);
+  --success-text: #A8C890;
+  --danger: #E89880;             --danger-light: rgba(232,152,128,0.15);
+  --danger-text: #F0B8A0;
+}
+
+
+/* ================================================================
+   8. 极简 (Minimal) — 纯粹设计 · 字体排版驱动
+   ================================================================ */
+[data-color-theme="minimal"] {
+  --primary: #2A2A2A;            --primary-rgb: 42, 42, 42;
+  --primary-light: #E0E0E0;      --primary-dark: #000000;
+  --secondary: #6A6A6A;          --secondary-rgb: 106, 106, 106;
+  --accent: #4A7A9A;             --accent-rgb: 74, 122, 154;
+  --bg-main: #FFFFFF;            --bg-glass: rgba(255, 255, 255, 0.9);
+  --bg-card: #FFFFFF;            --border-color: #E5E5E5;
+  --text-main: #1A1A1A;          --text-secondary: #6A6A6A;
+  --text-light: #9A9A9A;
+  --gold: #8A6A4A;               --gold-light: #B8A080;
+  --gold-dark: #6A4A2A;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 20px rgba(0,0,0,0.08);
+  --shadow-pink: 0 8px 20px rgba(42,42,42,0.1);
+  --success: #4A8A5A;            --success-light: rgba(74,138,90,0.1);
+  --success-text: #3A6A40;
+  --danger: #C84848;             --danger-light: rgba(200,72,72,0.1);
+  --danger-text: #A83838;
+}
+[data-color-theme="minimal"][data-theme="dark"],
+.dark[data-color-theme="minimal"] {
+  --primary: #F5F5F5;            --primary-rgb: 245, 245, 245;
+  --primary-light: #FFFFFF;      --primary-dark: #D0D0D0;
+  --secondary: #A0A0A0;          --secondary-rgb: 160, 160, 160;
+  --accent: #6A9AB8;             --accent-rgb: 106, 154, 184;
+  --bg-main: #000000;            --bg-glass: rgba(0, 0, 0, 0.85);
+  --bg-card: #0A0A0A;            --border-color: #2A2A2A;
+  --text-main: #F5F5F5;          --text-secondary: #A0A0A0;
+  --text-light: #6A6A6A;
+  --gold: #A08060;               --gold-light: #C8B090;
+  --gold-dark: #806040;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.6);
+  --shadow-lg: 0 8px 20px rgba(0,0,0,0.7);
+  --shadow-pink: 0 8px 20px rgba(245,245,245,0.1);
+  --success: #5AAA70;            --success-light: rgba(90,170,112,0.15);
+  --success-text: #80C898;
+  --danger: #E06060;             --danger-light: rgba(224,96,96,0.15);
+  --danger-text: #F09090;
+}
+
+
+/* ═══ 暗色回退（无主题时的通用暗色 = 手账暗色） ═══ */
 [data-theme="dark"],
 .dark {
-  --primary: #F472B6;
-  --primary-rgb: 244, 114, 182;
-  --primary-light: #FBCFE8;
-  --primary-dark: #DB2777;
-  --secondary: #FBBF24;
-  --secondary-rgb: 251, 191, 36;
-  --accent: #F9A8D4;
-  --accent-rgb: 249, 168, 212;
-
-  --bg-main: #0f172a;
-  --bg-glass: rgba(30, 41, 59, 0.8);
-  --bg-card: #1e293b;
-
-  --border-color: #334155;
-
-  --text-main: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-light: #64748b;
-
-  --gold: #FBBF24;
-  --gold-light: #FDE68A;
-  --gold-dark: #D97706;
-
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-pink: 0 10px 25px -5px rgba(244, 114, 182, 0.2);
-
-  /* 功能色 — dark */
-  --success: #4ade80;
-  --success-light: rgba(34, 197, 94, 0.12);
-  --success-text: #86efac;
-  --danger: #f87171;
-  --danger-light: rgba(239, 68, 68, 0.12);
-  --danger-text: #fca5a5;
+  --primary: #D4949A;            --primary-rgb: 212, 148, 154;
+  --primary-light: #F0D0D4;      --primary-dark: #B87076;
+  --secondary: #D4B88A;          --secondary-rgb: 212, 184, 138;
+  --accent: #E0B0B6;             --accent-rgb: 224, 176, 182;
+  --bg-main: #2A2520;            --bg-glass: rgba(42, 37, 32, 0.85);
+  --bg-card: #363028;            --border-color: #4A4238;
+  --text-main: #EDE0D0;          --text-secondary: #A89888;
+  --text-light: #7A7068;
+  --gold: #D4B88A;               --gold-light: #E8D5A8;
+  --gold-dark: #B89860;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+  --shadow-pink: 0 10px 25px rgba(212,148,154,0.25);
+  --success: #8AAA78;            --success-light: rgba(138,170,120,0.15);
+  --success-text: #A8C898;
+  --danger: #D48A8A;             --danger-light: rgba(212,138,138,0.15);
+  --danger-text: #E8AAAA;
 }
 
-/* 金粉色主题变量 */
-[data-theme="pink-gold"],
-.pink-gold {
-  --primary: #EC4899;
-  --primary-rgb: 236, 72, 153;
-  --primary-light: #F9A8D4;
-  --primary-dark: #DB2777;
-  --secondary: #F59E0B;
-  --secondary-rgb: 245, 158, 11;
-  --accent: #F472B6;
-  --accent-rgb: 244, 114, 182;
 
-  --bg-main: #fef2f2;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --bg-card: #ffffff;
+/* ═══ 自定义主题（动态注入 style 属性到 html） ═══ */
+/* 自定义主题由 settings.js applyCustomTheme() 直接设置 style 属性 */
 
-  --text-main: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
 
-  --gold: #F59E0B;
-  --gold-light: #FCD34D;
-  --gold-dark: #D97706;
-
-  --shadow-pink: 0 10px 25px -5px rgba(236, 72, 153, 0.3);
-}
-
-/* 蓝紫色主题变量 */
-[data-theme="blue-purple"],
-.blue-purple {
-  --primary: #6366f1;
-  --primary-rgb: 99, 102, 241;
-  --primary-light: #a5b4fc;
-  --primary-dark: #4f46e5;
-  --secondary: #8b5cf6;
-  --secondary-rgb: 139, 92, 246;
-  --accent: #c4b5fd;
-  --accent-rgb: 196, 181, 253;
-
-  --bg-main: #f8faff;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --bg-card: #ffffff;
-
-  --text-main: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
-
-  --gold: #8b5cf6;
-  --gold-light: #c4b5fd;
-  --gold-dark: #7c3aed;
-
-  --shadow-pink: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
-}
-
-/* 青绿色主题变量 */
-[data-theme="green-teal"],
-.green-teal {
-  --primary: #10b981;
-  --primary-rgb: 16, 185, 129;
-  --primary-light: #34d399;
-  --primary-dark: #059669;
-  --secondary: #0ea5e9;
-  --secondary-rgb: 14, 165, 233;
-  --accent: #60a5fa;
-  --accent-rgb: 96, 165, 250;
-
-  --bg-main: #f0fdf4;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --bg-card: #ffffff;
-
-  --text-main: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
-
-  --gold: #0ea5e9;
-  --gold-light: #60a5fa;
-  --gold-dark: #0284c7;
-
-  --shadow-pink: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
-}
-
-/* 橙红色主题变量 */
-[data-theme="orange-red"],
-.orange-red {
-  --primary: #f97316;
-  --primary-rgb: 249, 115, 22;
-  --primary-light: #fdba74;
-  --primary-dark: #ea580c;
-  --secondary: #ef4444;
-  --secondary-rgb: 239, 68, 68;
-  --accent: #fca5a5;
-  --accent-rgb: 252, 165, 165;
-
-  --bg-main: #fff7ed;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --bg-card: #ffffff;
-
-  --text-main: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
-
-  --gold: #ef4444;
-  --gold-light: #fca5a5;
-  --gold-dark: #dc2626;
-
-  --shadow-pink: 0 10px 25px -5px rgba(249, 115, 22, 0.3);
-}
-
-/* 紫粉色主题变量 */
-[data-theme="purple-pink"],
-.purple-pink {
-  --primary: #8b5cf6;
-  --primary-rgb: 139, 92, 246;
-  --primary-light: #c4b5fd;
-  --primary-dark: #7c3aed;
-  --secondary: #ec4899;
-  --secondary-rgb: 236, 72, 153;
-  --accent: #f9a8d4;
-  --accent-rgb: 249, 168, 212;
-
-  --bg-main: #fdf4ff;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --bg-card: #ffffff;
-
-  --text-main: #1e293b;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
-
-  --gold: #ec4899;
-  --gold-light: #f9a8d4;
-  --gold-dark: #db2777;
-
-  --shadow-pink: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
-}
-
-/* 减少动画 */
-.no-animation,
+/* ═══ 减少动画 / prefers-reduced-motion ═══ */
+.no-animation *,
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

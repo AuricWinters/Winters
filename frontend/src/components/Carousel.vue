@@ -15,17 +15,17 @@
         >
           <div class="carousel-content">
             <h3 class="carousel-title">
-              {{ slide.title }}
+              {{ t(slide.title) }}
             </h3>
             <p class="carousel-description">
-              {{ slide.description }}
+              {{ t(slide.description) }}
             </p>
             <div class="carousel-actions">
               <a
                 v-if="slide.link"
                 :href="slide.link"
                 class="carousel-button"
-              >查看详情</a>
+              >{{ t('查看详情') }}</a>
             </div>
           </div>
           <div class="carousel-image-container">
@@ -41,7 +41,7 @@
     <!-- 导航按钮 -->
     <button
       class="carousel-nav carousel-nav-left"
-      aria-label="上一张"
+      :aria-label="t('上一张')"
       @click="prevSlide"
     >
       <svg
@@ -55,7 +55,7 @@
     </button>
     <button
       class="carousel-nav carousel-nav-right"
-      aria-label="下一张"
+      :aria-label="t('下一张')"
       @click="nextSlide"
     >
       <svg
@@ -75,7 +75,7 @@
         :key="index"
         class="carousel-indicator"
         :class="{ active: currentSlide === index }"
-        :aria-label="`第 ${index + 1} 张`"
+        :aria-label="`${t('第')} ${index + 1} ${t('张')}`"
         @click="goToSlide(index)"
       />
     </div>
@@ -84,6 +84,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const props = defineProps({
   slides: {
@@ -288,7 +290,7 @@ watch(
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-glass);
   border: none;
   border-radius: 50%;
   display: flex;
@@ -331,14 +333,14 @@ watch(
   height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--border-color);
   cursor: pointer;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
 }
 
 .carousel-indicator:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-glass);
   transform: scale(1.2);
 }
 
