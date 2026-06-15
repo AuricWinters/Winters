@@ -110,7 +110,7 @@ body.full-screen {
 main {
   flex: 1;
   width: 100%;
-  max-width: 1420px;
+  max-width: 1800px;
   min-width: 320px;
   margin: 0 auto 40px;
   padding: 0 24px;

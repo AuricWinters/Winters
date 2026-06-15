@@ -137,6 +137,57 @@
           </div>
         </div>
       </article>
+
+      <!-- 2048 -->
+      <article
+        class="bento-card card-game2048 scroll-reveal"
+        @click="goToGame2048Lab"
+        style="--delay: 5;"
+      >
+        <div class="card-bg">
+          <div class="mesh-gradient"></div>
+          <div class="dot-pattern"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-top">
+            <span class="tag">Game</span>
+            <div class="icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <h2>{{ t('2048') }}</h2>
+            <p>{{ t('经典数字合并游戏，滑动方块达成2048。含连击倍率、撤销、粒子特效和音效。') }}</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 扫雷 -->
+      <article
+        class="bento-card card-minesweeper scroll-reveal"
+        @click="goToMinesweeperLab"
+        style="--delay: 6;"
+      >
+        <div class="card-bg">
+          <div class="mesh-gradient"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-top">
+            <span class="tag">Game</span>
+            <div class="icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <h2>{{ t('扫雷') }}</h2>
+            <p>{{ t('经典扫雷游戏豪华版。支持左键翻开、右键标旗、双击快速翻开、多难度选择和12套主题。') }}</p>
+          </div>
+        </div>
+      </article>
       </div>
     </div>
   </div>
@@ -168,6 +219,14 @@ function goToCodeLab() {
   router.push('/lab/code');
 }
 
+function goToGame2048Lab() {
+  router.push('/lab/2048');
+}
+
+function goToMinesweeperLab() {
+  router.push('/lab/minesweeper');
+}
+
 function showDevelopingToast() {
   showToast('该实验项目正在构建中，敬请期待', 'info');
 }
@@ -181,9 +240,9 @@ function showDevelopingToast() {
 }
 
 .lab-container {
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
   box-sizing: border-box;
 }
 
@@ -250,8 +309,8 @@ function showDevelopingToast() {
 /* 便当盒网格系统 - 使用3列等宽实现真正的左右交替 */
 .bento-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
 }
 
 /* ========================================
@@ -282,22 +341,20 @@ function showDevelopingToast() {
   grid-column: span 2;
 }
 
-/* 第5个及以后的卡片：默认宽 - 跨2列 */
-.bento-card:nth-child(5),
-.bento-card:nth-child(6),
-.bento-card:nth-child(7),
-.bento-card:nth-child(n+5) {
-  grid-column: span 2;
-}
+/* 有机布局：卡片大小不一，不强制对齐 */
+.bento-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.bento-card:nth-child(4) { grid-column: span 2; }
+.bento-card:nth-child(6) { grid-column: span 2; }
 
-/* 窄卡片紧凑样式（第2、3个卡片）*/
+/* 窄卡片紧凑 */
 .bento-card:nth-child(2),
-.bento-card:nth-child(3) {
-}
+.bento-card:nth-child(3),
+.bento-card:nth-child(5) {}
 
 .bento-card:nth-child(2) .card-content,
-.bento-card:nth-child(3) .card-content {
-  padding: 28px;
+.bento-card:nth-child(3) .card-content,
+.bento-card:nth-child(5) .card-content {
+  padding: 20px;
 }
 
 .bento-card:nth-child(2) .card-bottom h2,
@@ -344,11 +401,24 @@ function showDevelopingToast() {
 }
 
 /* 尺寸分配 */
-.card-particles { min-height: 450px; }
-.card-audio { min-height: 450px; }
-.card-code { min-height: 450px; }
-.card-physics { min-height: 400px; }
-.card-regex { min-height: 400px; }
+.card-particles { min-height: 200px; }
+.card-audio { min-height: 160px; }
+.card-code { min-height: 200px; }
+.card-physics { min-height: 160px; }
+.card-regex { min-height: 160px; }
+.card-game2048 { min-height: 160px; }
+.card-minesweeper { min-height: 160px; }
+
+.card-game2048 .mesh-gradient {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(248, 176, 66, 0.4) 0%, transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(233, 68, 96, 0.3) 0%, transparent 55%);
+}
+.card-minesweeper .mesh-gradient {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(240, 160, 64, 0.4) 0%, transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(224, 85, 85, 0.3) 0%, transparent 55%);
+}
 
 /* 背景视觉 */
 .card-bg {
@@ -406,7 +476,7 @@ function showDevelopingToast() {
 .card-content {
   position: relative;
   z-index: 1;
-  padding: 40px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -527,8 +597,9 @@ function showDevelopingToast() {
 
   /* 移动端恢复标准内边距（第2、3个窄卡片）*/
   .bento-card:nth-child(2) .card-content,
-  .bento-card:nth-child(3) .card-content {
-    padding: 32px;  /* 与现有响应式一致 */
+  .bento-card:nth-child(3) .card-content,
+  .bento-card:nth-child(5) .card-content {
+    padding: 20px;
   }
 
   .bento-card:nth-child(2) .card-bottom h2,
@@ -540,8 +611,8 @@ function showDevelopingToast() {
   .bento-card:nth-child(3) .card-bottom p {
     font-size: 1.15rem;  /* 恢复原始值 */
   }
-  .card-particles, .card-audio, .card-physics, .card-regex {
-    min-height: 350px;
+  .card-particles, .card-audio, .card-physics, .card-regex, .card-game2048, .card-minesweeper {
+    min-height: 200px;
   }
   .card-bottom p { max-width: 100%; }
 }
@@ -554,7 +625,7 @@ function showDevelopingToast() {
     gap: 20px;
   }
   .card-content {
-    padding: 32px;
+    padding: 20px;
   }
   .card-bottom h2 {
     font-size: 2rem;
@@ -588,4 +659,8 @@ function showDevelopingToast() {
     font-size: 1rem;
   }
 }
+</style>
+
+<style>
+#main-content:has(.lab-page) { max-width: 1800px; }
 </style>

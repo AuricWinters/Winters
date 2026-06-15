@@ -5,7 +5,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 95%;
-  max-width: 1600px;
+  max-width: 1800px;
   min-width: 320px;
   height: 70px;
   background: var(--bg-glass);

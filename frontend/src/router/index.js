@@ -144,6 +144,24 @@ const router = createRouter({
       },
     },
     {
+      path: '/lab/2048',
+      name: 'Game2048Lab',
+      component: () => import('../views/lab/Game2048Lab.vue'),
+      meta: {
+        title: '2048 - Winters',
+        fullWidth: true,
+      },
+    },
+    {
+      path: '/lab/minesweeper',
+      name: 'MinesweeperLab',
+      component: () => import('../views/lab/MinesweeperLab.vue'),
+      meta: {
+        title: '扫雷 - Winters',
+        fullWidth: true,
+      },
+    },
+    {
       path: '/lab/code',
       name: 'CodeLab',
       component: () => import('../views/lab/CodeLab.vue'),
