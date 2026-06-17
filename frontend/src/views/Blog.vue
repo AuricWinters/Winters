@@ -81,6 +81,7 @@ const { t } = useI18n();
 import { reactive, computed, onMounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
+import { useBlurReveal } from '../composables/useBlurReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
 import ShinyText from '../components/ShinyText.vue';
@@ -133,6 +134,7 @@ async function fetchPosts() {
 
 onMounted(() => {
   fetchPosts();
+  useBlurReveal('.timeline-content h4');
 });
 </script>
 

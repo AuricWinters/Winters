@@ -51,6 +51,7 @@
               <span>{{ t('中国 广东 广州') }}</span>
             </div>
           </div>
+          <CircularText text="WINTERS" :size="100" />
         </div>
 
         <div class="timeline-container scroll-reveal">
@@ -174,15 +175,13 @@
             </div>
           </div>
           <div class="skills-right">
-            <div class="skills-grid">
-              <div
-                v-for="skill in skills"
-                :key="skill"
-                class="skill-item"
-              >
-                {{ skill }}
-              </div>
-            </div>
+            <MasonryGrid>
+              <AnimatedList :items="skills" class="skills-grid">
+                <template #item="{ item }">
+                  <div class="skill-item">{{ item }}</div>
+                </template>
+              </AnimatedList>
+            </MasonryGrid>
           </div>
         </div>
       </div>
@@ -261,6 +260,8 @@ import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
 import GradientText from '../components/GradientText.vue';
 import AnimatedList from '../components/AnimatedList.vue';
+import CircularText from '../components/CircularText.vue';
+import MasonryGrid from '../components/MasonryGrid.vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useSpotlight } from '../composables/useSpotlight.js';

@@ -3,6 +3,7 @@
     <canvas class="particles-background" />
 
     <div class="lab-container">
+      <DotField />
       <header class="lab-header scroll-reveal" v-spotlight>
         <h1 class="display-title">
           The <span class="highlight"><GradientText text="Lab" /></span>.
@@ -14,80 +15,82 @@
       </header>
 
       <div class="bento-grid">
-      <!-- Canvas Particles -->
-      <article 
-        class="bento-card card-spotlight card-particles scroll-reveal" v-spotlight 
-        @click="goToParticleLab"
-        style="--delay: 1;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-          <div class="dot-pattern"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Interactive</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+      <!-- Cards 1-3 wrapped in BounceCards for elastic entry -->
+      <BounceCards :items="[0, 1, 2]" :stagger-ms="100">
+        <template #card="{ index }">
+          <article
+            v-if="index === 0"
+            class="bento-card card-spotlight card-particles scroll-reveal" v-spotlight
+            @click="goToParticleLab"
+          >
+            <div class="card-bg">
+              <div class="mesh-gradient"></div>
+              <div class="dot-pattern"></div>
             </div>
-          </div>
-          <div class="card-bottom">
-            <h2>{{ t('Canvas 粒子动画') }}</h2>
-            <p>{{ t('基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。') }}</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- Web Audio -->
-      <article 
-        class="bento-card card-spotlight card-audio scroll-reveal" v-spotlight 
-        @click="goToPianoLab"
-        style="--delay: 2;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <!-- <span class="tag">Audio API</span> -->
-            <span class="tag wip">{{ t('开发中') }}</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="card-content">
+              <div class="card-top">
+                <span class="tag">Interactive</span>
+                <div class="icon-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-bottom">
+                <h2>{{ t('Canvas 粒子动画') }}</h2>
+                <p>{{ t('基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。') }}</p>
+              </div>
             </div>
-          </div>
-          <div class="card-bottom">
-            <h2>{{ t('Web Audio 钢琴') }}</h2>
-            <p>{{ t('利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。') }}</p>
-          </div>
-        </div>
-      </article>
+          </article>
 
-      <!-- 2D Physics -->
-      <article 
-        class="bento-card card-spotlight card-physics disabled scroll-reveal" v-spotlight 
-        @click="showDevelopingToast"
-        style="--delay: 3;"
-      >
-        <div class="card-bg"></div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag wip">{{ t('开发中') }}</span>
-            <!-- <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div> -->
-          </div>
-          <div class="card-bottom">
-            <h2>{{ t('2D 物理引擎') }}</h2>
-            <p>{{ t('使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。') }}</p>
-          </div>
-        </div>
-      </article>
+          <article
+            v-else-if="index === 1"
+            class="bento-card card-spotlight card-audio scroll-reveal" v-spotlight
+            @click="goToPianoLab"
+          >
+            <div class="card-bg">
+              <div class="mesh-gradient"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-top">
+                <!-- <span class="tag">Audio API</span> -->
+                <span class="tag wip">{{ t('开发中') }}</span>
+                <div class="icon-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="card-bottom">
+                <h2>{{ t('Web Audio 钢琴') }}</h2>
+                <p>{{ t('利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。') }}</p>
+              </div>
+            </div>
+          </article>
+
+          <article
+            v-else
+            class="bento-card card-spotlight card-physics disabled scroll-reveal" v-spotlight
+            @click="showDevelopingToast"
+          >
+            <div class="card-bg"></div>
+            <div class="card-content">
+              <div class="card-top">
+                <span class="tag wip">{{ t('开发中') }}</span>
+                <!-- <div class="icon-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div> -->
+              </div>
+              <div class="card-bottom">
+                <h2>{{ t('2D 物理引擎') }}</h2>
+                <p>{{ t('使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。') }}</p>
+              </div>
+            </div>
+          </article>
+        </template>
+      </BounceCards>
 
       <!-- 编程学习 -->
       <article 
@@ -144,24 +147,26 @@
         @click="goToGame2048Lab"
         style="--delay: 5;"
       >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-          <div class="dot-pattern"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Game</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <GlareHover>
+          <div class="card-bg">
+            <div class="mesh-gradient"></div>
+            <div class="dot-pattern"></div>
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag">Game</span>
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('2048') }}</h2>
+              <p>{{ t('经典数字合并游戏，滑动方块达成2048。含连击倍率、撤销、粒子特效和音效。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('2048') }}</h2>
-            <p>{{ t('经典数字合并游戏，滑动方块达成2048。含连击倍率、撤销、粒子特效和音效。') }}</p>
-          </div>
-        </div>
+        </GlareHover>
       </article>
 
       <!-- 扫雷 -->
@@ -170,23 +175,25 @@
         @click="goToMinesweeperLab"
         style="--delay: 6;"
       >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Game</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <GlareHover>
+          <div class="card-bg">
+            <div class="mesh-gradient"></div>
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag">Game</span>
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('扫雷') }}</h2>
+              <p>{{ t('经典扫雷游戏豪华版。支持左键翻开、右键标旗、双击快速翻开、多难度选择和12套主题。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('扫雷') }}</h2>
-            <p>{{ t('经典扫雷游戏豪华版。支持左键翻开、右键标旗、双击快速翻开、多难度选择和12套主题。') }}</p>
-          </div>
-        </div>
+        </GlareHover>
       </article>
       </div>
     </div>
@@ -197,16 +204,49 @@
 import { useI18n } from '../composables/useI18n.js';
 const { t } = useI18n();
 import { useRouter } from 'vue-router';
+import { onMounted, onUnmounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
 import GradientText from '../components/GradientText.vue';
+import BounceCards from '../components/BounceCards.vue';
+import DotField from '../components/DotField.vue';
+import GlareHover from '../components/GlareHover.vue';
 
 const router = useRouter();
 const { showToast } = useToast();
 
 useParticles();
 useScrollReveal();
+
+// 卡片边框发光效果：鼠标追踪每个 bento card 的位置并设置 --glow-angle
+let glowCleanups = [];
+
+onMounted(() => {
+  const cards = document.querySelectorAll('.bento-card');
+  cards.forEach(card => {
+    const onMove = (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const angle = Math.atan2(y - rect.height / 2, x - rect.width / 2) * (180 / Math.PI);
+      card.style.setProperty('--glow-angle', angle + 'deg');
+    };
+    const onLeave = () => {
+      card.style.setProperty('--glow-angle', '0deg');
+    };
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+    glowCleanups.push({ el: card, move: onMove, leave: onLeave });
+  });
+});
+
+onUnmounted(() => {
+  glowCleanups.forEach(({ el, move, leave }) => {
+    el.removeEventListener('mousemove', move);
+    el.removeEventListener('mouseleave', leave);
+  });
+});
 
 function goToParticleLab() {
   router.push('/lab/particles');
@@ -314,6 +354,16 @@ function showDevelopingToast() {
   gap: 16px;
 }
 
+/* BounceCards wrapper spans full grid width for elastic entry */
+.bento-grid :deep(.bounce-cards) {
+  grid-column: 1 / -1;
+}
+
+/* Disable fadeUp entry animation on cards inside BounceCards (replaced by elastic entry) */
+.bento-grid :deep(.bounce-cards) .bento-card {
+  animation: none;
+}
+
 /* ========================================
  * 交替卡片布局（长方形-正方形交替）
  * 布局逻辑（使用grid-column: span控制宽度）：
@@ -322,48 +372,41 @@ function showDevelopingToast() {
  *   - 第3行: 宽(span 2)
  ======================================== */
 
-/* 第1个卡片（第1行左侧）：宽 - 跨2列 */
-.bento-card:nth-child(1) {
+/* 第2个卡片（原卡4 - 编程学习）：宽 - 跨2列 */
+.bento-card:nth-child(2) {
   grid-column: span 2;
 }
 
-/* 第2个卡片（第1行右侧）：窄 - 占1列 */
-.bento-card:nth-child(2) {
-  grid-column: span 1;
-}
-
-/* 第3个卡片（第2行左侧）：窄 - 占1列（交换！）*/
+/* 第3个卡片（原卡5 - Regex）：窄 - 占1列 */
 .bento-card:nth-child(3) {
   grid-column: span 1;
 }
 
-/* 第4个卡片（第2行右侧）：宽 - 跨2列（交换！）*/
+/* 第4个卡片（原卡6 - 2048）：宽 - 跨2列 */
 .bento-card:nth-child(4) {
   grid-column: span 2;
 }
 
-/* 有机布局：卡片大小不一，不强制对齐 */
-.bento-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+/* 第5个卡片（原卡7 - 扫雷）：窄 - 占1列 */
+.bento-card:nth-child(5) {
+  grid-column: span 1;
+}
+
+/* 有机布局：宽卡片 */
+.bento-card:nth-child(2) { grid-column: span 2; }
 .bento-card:nth-child(4) { grid-column: span 2; }
-.bento-card:nth-child(6) { grid-column: span 2; }
 
-/* 窄卡片紧凑 */
-.bento-card:nth-child(2),
-.bento-card:nth-child(3),
-.bento-card:nth-child(5) {}
+/* 窄卡片紧凑（remaining narrow cards in grid） */
+.bento-card:nth-child(3) {}
 
-.bento-card:nth-child(2) .card-content,
-.bento-card:nth-child(3) .card-content,
-.bento-card:nth-child(5) .card-content {
+.bento-card:nth-child(3) .card-content {
   padding: 20px;
 }
 
-.bento-card:nth-child(2) .card-bottom h2,
 .bento-card:nth-child(3) .card-bottom h2 {
   font-size: 1.8rem;
 }
 
-.bento-card:nth-child(2) .card-bottom p,
 .bento-card:nth-child(3) .card-bottom p {
   font-size: 1rem;
 }
@@ -587,30 +630,22 @@ function showDevelopingToast() {
     grid-template-columns: 1fr;  /* 改为单列 */
   }
 
-  /* 移动端所有卡片占满整行（重置span）*/
-  .bento-card:nth-child(1),
-  .bento-card:nth-child(2),
-  .bento-card:nth-child(3),
-  .bento-card:nth-child(4),
-  .bento-card:nth-child(n) {
-    grid-column: span 1;  /* 或直接 auto */
+  /* 移动端所有卡片占满整行 */
+  .bento-card {
+    grid-column: span 1;
   }
 
-  /* 移动端恢复标准内边距（第2、3个窄卡片）*/
-  .bento-card:nth-child(2) .card-content,
-  .bento-card:nth-child(3) .card-content,
-  .bento-card:nth-child(5) .card-content {
+  /* 移动端恢复标准内边距 */
+  .bento-card:nth-child(3) .card-content {
     padding: 20px;
   }
 
-  .bento-card:nth-child(2) .card-bottom h2,
   .bento-card:nth-child(3) .card-bottom h2 {
-    font-size: 2rem;  /* 恢复为现有值 */
+    font-size: 2rem;
   }
 
-  .bento-card:nth-child(2) .card-bottom p,
   .bento-card:nth-child(3) .card-bottom p {
-    font-size: 1.15rem;  /* 恢复原始值 */
+    font-size: 1.15rem;
   }
   .card-particles, .card-audio, .card-physics, .card-regex, .card-game2048, .card-minesweeper {
     min-height: 200px;

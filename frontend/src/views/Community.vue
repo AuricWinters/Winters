@@ -10,7 +10,7 @@
             <h1 class="page-title"><ShinyText :text="t('AI 社区')" /></h1>
             <span class="badge">Beta</span>
           </div>
-          <button class="post-btn" @click="$router.push('/community/new')">
+          <button class="post-btn" v-magnet @click="$router.push('/community/new')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             {{ t('发动态') }}
           </button>
@@ -78,6 +78,7 @@
       <div class="feed">
         <!-- 置顶 -->
         <article v-if="pinnedPost" class="post-card card-spotlight pinned scroll-reveal" v-spotlight @click="$router.push('/community/' + pinnedPost.id)">
+          <DecayCard>
           <div class="pin-badge">📌 {{ t('置顶') }}</div>
           <div class="post-header">
             <div class="author-avatar">{{ pinnedPost.author_name[0] }}</div>
@@ -105,10 +106,12 @@
               {{ formatCount(pinnedPost.views_count) }}
             </span>
           </div>
+          </DecayCard>
         </article>
 
         <!-- 动态列表 -->
         <article v-for="post in feedPosts" :key="post.id" class="post-card card-spotlight scroll-reveal" v-spotlight :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
+          <DecayCard>
           <div class="post-header">
             <div class="author-avatar">{{ post.author_name[0] }}</div>
             <div class="author-info">
@@ -135,6 +138,7 @@
               {{ formatCount(post.views_count) }}
             </span>
           </div>
+          </DecayCard>
         </article>
 
         <!-- 加载更多 -->
@@ -213,6 +217,8 @@ import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useCommunityStore } from '../stores/community.js';
 import ShinyText from '../components/ShinyText.vue';
+import DecayCard from '../components/DecayCard.vue';
+import { vMagnet } from '../directives/reactBits.js';
 
 const { t } = useI18n();
 const { showToast } = useToast();

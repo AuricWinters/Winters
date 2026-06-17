@@ -19,7 +19,9 @@
       </div>
 
       <div class="form-section">
-        <div class="auth-card card-spotlight" v-spotlight :class="{ shake: shakeCard }">
+        <StarBorder>
+          <div ref="authCardRef" class="auth-card card-spotlight" v-spotlight :class="{ shake: shakeCard }">
+          <GlitchText text="欢迎回来" class="glitch-welcome" />
           <!-- 标签切换 -->
           <div class="login-tabs">
             <button
@@ -214,6 +216,7 @@
             </router-link>
           </div>
         </div>
+        </StarBorder>
       </div>
     </div>
   </div>
@@ -227,10 +230,13 @@ import { useRouter } from 'vue-router';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import LoginPasswordForm from '../components/LoginPasswordForm.vue';
 import LoginCodeForm from '../components/LoginCodeForm.vue';
+import StarBorder from '../components/StarBorder.vue';
+import GlitchText from '../components/GlitchText.vue';
 import { API_BASE } from '../config.js';
 import { useUserStore } from '../stores/user.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useToast } from '../composables/useToast.js';
+import { useBorderGlow } from '../composables/useBorderGlow.js';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -262,7 +268,10 @@ const showPassword = ref(false);
 const shakeCard = ref(false);
 const codeCountdown = ref(0);
 const isTyping = ref(false);
+const authCardRef = ref(null);
 let countdownTimer = null;
+
+useBorderGlow(authCardRef);
 
 const indicatorStyle = computed(() => ({
   transform: loginType.value === 'password' ? 'translateX(0)' : 'translateX(100%)',
