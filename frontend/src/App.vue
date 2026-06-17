@@ -37,10 +37,13 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useSettingsStore } from './stores/settings.js';
+import { useClickSpark } from './composables/useClickSpark.js';
 import Header from './components/Header.vue';
 
 // 确保 store 在应用启动时立即初始化，刷新页面不会丢设置
 useSettingsStore();
+// 全局点击粒子效果
+useClickSpark();
 import Footer from './components/Footer.vue';
 import BackToTop from './components/BackToTop.vue';
 import ToastNotification from './components/ToastNotification.vue';

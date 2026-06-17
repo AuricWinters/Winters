@@ -274,10 +274,31 @@
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 .card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
+}
+/* Spotlight 聚光灯效果 */
+.card-spotlight::before,
+.card-spotlight:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--spotlight-color), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 0;
+}
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+.card-spotlight > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 右侧侧边栏：项目与网站 */

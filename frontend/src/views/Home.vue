@@ -6,7 +6,7 @@
     <div class="hero-section">
       <!-- 左侧：个人信息与时间线 -->
       <div class="profile-container">
-        <div class="profile-header scroll-reveal">
+        <div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal">
           <img
             src="/img/tx.jpg"
             :alt="t('AuricWinters头像')"
@@ -261,6 +261,8 @@ import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
+import { useSpotlight } from '../composables/useSpotlight.js';
+import { useTilt } from '../composables/useTilt.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
 
@@ -322,6 +324,11 @@ const handleStats = () => {
   formattedViews.value =
     views.value >= 1000 ? (views.value / 1000).toFixed(1) + 'k' : views.value.toString();
 };
+
+const profileCardRef = ref(null)
+
+useSpotlight(profileCardRef)
+useTilt(profileCardRef, { maxDeg: 8 })
 
 onMounted(() => {
   handleStats();
