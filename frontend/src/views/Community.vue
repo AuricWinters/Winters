@@ -77,7 +77,7 @@
       <!-- ═══ 动态流 ═══ -->
       <div class="feed">
         <!-- 置顶 -->
-        <article v-if="pinnedPost" class="post-card pinned scroll-reveal" @click="$router.push('/community/' + pinnedPost.id)">
+        <article v-if="pinnedPost" class="post-card card-spotlight pinned scroll-reveal" @click="$router.push('/community/' + pinnedPost.id)">
           <div class="pin-badge">📌 {{ t('置顶') }}</div>
           <div class="post-header">
             <div class="author-avatar">{{ pinnedPost.author_name[0] }}</div>
@@ -108,7 +108,7 @@
         </article>
 
         <!-- 动态列表 -->
-        <article v-for="post in feedPosts" :key="post.id" class="post-card scroll-reveal" :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
+        <article v-for="post in feedPosts" :key="post.id" class="post-card card-spotlight scroll-reveal" :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
           <div class="post-header">
             <div class="author-avatar">{{ post.author_name[0] }}</div>
             <div class="author-info">

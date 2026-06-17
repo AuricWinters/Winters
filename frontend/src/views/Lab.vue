@@ -16,7 +16,7 @@
       <div class="bento-grid">
       <!-- Canvas Particles -->
       <article 
-        class="bento-card card-particles scroll-reveal" 
+        class="bento-card card-spotlight card-particles scroll-reveal" 
         @click="goToParticleLab"
         style="--delay: 1;"
       >
@@ -42,7 +42,7 @@
 
       <!-- Web Audio -->
       <article 
-        class="bento-card card-audio scroll-reveal" 
+        class="bento-card card-spotlight card-audio scroll-reveal" 
         @click="goToPianoLab"
         style="--delay: 2;"
       >
@@ -68,7 +68,7 @@
 
       <!-- 2D Physics -->
       <article 
-        class="bento-card card-physics disabled scroll-reveal" 
+        class="bento-card card-spotlight card-physics disabled scroll-reveal" 
         @click="showDevelopingToast"
         style="--delay: 3;"
       >
@@ -91,7 +91,7 @@
 
       <!-- 编程学习 -->
       <article 
-        class="bento-card card-code scroll-reveal" 
+        class="bento-card card-spotlight card-code scroll-reveal" 
         @click="goToCodeLab"
         style="--delay: 3;"
       >
@@ -117,7 +117,7 @@
 
       <!-- Regex Visualizer -->
       <article 
-        class="bento-card card-regex disabled scroll-reveal" 
+        class="bento-card card-spotlight card-regex disabled scroll-reveal" 
         @click="showDevelopingToast"
         style="--delay: 4;"
       >
@@ -140,7 +140,7 @@
 
       <!-- 2048 -->
       <article
-        class="bento-card card-game2048 scroll-reveal"
+        class="bento-card card-spotlight card-game2048 scroll-reveal"
         @click="goToGame2048Lab"
         style="--delay: 5;"
       >
@@ -166,7 +166,7 @@
 
       <!-- 扫雷 -->
       <article
-        class="bento-card card-minesweeper scroll-reveal"
+        class="bento-card card-spotlight card-minesweeper scroll-reveal"
         @click="goToMinesweeperLab"
         style="--delay: 6;"
       >
