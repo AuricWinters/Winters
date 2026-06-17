@@ -5,7 +5,7 @@
     <div class="lab-container">
       <header class="lab-header scroll-reveal" v-spotlight>
         <h1 class="display-title">
-          The <span class="highlight">Lab</span>.
+          The <span class="highlight"><GradientText text="Lab" /></span>.
           <span class="badge">Experimental</span>
         </h1>
         <p class="subtitle">
@@ -200,6 +200,7 @@ import { useRouter } from 'vue-router';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
+import GradientText from '../components/GradientText.vue';
 
 const router = useRouter();
 const { showToast } = useToast();

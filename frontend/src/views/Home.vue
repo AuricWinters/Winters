@@ -14,7 +14,7 @@
             loading="lazy"
           >
           <div class="profile-info">
-            <h1>{{ profile.name }}</h1>
+            <h1><GradientText :text="profile.name" /></h1>
             <p class="title">
               {{ profile.bio }}
             </p>
@@ -259,6 +259,8 @@ import { useI18n } from '../composables/useI18n.js';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
+import GradientText from '../components/GradientText.vue';
+import AnimatedList from '../components/AnimatedList.vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useSpotlight } from '../composables/useSpotlight.js';
