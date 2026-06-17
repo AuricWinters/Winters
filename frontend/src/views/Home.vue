@@ -361,5 +361,53 @@ onMounted(() => {
 .hero-section {
   position: relative;
   z-index: 1;
+  /* Bento 瀑布流布局 override */
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  max-width: 1800px !important;
+  margin: 40px auto 0 !important;
+  padding: 0 24px !important;
+}
+
+/* 有机卡片跨越 */
+.profile-container {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.content-container {
+  grid-column: span 2;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.sidebar-container {
+  grid-column: span 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.sidebar-container .section-card {
+  grid-column: span 1;
+}
+
+@media (max-width: 1024px) {
+  .hero-section {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .profile-container { grid-column: span 2; grid-row: span 1; }
+  .content-container { grid-column: span 2; grid-row: span 1; }
+  .sidebar-container { grid-column: span 2; grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .hero-section {
+    grid-template-columns: 1fr !important;
+  }
+  .profile-container, .content-container, .sidebar-container {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  .sidebar-container { grid-template-columns: 1fr; }
 }
 </style>
