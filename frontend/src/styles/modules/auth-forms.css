@@ -462,7 +462,7 @@
 }
 
 .social-btn.wechat {
-  color: #07c160;
+  color: var(--wechat-green);
 }
 
 .social-btn.wechat:hover {
@@ -471,7 +471,7 @@
 }
 
 .social-btn.github {
-  color: #1f2937;
+  color: var(--github-bg);
 }
 
 .social-btn.github:hover {

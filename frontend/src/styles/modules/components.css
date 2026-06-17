@@ -1,16 +1,16 @@
 /* 个人信息卡片 */
 .profile-header {
   background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 30px;
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
   text-align: center;
   box-shadow: var(--shadow-md);
-  border: 1px solid rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--border-color);
   transition: var(--transition);
 }
 
 .profile-header:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -266,12 +266,32 @@
   box-shadow: var(--shadow-md);
 }
 
+/* 统一卡片基类 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
 /* 右侧侧边栏：项目与网站 */
 .section-card {
   background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 30px;
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.section-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .section-card h3 {
@@ -366,7 +386,7 @@
 .chart-cell {
   width: 10px;
   height: 10px;
-  background: #edf2f7;
+  background: var(--chart-inactive);
   border-radius: 2px;
 }
 
