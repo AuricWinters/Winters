@@ -282,14 +282,13 @@
   box-shadow: var(--shadow-lg);
 }
 /* Spotlight 聚光灯效果 */
-.card-spotlight::before,
-.card-spotlight:hover::before {
+.card-spotlight::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--spotlight-color), transparent 40%);
+  background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--primary-rgb), 0.15), transparent 50%);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 0;
 }

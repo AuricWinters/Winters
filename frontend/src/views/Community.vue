@@ -40,7 +40,7 @@
       <!-- ═══ 左侧边栏：导航区 ═══ -->
       <aside class="left-sidebar">
         <!-- 用户卡片 -->
-        <div class="side-card user-card">
+        <div class="side-card card-spotlight user-card">
           <div class="uc-avatar">凌</div>
           <div class="uc-name">AuricWinters</div>
           <div class="uc-bio">AI 社区站长 · 全栈开发者</div>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- 快捷导航 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">📂 {{ t('板块导航') }}</h4>
           <nav class="nav-list">
             <a v-for="c in categories" :key="c.value"
@@ -63,7 +63,7 @@
         </div>
 
         <!-- 快捷入口 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">⚡ {{ t('快捷入口') }}</h4>
           <div class="quick-links">
             <a href="/ai" class="quick-link">{{ t('🤖 AI 聊天') }}</a>
@@ -146,7 +146,7 @@
       <!-- ═══ 右侧边栏 ═══ -->
       <aside class="sidebar">
         <!-- 社区统计 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">📊 {{ t('社区统计') }}</h4>
           <div class="stats-grid">
             <div class="stat-item">
@@ -161,7 +161,7 @@
         </div>
 
         <!-- 热门话题 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">🔥 {{ t('热门话题') }}</h4>
           <div class="hot-list">
             <div v-for="(topic, i) in hotTopics" :key="i" class="hot-item">
@@ -175,7 +175,7 @@
         </div>
 
         <!-- AI 工具排行 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">🏆 {{ t('AI 工具热度榜') }}</h4>
           <div class="tool-list">
             <div v-for="(tool, i) in aiTools" :key="i" class="tool-item">
@@ -190,7 +190,7 @@
         </div>
 
         <!-- 活跃用户 -->
-        <div class="side-card">
+        <div class="side-card" v-spotlight>
           <h4 class="side-title">⭐ {{ t('本周活跃') }}</h4>
           <div class="user-list">
             <div v-for="u in activeUsers" :key="u.name" class="user-item">

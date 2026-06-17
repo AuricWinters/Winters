@@ -8,7 +8,7 @@
       style="grid-template-columns: 1fr"
     >
       <div class="content-container">
-        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
+        <div class="section-card card-spotlight card-spotlight scroll-reveal" v-spotlight>
           <h3>{{ t('最近动态') }}</h3>
 
           <!-- 分类筛选按钮 -->

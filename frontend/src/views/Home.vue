@@ -119,7 +119,7 @@
           class="scroll-reveal"
         />
 
-        <div class="skills-split-section scroll-reveal">
+        <div class="skills-split-section card-spotlight scroll-reveal" v-spotlight>
           <div class="skills-left">
             <h3>{{ t('技能专长') }}</h3>
             <div class="skill-bars">
@@ -189,7 +189,7 @@
 
       <!-- 右侧：技能专长、项目与兴趣 -->
       <div class="sidebar-container">
-        <div class="section-card scroll-reveal">
+        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
           <h3>{{ t('我的项目') }}</h3>
           <div class="projects-grid">
             <router-link
@@ -204,7 +204,7 @@
           </div>
         </div>
 
-        <div class="section-card scroll-reveal">
+        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
           <h3>{{ t('兴趣爱好') }}</h3>
           <div class="skills-grid">
             <div class="skill-item">
@@ -222,7 +222,7 @@
           </div>
         </div>
 
-        <div class="section-card scroll-reveal">
+        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
           <h3>{{ t('网站数据') }}</h3>
           <div class="stats-grid">
             <div style="font-size: 13px; color: var(--text-secondary)">
