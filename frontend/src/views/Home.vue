@@ -6,7 +6,7 @@
     <div class="hero-section">
       <!-- 左侧：个人信息与时间线 -->
       <div class="profile-container">
-        <div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal">
+        <div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal" v-spotlight>
           <img
             src="/img/tx.jpg"
             :alt="t('AuricWinters头像')"
