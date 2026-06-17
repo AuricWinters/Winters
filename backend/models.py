@@ -363,6 +363,61 @@ class SocialLoginRequest(BaseModel):
     )
 
 
+# ═══ 社区模型 ═══
+
+class PostCreate(BaseModel):
+    title: Optional[str] = Field(default=None, max_length=200)
+    content: str = Field(..., min_length=1, max_length=50000)
+    images: Optional[str] = Field(default='[]', max_length=5000)
+    tags: Optional[str] = Field(default='[]', max_length=1000)
+    category: Optional[str] = Field(default='share')
+
+class PostResponse(BaseModel):
+    id: int
+    user_id: int
+    title: Optional[str] = None
+    content: str
+    images: str = '[]'
+    tags: str = '[]'
+    category: str = 'share'
+    likes_count: int = 0
+    comments_count: int = 0
+    views_count: int = 0
+    is_pinned: int = 0
+    created_at: str
+    updated_at: str
+    author_name: Optional[str] = None
+    liked: bool = False
+    class Config: from_attributes = True
+
+class CommentCreate(BaseModel):
+    parent_id: Optional[int] = None
+    content: str = Field(..., min_length=1, max_length=2000)
+
+class CommentResponse(BaseModel):
+    id: int
+    post_id: int
+    user_id: int
+    parent_id: Optional[int] = None
+    content: str
+    created_at: str
+    author_name: Optional[str] = None
+    replies: list = []
+    class Config: from_attributes = True
+
+class LikeRequest(BaseModel):
+    post_id: int
+
+class TagResponse(BaseModel):
+    name: str
+    post_count: int
+
+class PostListResponse(BaseModel):
+    posts: list
+    total: int
+    page: int
+    has_more: bool
+
 class SocialLoginResponse(BaseModel):
     """
     第三方登录响应模型

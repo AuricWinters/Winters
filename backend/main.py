@@ -15,6 +15,7 @@ from routes.auth import router as auth_router
 from routes.code import router as code_router
 from routes.user import router as user_router
 from routes.websocket import router as ws_router
+from routes.community import router as community_router
 
 
 @asynccontextmanager
@@ -56,6 +57,7 @@ app.include_router(auth_router)
 app.include_router(code_router)
 app.include_router(user_router)  # 用户信息相关路由
 app.include_router(ws_router)  # WebSocket 交互式代码执行路由
+app.include_router(community_router)  # AI 社区动态路由
 
 
 # 基本健康检查端点

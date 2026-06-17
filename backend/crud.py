@@ -412,6 +412,124 @@ def reset_password_by_phone(db: sqlite3.Connection, phone: str, new_password: st
         raise Exception(f"数据库操作错误: {e}")
 
 
+# ═══ 社区 CRUD ═══
+
+import json
+
+def create_post(db, user_id: int, data) -> dict:
+    cursor = db.execute(
+        "INSERT INTO posts (user_id, title, content, images, tags, category) VALUES (?,?,?,?,?,?)",
+        (user_id, data.title, data.content, data.images or '[]', data.tags or '[]', data.category or 'share')
+    )
+    post_id = cursor.lastrowid
+
+    # 更新标签统计
+    try:
+        tags = json.loads(data.tags or '[]')
+        for tag in tags:
+            db.execute(
+                "INSERT INTO tags (name, post_count) VALUES (?, 1) ON CONFLICT(name) DO UPDATE SET post_count = post_count + 1",
+                (tag,)
+            )
+    except: pass
+
+    return get_post_by_id(db, post_id, user_id)
+
+def get_post_by_id(db, post_id: int, viewer_id: int = 0) -> dict:
+    row = db.execute("""
+        SELECT p.*, COALESCE(u.nickname, u.account) as author_name,
+               (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) as liked
+        FROM posts p LEFT JOIN users u ON p.user_id = u.id
+        WHERE p.id = ?
+    """, (viewer_id, post_id)).fetchone()
+    if not row: return None
+    return dict(row)
+
+def get_posts(db, page: int = 1, page_size: int = 20, category: str = '', tag: str = '', viewer_id: int = 0) -> dict:
+    where = []
+    params = []
+    if category and category != 'all':
+        where.append("p.category = ?"); params.append(category)
+    if tag:
+        where.append("p.tags LIKE ?"); params.append(f'%"{tag}"%')
+    where_clause = ("WHERE " + " AND ".join(where)) if where else ""
+
+    count = db.execute(f"SELECT COUNT(*) FROM posts p {where_clause}", params).fetchone()[0]
+    offset = (page - 1) * page_size
+
+    rows = db.execute(f"""
+        SELECT p.*, COALESCE(u.nickname, u.account) as author_name,
+               (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) as liked
+        FROM posts p LEFT JOIN users u ON p.user_id = u.id
+        {where_clause}
+        ORDER BY p.is_pinned DESC, p.created_at DESC
+        LIMIT ? OFFSET ?
+    """, [viewer_id] + params + [page_size, offset]).fetchall()
+
+    return {
+        "posts": [dict(r) for r in rows],
+        "total": count,
+        "page": page,
+        "has_more": offset + page_size < count
+    }
+
+def update_post(db, post_id: int, user_id: int, data: dict) -> dict:
+    sets = []; params = []
+    for k in ['title','content','images','tags','category']:
+        if k in data:
+            sets.append(f"{k} = ?"); params.append(data[k])
+    if not sets: return get_post_by_id(db, post_id, user_id)
+    sets.append("updated_at = CURRENT_TIMESTAMP")
+    params += [post_id, user_id]
+    db.execute(f"UPDATE posts SET {', '.join(sets)} WHERE id = ? AND user_id = ?", params)
+    return get_post_by_id(db, post_id, user_id)
+
+def delete_post(db, post_id: int, user_id: int) -> bool:
+    c = db.execute("DELETE FROM posts WHERE id = ? AND user_id = ?", (post_id, user_id))
+    return c.rowcount > 0
+
+def toggle_like(db, user_id: int, post_id: int) -> dict:
+    existing = db.execute("SELECT id FROM likes WHERE user_id = ? AND post_id = ?", (user_id, post_id)).fetchone()
+    if existing:
+        db.execute("DELETE FROM likes WHERE id = ?", (existing['id'],))
+        db.execute("UPDATE posts SET likes_count = MAX(0, likes_count - 1) WHERE id = ?", (post_id,))
+        liked = False
+    else:
+        db.execute("INSERT INTO likes (user_id, post_id) VALUES (?,?)", (user_id, post_id))
+        db.execute("UPDATE posts SET likes_count = likes_count + 1 WHERE id = ?", (post_id,))
+        liked = True
+    post = get_post_by_id(db, post_id, user_id)
+    return {"liked": liked, "likes_count": post['likes_count'] if post else 0}
+
+def create_comment(db, user_id: int, post_id: int, data) -> dict:
+    db.execute(
+        "INSERT INTO comments (post_id, user_id, parent_id, content) VALUES (?,?,?,?)",
+        (post_id, user_id, data.parent_id, data.content)
+    )
+    db.execute("UPDATE posts SET comments_count = comments_count + 1 WHERE id = ?", (post_id,))
+    return {"message": "评论成功"}
+
+def get_comments(db, post_id: int) -> list:
+    rows = db.execute("""
+        SELECT c.*, COALESCE(u.nickname, u.account) as author_name
+        FROM comments c LEFT JOIN users u ON c.user_id = u.id
+        WHERE c.post_id = ? ORDER BY c.created_at ASC
+    """, (post_id,)).fetchall()
+    comments = [dict(r) for r in rows]
+    # 嵌套：parent_id → replies
+    comment_map = {c['id']: {**c, 'replies': []} for c in comments}
+    roots = []
+    for c in comments:
+        if c['parent_id'] and c['parent_id'] in comment_map:
+            comment_map[c['parent_id']]['replies'].append(comment_map[c['id']])
+        else:
+            roots.append(comment_map[c['id']])
+    return roots
+
+def get_hot_tags(db, limit: int = 20) -> list:
+    rows = db.execute("SELECT name, post_count FROM tags ORDER BY post_count DESC LIMIT ?", (limit,)).fetchall()
+    return [dict(r) for r in rows]
+
 # 测试代码
 if __name__ == "__main__":
     from database import init_db, get_db

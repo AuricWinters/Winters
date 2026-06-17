@@ -21,6 +21,24 @@ const router = createRouter({
       },
     },
     {
+      path: '/community',
+      name: 'Community',
+      component: () => import('../views/Community.vue'),
+      meta: { title: 'AI 社区 - Winters' },
+    },
+    {
+      path: '/community/new',
+      name: 'PostEditor',
+      component: () => import('../views/PostEditor.vue'),
+      meta: { title: '发动态 - Winters' },
+    },
+    {
+      path: '/community/:id',
+      name: 'PostDetail',
+      component: () => import('../views/PostDetail.vue'),
+      meta: { title: '帖子详情 - Winters' },
+    },
+    {
       path: '/drive',
       name: 'Drive',
       component: () => import('../views/Drive.vue'),

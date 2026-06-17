@@ -83,6 +83,63 @@ def init_db() -> None:
             ON users(account)
         """)
         
+        # 创建动态/帖子表
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS posts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT,
+                content TEXT NOT NULL,
+                images TEXT DEFAULT '[]',
+                tags TEXT DEFAULT '[]',
+                category TEXT DEFAULT 'share',
+                likes_count INTEGER DEFAULT 0,
+                comments_count INTEGER DEFAULT 0,
+                views_count INTEGER DEFAULT 0,
+                is_pinned INTEGER DEFAULT 0,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            )
+        """)
+
+        # 创建评论表
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS comments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                post_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                parent_id INTEGER,
+                content TEXT NOT NULL,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (post_id) REFERENCES posts(id),
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (parent_id) REFERENCES comments(id)
+            )
+        """)
+
+        # 创建点赞表
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS likes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                post_id INTEGER NOT NULL,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(user_id, post_id),
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (post_id) REFERENCES posts(id)
+            )
+        """)
+
+        # 创建标签统计表
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS tags (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT UNIQUE NOT NULL,
+                post_count INTEGER DEFAULT 0
+            )
+        """)
+
         print(f"[OK] 数据库初始化完成: {DATABASE_PATH}")
 
 
