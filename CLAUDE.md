@@ -8,7 +8,7 @@
 |------|------|
 | 前端 | Vue 3 (Composition API + `<script setup>`), Vite 5, Pinia, Vue Router 4 |
 | 后端 | Python FastAPI, SQLite (原生 sqlite3), WebSocket |
-| 样式 | CSS Custom Properties (8 套主题), Scoped CSS, 玻璃拟态 |
+| 样式 | CSS Custom Properties (8 套主题), Scoped CSS, 玻璃拟态 + React Bits 动效 |
 | 测试 | Playwright (E2E / 浏览器截图) |
 
 ## 项目结构
@@ -18,8 +18,8 @@ Winters/
 ├── frontend/src/
 │   ├── views/            # 18 个页面
 │   │   └── lab/          # ParticleLab, PianoLab, CodeLab
-│   ├── components/       # 10 个全局组件（Header, Footer, SettingsPanel, Toast...）
-│   ├── composables/      # 5 个 composable（useParticles, useToast, useScrollReveal, useBackToTop, useSettings）
+│   ├── components/       # 20 个全局组件（Header/Footer/SettingsPanel/Toast + React Bits: ShinyText/GlitchText/StarBorder/GlareHover/GradientText/DecayCard/DotField/MasonryGrid/BounceCards/AnimatedList/CircularText）
+│   ├── composables/      # 13 个 composable（useParticles/useToast/useScrollReveal/useBackToTop + React Bits: useSpotlight/useTilt/useMagnet/useClickSpark/useBlurReveal/useCountUp/useBounceEntry/useBorderGlow）
 │   ├── stores/           # 4 个 Pinia store（user, settings, data, ai）
 │   ├── router/           # Vue Router，路由守卫 + 懒加载
 │   ├── styles/modules/   # 8 个 CSS 模块（variables, base, layout, header, components, auth-forms, features, utilities）

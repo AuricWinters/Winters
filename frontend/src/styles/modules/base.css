@@ -65,6 +65,15 @@ body {
   padding-top: 70px;
 }
 
+/* 暗色滚动条 */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* 选中文本 */
+::selection { background: var(--primary); color: var(--text-on-primary); }
+
 /* 减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,
