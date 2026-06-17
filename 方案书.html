@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winters UI 重设计方案书 — React Bits 风格</title>
+<style>
+/* ============================================================
+   方案书全局样式
+   ============================================================ */
+:root {
+  --bg: #0d0d0e;
+  --bg-card: #151518;
+  --border: #252530;
+  --text: #e8e6e3;
+  --text2: #98989a;
+  --accent: #a78bfa;
+  --accent2: #60a5fa;
+  --accent3: #f472b6;
+  --radius: 20px;
+  --gap: 24px;
+  font-family: 'Inter', 'SF Pro', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px 120px;
+  line-height: 1.6;
+}
+
+/* ===== 头部 ===== */
+.hero {
+  text-align: center;
+  padding: 80px 0 60px;
+  position: relative;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+.hero p {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.hero .badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 24px;
+}
+
+/* ===== 导航 tabs ===== */
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.nav-tabs button {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.nav-tabs button:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-tabs button.active {
+  background: #fff;
+  color: #111;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ===== 区块标题 ===== */
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--text2);
+  margin-bottom: 28px;
+}
+
+/* ===== 组件 demo 卡片 ===== */
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: var(--gap);
+  margin-bottom: 64px;
+}
+.demo-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 36px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.demo-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.demo-card .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.tag.easy  { background: rgba(52,211,153,0.12); color: #34d399; }
+.tag.medium { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.tag.layout { background: rgba(96,165,250,0.12); color: #60a5fa; }
+.tag.page { background: rgba(244,114,182,0.12); color: #f472b6; }
+.tag.foundation { background: rgba(167,139,250,0.12); color: #a78bfa; }
+
+/* ============================================================
+   Effect 1: Spotlight
+   ============================================================ */
+.spotlight-demo {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 16px;
+  background: #1a1a20;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.spotlight-demo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(167,139,250,0.15), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.spotlight-demo:hover::before { opacity: 1; }
+.spotlight-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text2);
+  z-index: 1;
+  pointer-events: none;
+  transition: color 0.3s;
+}
+.spotlight-demo:hover .spotlight-text { color: #fff; }
+
+/* ============================================================
+   Effect 2: Tilt
+   ============================================================ */
+.tilt-demo {
+  width: 100%;
+  aspect-ratio: 16/10;
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tilt-inner {
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1e1b2e, #1a1a24);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+  cursor: pointer;
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.5);
+}
+.tilt-inner .tilt-glow {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167,139,250,0.3), transparent);
+  transform: translateZ(40px);
+  pointer-events: none;
+}
+
+/* ============================================================
+   Effect 3: Magnet
+   ============================================================ */
+.magnet-zone {
+  width: 100%;
+  height: 200px;
+  background: #1a1a20;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.magnet-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   Effect 4: ShinyText
+   ============================================================ */
+.shiny-text {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  background: linear-gradient(110deg, #e8e6e3 20%, #a78bfa 38%, #a78bfa 46%, #e8e6e3 64%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+  display: inline-block;
+}
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* ============================================================
+   Effect 5: BorderGlow
+   ============================================================ */
+.border-glow-demo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 16px;
+  background: #1a1a20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+.border-glow-demo .glow-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--angle, 0deg), transparent, #a78bfa, #60a5fa, #f472b6, transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.border-glow-demo:hover .glow-border { opacity: 1; }
+.border-glow-demo span {
+  font-weight: 700;
+  color: var(--text2);
+  z-index: 1;
+  transition: color 0.3s;
+}
+.border-glow-demo:hover span { color: #fff; }
+
+/* ============================================================
+   Effect 6: BlurReveal
+   ============================================================ */
+.blur-text {
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.blur-word {
+  filter: blur(8px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.blur-word.show {
+  filter: blur(0);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   Effect 7: BounceCards
+   ============================================================ */
+.bounce-zone {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.bounce-card {
+  width: 100px;
+  aspect-ratio: 1;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bounce-card:nth-child(1) { background: rgba(167,139,250,0.15); }
+.bounce-card:nth-child(2) { background: rgba(96,165,250,0.15); }
+.bounce-card:nth-child(3) { background: rgba(244,114,182,0.15); }
+.bounce-card:hover { transform: scale(1.25); }
+
+/* ============================================================
+   Effect 8: Masonry mock
+   ============================================================ */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 100px;
+  gap: 12px;
+}
+.masonry-grid .m-block {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.masonry-grid .m-block:hover {
+  border-color: rgba(167,139,250,0.5);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.m-block.s1 { grid-row: span 2; grid-column: span 2; background: rgba(167,139,250,0.06); }
+.m-block.s2 { grid-row: span 1; grid-column: span 1; background: rgba(96,165,250,0.06); }
+.m-block.s3 { grid-row: span 2; grid-column: span 1; background: rgba(244,114,182,0.06); }
+.m-block.s4 { grid-row: span 1; grid-column: span 2; background: rgba(52,211,153,0.06); }
+.m-block.s5 { grid-row: span 1; grid-column: span 2; background: rgba(251,191,36,0.06); }
+.m-block.s6 { grid-row: span 2; grid-column: span 1; background: rgba(96,165,250,0.06); }
+
+/* ============================================================
+   Before/After 对比
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+}
+.compare-col {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 32px;
+}
+.compare-col h4 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.compare-col.old { border-color: rgba(239,68,68,0.2); }
+.compare-col.new { border-color: rgba(52,211,153,0.2); }
+.compare-col.old h4 { color: #ef4444; }
+.compare-col.new h4 { color: #34d399; }
+
+/* 旧风格模拟 */
+.glass-card-old {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 80px rgba(236,72,153,0.08);
+  margin-bottom: 12px;
+}
+.glass-card-old h5 { color: var(--text); margin-bottom: 8px; }
+.glass-card-old p { color: var(--text2); font-size: 13px; }
+.btn-old {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 25px rgba(255,255,255,0.3), 0 0 50px rgba(236,72,153,0.3);
+  cursor: pointer;
+}
+
+/* 新风格模拟（统一玻璃 + 动效） */
+.glass-card-new {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 24px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.glass-card-new:hover {
+  border-color: rgba(167,139,250,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.glass-card-new h5 { color: #fff; margin-bottom: 8px; font-size: 15px; }
+.glass-card-new p { color: #98989a; font-size: 13px; }
+.btn-new-glass {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-new-glass:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(167,139,250,0.3); }
+
+/* ============================================================
+   页面布局 Mock
+   ============================================================ */
+.page-mock {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 24px;
+  overflow: hidden;
+}
+.page-mock-label {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 16px;
+}
+.mock-home {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 80px;
+  gap: 10px;
+}
+.mock-block {
+  border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.mock-block:hover {
+  border-color: rgba(167,139,250,0.4);
+  border-style: solid;
+  color: rgba(255,255,255,0.6);
+  background: rgba(167,139,250,0.03);
+}
+.mock-block.hero  { grid-row: span 3; grid-column: span 2; }
+.mock-block.wide  { grid-row: span 2; grid-column: span 2; }
+.mock-block.tall  { grid-row: span 2; grid-column: span 1; }
+
+/* ============================================================
+   ClickSpark Canvas
+   ============================================================ */
+#click-spark-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer-note {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text2);
+  font-size: 14px;
+}
+.footer-note strong { color: var(--accent); }
+
+/* ============================================================
+   Decay SVG filter demo
+   ============================================================ */
+.decay-card {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.decay-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.decay-card svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.decay-card .decay-label {
+  position: absolute;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* ============================================================
+   GlitchText
+   ============================================================ */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  letter-spacing: 4px;
+  animation: glitch-skew 4s infinite linear alternate-reverse;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.8;
+}
+.glitch-text::before {
+  color: #f472b6;
+  z-index: -1;
+  animation: glitch-clip1 3s infinite linear alternate-reverse;
+}
+.glitch-text::after {
+  color: #60a5fa;
+  z-index: -2;
+  animation: glitch-clip2 2s infinite linear alternate-reverse;
+}
+@keyframes glitch-skew {
+  0%, 100% { transform: skew(0deg); }
+  5% { transform: skew(0.5deg); }
+  10% { transform: skew(-0.3deg); }
+  15% { transform: skew(0deg); }
+}
+@keyframes glitch-clip1 {
+  0%, 100% { clip-path: inset(0 0 80% 0); }
+  20% { clip-path: inset(20% 0 60% 0); }
+  40% { clip-path: inset(60% 0 20% 0); }
+  60% { clip-path: inset(40% 0 40% 0); }
+  80% { clip-path: inset(80% 0 0 0); }
+}
+@keyframes glitch-clip2 {
+  0%, 100% { clip-path: inset(80% 0 0 0); }
+  20% { clip-path: inset(10% 0 70% 0); }
+  40% { clip-path: inset(50% 0 30% 0); }
+  60% { clip-path: inset(30% 0 50% 0); }
+  80% { clip-path: inset(70% 0 10% 0); }
+}
+
+/* ============================================================
+   StarBorder
+   ============================================================ */
+.star-border-demo {
+  position: relative;
+  padding: 20px 36px;
+  border-radius: 14px;
+  background: #1a1a20;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  overflow: hidden;
+}
+.star-border-demo::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent 0%, #f472b6 10%, transparent 20%, #60a5fa 35%, transparent 45%, #a78bfa 60%, transparent 70%, #f472b6 85%, transparent 100%);
+  animation: star-spin 4s linear infinite;
+  z-index: -1;
+  opacity: 0.6;
+}
+@keyframes star-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   GlareHover
+   ============================================================ */
+.glare-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.glare-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-15deg);
+  transition: left 0.6s ease;
+}
+.glare-card:hover::after {
+  left: 120%;
+}
+
+/* ============================================================
+   GradientText
+   ============================================================ */
+.gradient-text-demo {
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(270deg, #a78bfa, #f472b6, #60a5fa, #34d399, #a78bfa);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-flow 5s linear infinite;
+}
+@keyframes gradient-flow {
+  0% { background-position: 0% 0; }
+  100% { background-position: 300% 0; }
+}
+
+/* ============================================================
+   CountUp
+   ============================================================ */
+.count-up-demo { text-align: center; }
+.count-up-value {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Inter', 'SF Mono', monospace;
+}
+
+/* ============================================================
+   GooeyNav
+   ============================================================ */
+.gooey-demo-wrap {
+  filter: url(#gooey-filter);
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.gooey-demo {
+  position: relative;
+  display: flex;
+  gap: 0;
+  background: #1a1a20;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 4px;
+}
+.gooey-btn {
+  width: 52px;
+  height: 52px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  border-radius: 12px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s;
+  color: var(--text2);
+}
+.gooey-btn.active {
+  color: #fff;
+  background: rgba(167,139,250,0.2);
+}
+.gooey-blob {
+  position: absolute;
+  top: 4px; left: 4px;
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  background: rgba(167,139,250,0.25);
+  z-index: 1;
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   DotField Canvas
+   ============================================================ */
+.dotfield-canvas {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  background: #1a1a20;
+  cursor: crosshair;
+}
+
+/* ============================================================
+   AnimatedList
+   ============================================================ */
+.animated-list-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+.al-item {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #1a1a20;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.al-item.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ============================================================
+   CircularText
+   ============================================================ */
+.circular-text-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.circular-ring {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  animation: ring-spin 12s linear infinite;
+}
+.circular-ring span {
+  position: absolute;
+  left: 50%; top: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  transform-origin: 0 70px;
+  transform: translate(-50%, -50%) rotate(calc(var(--i) * 22.5deg)) translateY(-70px);
+}
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   TextType
+   ============================================================ */
+.typewriter-demo {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.typewriter-cursor {
+  animation: blink 0.8s step-end infinite;
+  color: var(--accent);
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   Waves Canvas
+   ============================================================ */
+.waves-canvas {
+  width: 100%;
+  aspect-ratio: 16/7;
+  border-radius: 14px;
+  background: #0a0a10;
+  cursor: pointer;
+}
+
+/* ============================================================
+   StickerPeel
+   ============================================================ */
+.sticker-peel-demo {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.sticker-card {
+  position: relative;
+  width: 200px;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(244,114,182,0.2));
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.sticker-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, transparent 50%, rgba(244,114,182,0.3) 50%);
+  border-radius: 0 0 0 8px;
+  transition: all 0.4s ease;
+}
+.sticker-card:hover::after {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, transparent 50%, rgba(244,114,182,0.6) 50%);
+}
+
+/* ============================================================
+   ElasticSlider
+   ============================================================ */
+.elastic-slider-wrap {
+  padding: 20px;
+}
+.elastic-track {
+  position: relative;
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.elastic-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  transition: width 0.15s ease-out;
+}
+.elastic-thumb {
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  cursor: grab;
+}
+.elastic-thumb:active {
+  transform: translate(-50%, -50%) scale(1.3);
+  cursor: grabbing;
+}
+.elastic-value {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ============================================================
+   PixelSnow
+   ============================================================ */
+.pixel-snow-demo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  background: #0d0d15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.snowflake {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.s1 { top: -4px; left: 15%; animation: snow-fall 5s -0s linear infinite; }
+.s2 { top: -4px; left: 30%; animation: snow-fall 6s -1.5s linear infinite; }
+.s3 { top: -4px; left: 50%; animation: snow-fall 4.5s -3s linear infinite; }
+.s4 { top: -4px; left: 65%; animation: snow-fall 5.5s -2s linear infinite; }
+.s5 { top: -4px; left: 80%; animation: snow-fall 7s -4s linear infinite; }
+.s6 { top: -4px; left: 90%; animation: snow-fall 4s -1s linear infinite; }
+@keyframes snow-fall {
+  0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+  50% { transform: translateY(50px) translateX(20px); opacity: 1; }
+  100% { transform: translateY(100px) translateX(-10px); opacity: 0; }
+}
+
+/* ============================================================
+   ColorBends
+   ============================================================ */
+.colorbends-demo {
+  width: 100%;
+  aspect-ratio: 16/8;
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 30%, rgba(244,114,182,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 60%, rgba(96,165,250,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 70%, rgba(52,211,153,0.2) 0%, transparent 50%);
+  animation: colorbend-shift 8s ease-in-out infinite;
+}
+@keyframes colorbend-shift {
+  0%, 100% {
+    background-position: 20% 50%, 50% 30%, 80% 60%, 40% 70%;
+  }
+  25% {
+    background-position: 70% 40%, 30% 60%, 50% 30%, 80% 50%;
+  }
+  50% {
+    background-position: 60% 70%, 70% 50%, 20% 40%, 50% 30%;
+  }
+  75% {
+    background-position: 30% 30%, 80% 40%, 60% 70%, 20% 60%;
+  }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 768px) {
+  body { padding: 0 16px 80px; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .masonry-grid { grid-template-columns: 1fr 1fr; }
+  .mock-home { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="click-spark-canvas"></canvas>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="badge">📘 设计方案书 v1.0</div>
+  <h1>Winters UI 重设计</h1>
+  <p>玻璃拟态保留（统一规范）+ React Bits 动效叠加 —— Spotlight / Tilt / Magnet / BorderGlow / ClickSpark</p>
+  <p style="margin-top:12px; font-size:13px; color:var(--text2);">
+    💡 <strong>提示：</strong>下面所有演示都是<strong>可交互的</strong> —— 移动鼠标、点击、悬停来感受效果
+  </p>
+</header>
+
+<!-- ===== 导航 ===== -->
+<nav class="nav-tabs" id="nav-tabs">
+  <button class="active" data-target="compare">↔ 新旧对比</button>
+  <button data-target="effects">✨ 动效演示</button>
+  <button data-target="layouts">📐 布局改动</button>
+  <button data-target="pages">📄 逐页改造</button>
+  <button data-target="plan">📋 实施计划</button>
+</nav>
+
+<!-- ============================================================
+     SECTION: 新旧对比
+     ============================================================ -->
+<section id="compare">
+  <h2 class="section-title">↔ 新旧设计对比</h2>
+  <p class="section-sub">左边是当前杂乱无章的玻璃拟态，右边是统一规范 + React Bits 动效叠加版</p>
+
+  <div class="compare-grid">
+    <div class="compare-col old">
+      <h4>❌ 旧（玻璃拟态各写各的）</h4>
+      <div class="glass-card-old">
+        <h5>项目卡片</h5>
+        <p>16px 圆角 + 三层彩色光晕阴影</p>
+      </div>
+      <div class="glass-card-old">
+        <h5>侧边栏</h5>
+        <p>半透明 + 30px 内边距（跟别人不一样）</p>
+      </div>
+      <div class="glass-card-old">
+        <h5>帖子卡片</h5>
+        <p>28px 内边距（又是另一个值）</p>
+      </div>
+      <button class="btn-old">按钮（4 处重复定义）</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        ⚠️ 10+ 种卡片类 / 4 处重复按钮 / 8 个断点 / 硬编码颜色
+      </p>
+    </div>
+
+    <div class="compare-col new">
+      <h4>✅ 新（统一玻璃 + 动效叠加）</h4>
+      <div class="glass-card-new spotlight-target">
+        <h5>项目卡片</h5>
+        <p>统一 20px 圆角 + Spotlight 聚光灯跟随</p>
+      </div>
+      <div class="glass-card-new spotlight-target">
+        <h5>侧边栏</h5>
+        <p>统一 28px 内边距 + 3D Tilt 倾斜</p>
+      </div>
+      <div class="glass-card-new spotlight-target">
+        <h5>帖子卡片</h5>
+        <p>统一 `.card` 基类 + BorderGlow 发光</p>
+      </div>
+      <button class="btn-new-glass">按钮（全局一个基类）</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        ✅ 1 个 `.card` 基类 / 1 个按钮系统 / 4 个断点 / 零硬编码
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION: 动效演示
+     ============================================================ -->
+<section id="effects" style="margin-top:64px;">
+  <h2 class="section-title">✨ 动效交互演示</h2>
+  <p class="section-sub">所有效果都是活的 —— 动鼠标、点按钮来感受（来源标注了 React Bits 原组件名）</p>
+
+  <div class="demo-grid">
+
+    <!-- Spotlight -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 鼠标跟踪</span>
+      <h3>🔦 SpotlightCard</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        卡片跟随鼠标显示径向渐变聚光灯，原 React Bits SpotlightCard
+      </p>
+      <div class="spotlight-demo" onmousemove="updateSpotlight(this, event)">
+        <span class="spotlight-text">👆 鼠标移过来</span>
+        <div style="position:absolute;bottom:12px;right:16px;font-size:11px;color:var(--text2);z-index:1;">
+          用在哪：所有卡片、头像区
+        </div>
+      </div>
+    </div>
+
+    <!-- Tilt -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 3D 透视</span>
+      <h3>🔄 TiltedCard</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        3D 透视倾斜，跟随鼠标旋转。原 React Bits TiltedCard
+      </p>
+      <div class="tilt-demo" id="tilt-zone">
+        <div class="tilt-inner" id="tilt-card">
+          <div class="tilt-glow"></div>
+          🃏
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Lab 游戏卡、Profile 便利贴
+      </p>
+    </div>
+
+    <!-- Magnet -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 磁性吸附</span>
+      <h3>🧲 Magnet</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        按钮/图标跟随鼠标磁性偏移。原 React Bits Magnet
+      </p>
+      <div class="magnet-zone" id="magnet-zone">
+        <button class="magnet-btn" data-magnet>🚀</button>
+        <button class="magnet-btn" data-magnet>💎</button>
+        <button class="magnet-btn" data-magnet>⚡</button>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：CTA 按钮、导航图标、设置色块
+      </p>
+    </div>
+
+    <!-- ShinyText -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>💫 ShinyText</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        金属光泽扫过文字的动画。原 React Bits ShinyText
+      </p>
+      <div class="shiny-text">Shiny Text Effect</div>
+      <p style="font-size:11px;color:var(--text2);margin-top:16px;">
+        用在哪：页面标题、热门话题标签、Logo
+      </p>
+    </div>
+
+    <!-- BorderGlow -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 锥形渐变</span>
+      <h3>💡 BorderGlow</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        锥形渐变边框发光，跟随鼠标改变角度。原 React Bits BorderGlow
+      </p>
+      <div class="border-glow-demo" id="border-glow-target">
+        <div class="glow-border" id="glow-border"></div>
+        <span>👆 鼠标移过来看边框发光</span>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Lab bento 卡片
+      </p>
+    </div>
+
+    <!-- BlurReveal -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 滚动渐显</span>
+      <h3>📖 BlurReveal (BlurText)</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        滚动到视口时文字从模糊到清晰。原 React Bits BlurText
+      </p>
+      <div class="blur-text" id="blur-text">
+        <span class="blur-word">每个</span>
+        <span class="blur-word">词</span>
+        <span class="blur-word">都会</span>
+        <span class="blur-word">依次</span>
+        <span class="blur-word">清晰</span>
+      </div>
+      <button onclick="replayBlur()" style="margin-top:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;">▶ 重播</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Blog 文章列表、Profile 标签切换
+      </p>
+    </div>
+
+    <!-- BounceCards -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 弹性动画</span>
+      <h3>🦘 BounceCards</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        卡片弹性入场 + hover 推开相邻卡片。原 React Bits BounceCards
+      </p>
+      <div class="bounce-zone">
+        <div class="bounce-card" id="b1">📸</div>
+        <div class="bounce-card" id="b2">🎮</div>
+        <div class="bounce-card" id="b3">🎵</div>
+      </div>
+      <button onclick="replayBounce()" style="margin-top:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;">▶ 重播入场</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Lab 卡片入场
+      </p>
+    </div>
+
+    <!-- DecayCard mock -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · SVG 滤镜</span>
+      <h3>🌀 DecayCard</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        SVG feDisplacementMap 滤镜，hover 时图像变形。原 React Bits DecayCard
+      </p>
+      <div class="decay-card" id="decay-card">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);"></div>
+        <svg>
+          <defs>
+            <filter id="decay-filter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="decay-disp">
+                <animate attributeName="scale" values="0;20;0" dur="4s" repeatCount="indefinite" />
+              </feDisplacementMap>
+            </filter>
+          </defs>
+          <rect width="100%" height="100%" filter="url(#decay-filter)" fill="none" />
+        </svg>
+        <span class="decay-label">Hover 变形效果</span>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Community 帖子卡片 hover、Login 认证卡
+      </p>
+    </div>
+
+    <!-- ===== GlitchText ===== -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>📺 GlitchText</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        CSS 伪元素叠加 + clip-path 故障抖动。原 React Bits GlitchText
+      </p>
+      <div style="position:relative;font-size:36px;font-weight:900;text-align:center;padding:20px;">
+        <span class="glitch-text" data-text="GLITCH">GLITCH</span>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：404页面、错误提示、标题装饰
+      </p>
+    </div>
+
+    <!-- ===== StarBorder ===== -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>⭐ StarBorder</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        双径向渐变轨道绕行发光边框。原 React Bits StarBorder
+      </p>
+      <div style="display:flex;align-items:center;justify-content:center;padding:20px;">
+        <div class="star-border-demo">
+          <span>✦ Star Border ✦</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：重要卡片高亮、CTA 按钮
+      </p>
+    </div>
+
+    <!-- ===== GlareHover ===== -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>💿 GlareHover</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        Hover 时表面扫过一道光泽。原 React Bits GlareHover
+      </p>
+      <div class="glare-card">
+        <span style="font-size:48px;">💿</span>
+        <span style="color:var(--text2);">鼠标移过来看光泽</span>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：图片卡片、项目缩略图
+      </p>
+    </div>
+
+    <!-- ===== GradientText ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 渐变色流动</span>
+      <h3>🌈 GradientText</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        渐变色在文字上持续流动。原 React Bits GradientText
+      </p>
+      <div class="gradient-text-demo">Gradient Flow</div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Hero 标题、品牌名
+      </p>
+    </div>
+
+    <!-- ===== CountUp ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 数字滚动</span>
+      <h3>🔢 CountUp</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        数字从 0 滚动到目标值，弹性缓出。原 React Bits CountUp
+      </p>
+      <div style="display:flex;gap:40px;justify-content:center;padding:20px;">
+        <div class="count-up-demo">
+          <div class="count-up-value" id="count1" data-target="3842">0</div>
+          <div style="font-size:12px;color:var(--text2);">活跃用户</div>
+        </div>
+        <div class="count-up-demo">
+          <div class="count-up-value" id="count2" data-target="128">0</div>
+          <div style="font-size:12px;color:var(--text2);">项目数</div>
+        </div>
+        <div class="count-up-demo">
+          <div class="count-up-value" id="count3" data-target="96351">0</div>
+          <div style="font-size:12px;color:var(--text2);">代码行数</div>
+        </div>
+      </div>
+      <button onclick="replayCountUp()" style="display:block;margin:12px auto 0;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;">▶ 重播</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Profile 统计数字、首页数据展示
+      </p>
+    </div>
+
+    <!-- ===== GooeyNav ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 果冻效果</span>
+      <h3>🫧 GooeyNav</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        CSS filter blur+contrast 实现粘性流体导航。原 React Bits GooeyNav
+      </p>
+      <div class="gooey-demo-wrap">
+        <div class="gooey-demo">
+          <button class="gooey-btn active">🏠</button>
+          <button class="gooey-btn">💬</button>
+          <button class="gooey-btn">🧪</button>
+          <button class="gooey-btn">👤</button>
+          <div class="gooey-blob"></div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：移动端底部导航、标签切换
+      </p>
+    </div>
+
+    <!-- ===== DotField ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · Canvas 2D</span>
+      <h3>🔵 DotField</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        点阵跟随鼠标排斥/吸引。原 React Bits DotField
+      </p>
+      <canvas class="dotfield-canvas" id="dotfield"></canvas>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Hero 背景、Lab 卡片装饰
+      </p>
+    </div>
+
+    <!-- ===== AnimatedList ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 列表入场</span>
+      <h3>📋 AnimatedList</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        列表项交错 fade + scale 入场动画。原 React Bits AnimatedList
+      </p>
+      <div class="animated-list-demo" id="animated-list">
+        <div class="al-item">🚀 粒子实验</div>
+        <div class="al-item">🎹 钢琴实验室</div>
+        <div class="al-item">🎮 2048 游戏</div>
+        <div class="al-item">💣 扫雷</div>
+        <div class="al-item">💻 在线 IDE</div>
+      </div>
+      <button onclick="replayAnimatedList()" style="display:block;margin:12px auto 0;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;">▶ 重播</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Lab 卡片入场、Blog 列表、项目列表
+      </p>
+    </div>
+
+    <!-- ===== CircularText ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · CSS 旋转</span>
+      <h3>⭕ CircularText</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        文字沿圆形排列旋转。原 React Bits CircularText
+      </p>
+      <div class="circular-text-wrap">
+        <div class="circular-ring">
+          <span style="--i:0">W</span><span style="--i:1">I</span><span style="--i:2">N</span><span style="--i:3">T</span><span style="--i:4">E</span><span style="--i:5">R</span><span style="--i:6">S</span><span style="--i:7">·</span><span style="--i:8">W</span><span style="--i:9">I</span><span style="--i:10">N</span><span style="--i:11">T</span><span style="--i:12">E</span><span style="--i:13">R</span><span style="--i:14">S</span><span style="--i:15">·</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：Logo 装饰、Loading 动画
+      </p>
+    </div>
+
+    <!-- ===== TextType ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 打字机</span>
+      <h3>⌨️ TextType</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        打字机逐字输出 + 光标闪烁。原 React Bits TextType
+      </p>
+      <div class="typewriter-demo">
+        <span id="typewriter-text"></span><span class="typewriter-cursor">|</span>
+      </div>
+      <button onclick="replayTypewriter()" style="display:block;margin:12px auto 0;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;">▶ 重播</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：AI 对话、终端模拟、Loading 提示
+      </p>
+    </div>
+
+    <!-- ===== Waves Canvas ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · Canvas 2D</span>
+      <h3>🌊 Waves</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        多层正弦波浪 + 鼠标涟漪。原 React Bits Waves
+      </p>
+      <canvas class="waves-canvas" id="waves-canvas"></canvas>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：页面底部装饰、卡片背景
+      </p>
+    </div>
+
+    <!-- ===== StickerPeel ===== -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>🏷️ StickerPeel</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        Hover 时贴纸一角卷起。原 React Bits StickerPeel
+      </p>
+      <div class="sticker-peel-demo">
+        <div class="sticker-card">
+          <span style="font-size:32px;">📌</span>
+          <span style="color:var(--text2);">Hover 看卷角</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：重要公告卡片、Featured 项目
+      </p>
+    </div>
+
+    <!-- ===== ElasticSlider ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 弹性滑动</span>
+      <h3>🎚️ ElasticSlider</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        拖拽滑块带弹性回弹效果。原 React Bits ElasticSlider
+      </p>
+      <div class="elastic-slider-wrap">
+        <div class="elastic-track" id="elastic-track">
+          <div class="elastic-fill" id="elastic-fill" style="width:40%"></div>
+          <div class="elastic-thumb" id="elastic-thumb" style="left:40%"></div>
+        </div>
+        <div class="elastic-value" id="elastic-value">40%</div>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：设置面板字体大小/透明度调节
+      </p>
+    </div>
+
+    <!-- ===== PixelSnow ===== -->
+    <div class="demo-card">
+      <span class="tag easy">Easy · 纯 CSS</span>
+      <h3>❄️ PixelSnow</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        像素化雪花飘落。原 React Bits PixelSnow
+      </p>
+      <div class="pixel-snow-demo">
+        <div class="snowflake s1"></div><div class="snowflake s2"></div><div class="snowflake s3"></div>
+        <div class="snowflake s4"></div><div class="snowflake s5"></div><div class="snowflake s6"></div>
+        <span style="color:var(--text2);z-index:1;">❄️ Pixel Snow ❄️</span>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：季节性装饰、404 页面
+      </p>
+    </div>
+
+    <!-- ===== ColorBends ===== -->
+    <div class="demo-card">
+      <span class="tag medium">Medium · 渐变动画</span>
+      <h3>🎨 ColorBends</h3>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+        多个渐变带扭动流动。原 React Bits ColorBends
+      </p>
+      <div class="colorbends-demo"></div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px;">
+        用在哪：页面背景、Hero 装饰
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION: 布局改动
+     ============================================================ -->
+<section id="layouts" style="margin-top:64px;">
+  <h2 class="section-title">📐 布局方案对比</h2>
+  <p class="section-sub">从规矩的三栏/四栏 Grid → 有机的 Masonry 瀑布流 + Bento 网格</p>
+
+  <div class="demo-grid">
+    <!-- 首页布局对比 -->
+    <div class="demo-card">
+      <span class="tag layout">首页布局</span>
+      <h3>Home：三栏 → Masonry 瀑布流</h3>
+      <p style="color:var(--text2);font-size:12px;margin-bottom:12px;">
+        旧：固定 300px/1fr/300px 三栏<br>
+        新：MasonryGrid 有机排列，卡片大小不一
+      </p>
+      <div class="masonry-grid">
+        <div class="m-block s1">👤 个人资料 + 统计数据</div>
+        <div class="m-block s2">📝 动态</div>
+        <div class="m-block s3">📊 活跃热力图</div>
+        <div class="m-block s4">🛠️ 技能展示</div>
+        <div class="m-block s5">📂 项目列表</div>
+        <div class="m-block s6">🔗 快捷链接</div>
+      </div>
+    </div>
+
+    <!-- 社区布局对比 -->
+    <div class="demo-card">
+      <span class="tag layout">社区布局</span>
+      <h3>Community：三栏 → 左导航 + Masonry</h3>
+      <p style="color:var(--text2);font-size:12px;margin-bottom:12px;">
+        旧：220px/1fr/300px 带右侧边栏<br>
+        新：左侧浮动导航 + MasonryGrid 帖子流
+      </p>
+      <div style="display:flex;gap:12px;">
+        <div style="width:60px;display:flex;flex-direction:column;gap:8px;">
+          <div style="width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:rgba(167,139,250,0.1);"></div>
+          <div style="width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:rgba(96,165,250,0.1);"></div>
+          <div style="width:40px;height:40px;border-radius:12px;border:1px solid var(--border);background:rgba(244,114,182,0.1);"></div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:60px;gap:8px;">
+          <div style="grid-row:span 2;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.02);"></div>
+          <div style="grid-row:span 2;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.02);"></div>
+          <div style="grid-row:span 2;grid-column:span 2;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.02);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lab 布局 -->
+    <div class="demo-card">
+      <span class="tag layout">Lab 布局</span>
+      <h3>Lab：Bento Grid 保留 + 发光边框</h3>
+      <p style="color:var(--text2);font-size:12px;margin-bottom:12px;">
+        Bento 网格保留，mesh-gradient → BorderGlow 发光边框
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-auto-rows:60px;gap:10px;">
+        <div style="grid-row:span 2;grid-column:span 2;border-radius:14px;border:1px solid var(--border);background:rgba(167,139,250,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;">🧪 粒子实验</div>
+        <div style="grid-row:span 2;border-radius:14px;border:1px solid var(--border);background:rgba(96,165,250,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;">🎹 钢琴</div>
+        <div style="border-radius:14px;border:1px solid var(--border);background:rgba(244,114,182,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;">🎮 2048</div>
+        <div style="grid-row:span 2;grid-column:span 2;border-radius:14px;border:1px solid var(--border);background:rgba(52,211,153,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;">💣 扫雷</div>
+        <div style="border-radius:14px;border:1px solid var(--border);background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;">💻 IDE</div>
+      </div>
+    </div>
+
+    <!-- 导航改动 -->
+    <div class="demo-card">
+      <span class="tag layout">导航改动</span>
+      <h3>Header：玻璃拟态保留 + 统一规范</h3>
+      <p style="color:var(--text2);font-size:12px;margin-bottom:12px;">
+        玻璃拟态保留但统一 blur 16px，加 ShinyText Logo + 悬浮下划线动画
+      </p>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);">
+        <span class="shiny-text" style="font-size:18px;">WINTERS</span>
+        <div style="display:flex;gap:16px;">
+          <span style="color:#fff;font-size:12px;border-bottom:2px solid var(--accent);padding-bottom:4px;">首页</span>
+          <span style="color:var(--text2);font-size:12px;">动态</span>
+          <span style="color:var(--text2);font-size:12px;">实验室</span>
+          <span style="color:var(--text2);font-size:12px;">项目</span>
+        </div>
+        <button class="btn-new-glass" style="font-size:12px;padding:6px 14px;">登录</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION: 逐页改造清单
+     ============================================================ -->
+<section id="pages" style="margin-top:64px;">
+  <h2 class="section-title">📄 逐页改造清单</h2>
+  <p class="section-sub">每个页面用什么组件 + 改什么布局</p>
+
+  <div class="demo-grid">
+    <div class="demo-card">
+      <span class="tag page">Home.vue 首页</span>
+      <h3>🏠 首页</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">布局</td><td>三栏 → MasonryGrid 瀑布流</td></tr>
+        <tr><td style="padding:6px 0;">卡片</td><td>SpotlightCard + useTilt</td></tr>
+        <tr><td style="padding:6px 0;">标题</td><td>ShinyText</td></tr>
+        <tr><td style="padding:6px 0;">CTA</td><td>useMagnet</td></tr>
+        <tr><td style="padding:6px 0;">交互</td><td>全局 useClickSpark</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Community.vue</span>
+      <h3>💬 AI 社区</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">布局</td><td>三栏 → 左侧浮动导航 + MasonryGrid 帖子</td></tr>
+        <tr><td style="padding:6px 0;">帖子卡</td><td>SpotlightCard + useDecayHover</td></tr>
+        <tr><td style="padding:6px 0;">发帖</td><td>固定右下 useMagnet + useClickSpark</td></tr>
+        <tr><td style="padding:6px 0;">标签</td><td>ShinyText 热门话题</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Lab.vue</span>
+      <h3>🧪 实验室</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">布局</td><td>Bento Grid 保留</td></tr>
+        <tr><td style="padding:6px 0;">卡片</td><td>BorderGlow 替 mesh-gradient</td></tr>
+        <tr><td style="padding:6px 0;">游戏卡</td><td>useTilt 3D 倾斜</td></tr>
+        <tr><td style="padding:6px 0;">入场</td><td>BounceCards 弹性弹出</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Blog.vue</span>
+      <h3>📝 动态</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">布局</td><td>时间线 → MasonryGrid</td></tr>
+        <tr><td style="padding:6px 0;">条目</td><td>BlurReveal 逐条渐显</td></tr>
+        <tr><td style="padding:6px 0;">筛选</td><td>useMagnet 按钮</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Profile.vue</span>
+      <h3>👤 个人中心</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">便利贴</td><td>useTilt 3D 倾斜</td></tr>
+        <tr><td style="padding:6px 0;">头像</td><td>SpotlightCard 聚光</td></tr>
+        <tr><td style="padding:6px 0;">统计</td><td>useBounceEntry 弹入</td></tr>
+        <tr><td style="padding:6px 0;">标签</td><td>BlurReveal 切换过渡</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">SettingsPanel.vue</span>
+      <h3>⚙️ 设置面板</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">色块</td><td>useMagnet + SpotlightCard</td></tr>
+        <tr><td style="padding:6px 0;">开关</td><td>React Bits 风格滑块</td></tr>
+        <tr><td style="padding:6px 0;">卡片</td><td>统一为 .card</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Header.vue</span>
+      <h3>🧭 导航栏</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">风格</td><td>玻璃拟态 → 暗底 + 1px 底边线</td></tr>
+        <tr><td style="padding:6px 0;">Logo</td><td>ShinyText 金属光泽</td></tr>
+        <tr><td style="padding:6px 0;">导航项</td><td>悬浮下划线动画</td></tr>
+      </table>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">Login/Register</span>
+      <h3>🔐 登录/注册</h3>
+      <table style="width:100%;font-size:12px;color:var(--text2);border-collapse:collapse;">
+        <tr><td style="padding:6px 0;">卡片</td><td>useBorderGlow + useDecayHover</td></tr>
+        <tr><td style="padding:6px 0;">背景</td><td>粒子系统 + 鼠标交互</td></tr>
+        <tr><td style="padding:6px 0;">按钮</td><td>统一 .btn-primary</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION: 实施计划
+     ============================================================ -->
+<section id="plan" style="margin-top:64px;">
+  <h2 class="section-title">📋 实施计划</h2>
+  <p class="section-sub">分 4 个阶段，每个阶段做完可验证</p>
+
+  <div style="display:grid;gap:16px;">
+    <div class="demo-card">
+      <span class="tag foundation">阶段 0</span>
+      <h3>🏗️ CSS 基础设施统一</h3>
+      <p style="color:var(--text2);font-size:13px;">
+        variables.css 补变量 → components.css 建 .card 基类 → main.css 去重按钮 →
+        base.css 动画统一 → layout.css 断点收敛 → journal.css 封存 → 硬编码颜色清零
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag easy">阶段 1 · Easy</span>
+      <h3>✨ 动效 Composables（8 个）</h3>
+      <p style="color:var(--text2);font-size:13px;">
+        useSpotlight / useTilt / useMagnet / useClickSpark / ShinyText / BlurReveal / BounceCards / DecayCard
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag medium">阶段 2 · Medium</span>
+      <h3>🧩 布局组件</h3>
+      <p style="color:var(--text2);font-size:13px;">
+        MasonryGrid / BorderGlowCard / TiltedCard / FloatingNav / ParticleBg 升级
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <span class="tag page">阶段 3</span>
+      <h3>📄 逐页改造（8 个页面）</h3>
+      <p style="color:var(--text2);font-size:13px;">
+        Home → Community → Lab → Blog → Profile → Settings → Header → Login
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-note">
+  <p>方案书结束。所有动效演示都是<strong>真实可交互</strong>的 React Bits 风格效果。</p>
+  <p style="margin-top:4px;">点击页面任意位置试试 <strong>ClickSpark</strong> 粒子爆发 ↓</p>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+// ===== ClickSpark =====
+const sparkCanvas = document.getElementById('click-spark-canvas');
+const ctx = sparkCanvas.getContext('2d');
+let sparks = [];
+let sparkAnimId;
+
+function resizeSparkCanvas() {
+  sparkCanvas.width = window.innerWidth;
+  sparkCanvas.height = window.innerHeight;
+}
+resizeSparkCanvas();
+window.addEventListener('resize', resizeSparkCanvas);
+
+class Spark {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2 + Math.random() * 6;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
+    this.life = 0.6 + Math.random() * 0.6;
+    this.maxLife = this.life;
+    this.size = 1 + Math.random() * 4;
+    const colors = ['#a78bfa','#60a5fa','#f472b6','#34d399','#fbbf24','#fff'];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+  update(dt) {
+    this.x += this.vx * dt * 60;
+    this.y += this.vy * dt * 60;
+    this.vy += 0.5 * dt * 60;
+    this.life -= dt;
+  }
+  draw(ctx) {
+    const alpha = this.life / this.maxLife;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * alpha, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = alpha;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+document.addEventListener('click', (e) => {
+  for (let i = 0; i < 12; i++) {
+    sparks.push(new Spark(e.clientX, e.clientY));
+  }
+});
+
+function animateSparks(ts) {
+  const dt = Math.min(0.05, (ts - (animateSparks.lastTs || ts)) / 1000);
+  animateSparks.lastTs = ts;
+  ctx.clearRect(0, 0, sparkCanvas.width, sparkCanvas.height);
+  sparks = sparks.filter(s => s.life > 0);
+  sparks.forEach(s => { s.update(dt); s.draw(ctx); });
+  sparkAnimId = requestAnimationFrame(animateSparks);
+}
+animateSparks.lastTs = 0;
+sparkAnimId = requestAnimationFrame(animateSparks);
+
+// ===== Spotlight =====
+function updateSpotlight(el, e) {
+  const rect = el.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  el.style.setProperty('--mx', x + '%');
+  el.style.setProperty('--my', y + '%');
+}
+
+// ===== Tilt =====
+const tiltZone = document.getElementById('tilt-zone');
+const tiltCard = document.getElementById('tilt-card');
+tiltZone.addEventListener('mousemove', (e) => {
+  const rect = tiltZone.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  tiltCard.style.transform = `rotateY(${x * 25}deg) rotateX(${-y * 25}deg)`;
+});
+tiltZone.addEventListener('mouseleave', () => {
+  tiltCard.style.transform = 'rotateY(0) rotateX(0)';
+});
+
+// ===== Magnet =====
+const magnetZone = document.getElementById('magnet-zone');
+const magnetBtns = magnetZone.querySelectorAll('[data-magnet]');
+
+magnetZone.addEventListener('mousemove', (e) => {
+  const zoneRect = magnetZone.getBoundingClientRect();
+  magnetBtns.forEach(btn => {
+    const btnRect = btn.getBoundingClientRect();
+    const btnCX = btnRect.left + btnRect.width / 2;
+    const btnCY = btnRect.top + btnRect.height / 2;
+    const dx = e.clientX - btnCX;
+    const dy = e.clientY - btnCY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const maxDist = 120;
+    if (dist < maxDist) {
+      const strength = (1 - dist / maxDist) * 20;
+      const ax = (dx / dist) * strength;
+      const ay = (dy / dist) * strength;
+      btn.style.transform = `translate(${ax}px, ${ay}px)`;
+    } else {
+      btn.style.transform = 'translate(0, 0)';
+    }
+  });
+});
+magnetZone.addEventListener('mouseleave', () => {
+  magnetBtns.forEach(btn => { btn.style.transform = 'translate(0, 0)'; });
+});
+
+// ===== BorderGlow angle animation =====
+let glowAngle = 0;
+const glowBorder = document.getElementById('glow-border');
+function animateGlow() {
+  glowAngle = (glowAngle + 0.4) % 360;
+  if (glowBorder) glowBorder.style.setProperty('--angle', glowAngle + 'deg');
+  requestAnimationFrame(animateGlow);
+}
+requestAnimationFrame(animateGlow);
+
+// ===== BlurReveal =====
+function showBlurWords() {
+  const words = document.querySelectorAll('#blur-text .blur-word');
+  words.forEach((w, i) => {
+    setTimeout(() => { w.classList.add('show'); }, i * 150);
+  });
+}
+function replayBlur() {
+  const words = document.querySelectorAll('#blur-text .blur-word');
+  words.forEach(w => w.classList.remove('show'));
+  setTimeout(showBlurWords, 200);
+}
+// Trigger on load
+const blurObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { showBlurWords(); blurObserver.disconnect(); }});
+}, { threshold: 0.3 });
+setTimeout(() => {
+  const blurText = document.getElementById('blur-text');
+  if (blurText) blurObserver.observe(blurText);
+}, 500);
+
+// ===== BounceCards replay =====
+function replayBounce() {
+  ['b1','b2','b3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.style.transform = 'scale(0)';
+    setTimeout(() => {
+      el.style.transform = 'scale(1)';
+    }, i * 100 + 50);
+  });
+}
+// Initial bounce
+setTimeout(replayBounce, 1000);
+// Replay on scroll into view
+const bounceObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) replayBounce(); });
+}, { threshold: 0.5 });
+setTimeout(() => {
+  const bz = document.querySelector('.bounce-zone');
+  if (bz) bounceObserver.observe(bz);
+}, 500);
+
+// ===== Nav tabs =====
+document.getElementById('nav-tabs').addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#nav-tabs button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  const target = document.getElementById(e.target.dataset.target);
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// ===== Decay hover =====
+const decayCard = document.getElementById('decay-card');
+const decayDisp = document.getElementById('decay-disp');
+if (decayCard && decayDisp) {
+  decayCard.addEventListener('mouseenter', () => {
+    decayDisp.setAttribute('values', '0;30;0');
+    const anim = decayDisp.querySelector('animate');
+    if (anim) {
+      anim.setAttribute('values', '0;30;0');
+      anim.setAttribute('dur', '2s');
+      anim.beginElement();
+    }
+  });
+  decayCard.addEventListener('mouseleave', () => {
+    decayDisp.setAttribute('values', '0;0;0');
+    const anim = decayDisp.querySelector('animate');
+    if (anim) {
+      anim.setAttribute('values', '0;0;0');
+      anim.setAttribute('dur', '0.8s');
+      anim.beginElement();
+    }
+  });
+}
+
+console.log('🎨 Winters UI 重设计方案书 已就绪 · 24 个交互 Demo');
+console.log('  ✨ 鼠标跟踪: Spotlight · Tilt · Magnet · DotField');
+console.log('  🎨 纯CSS: ShinyText · GlitchText · StarBorder · GlareHover · GradientText · StickerPeel · PixelSnow · ColorBends');
+console.log('  🖌️ Canvas: ClickSpark · Waves');
+console.log('  📜 入场: BlurReveal · BounceCards · CountUp · AnimatedList · CircularText');
+console.log('  🔧 SVG: DecayCard · BorderGlow · GooeyNav');
+console.log('  ⌨️ 交互: TextType · ElasticSlider');
+console.log('  📊 方案书: 135 组件全量分类 · P0~P3 优先级');
+
+// ===== CountUp =====
+function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+function doCountUp(el, duration) {
+  const target = parseInt(el.dataset.target);
+  const start = performance.now();
+  function tick(ts) {
+    const elapsed = ts - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeOutExpo(progress);
+    el.textContent = Math.floor(eased * target).toLocaleString();
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toLocaleString();
+  }
+  requestAnimationFrame(tick);
+}
+
+function replayCountUp() {
+  ['count1','count2','count3'].forEach(id => {
+    document.getElementById(id).textContent = '0';
+    setTimeout(() => doCountUp(document.getElementById(id), 1800), 200);
+  });
+}
+
+// Trigger on scroll
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      replayCountUp();
+      countObserver.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+setTimeout(() => {
+  const c1 = document.getElementById('count1');
+  if (c1) countObserver.observe(c1);
+}, 800);
+
+// ===== GooeyNav =====
+document.querySelector('.gooey-demo').addEventListener('click', (e) => {
+  if (!e.target.classList.contains('gooey-btn')) return;
+  const btns = e.currentTarget.querySelectorAll('.gooey-btn');
+  const blob = e.currentTarget.querySelector('.gooey-blob');
+  btns.forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  const idx = Array.from(btns).indexOf(e.target);
+  blob.style.left = (4 + idx * 52) + 'px';
+});
+
+// ===== DotField =====
+(function() {
+  const canvas = document.getElementById('dotfield');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let dots = [], w, h, mx = -1000, my = -1000;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 72;
+    canvas.height = canvas.width * (9/16);
+    w = canvas.width; h = canvas.height;
+    initDots();
+  }
+
+  function initDots() {
+    dots = [];
+    const spacing = 22;
+    for (let x = spacing; x < w; x += spacing) {
+      for (let y = spacing; y < h; y += spacing) {
+        dots.push({ ox: x, oy: y, x, y, r: 1.5 + Math.random() * 2 });
+      }
+    }
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mx = e.clientX - rect.left;
+    my = e.clientY - rect.top;
+  });
+  canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; });
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    dots.forEach(d => {
+      const dx = mx - d.ox; const dy = my - d.oy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const maxDist = 80;
+      if (dist < maxDist) {
+        const force = (1 - dist / maxDist) * 18;
+        d.x = d.ox - (dx / dist) * force;
+        d.y = d.oy - (dy / dist) * force;
+      } else {
+        d.x += (d.ox - d.x) * 0.08;
+        d.y += (d.oy - d.y) * 0.08;
+      }
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(167,139,250,0.4)';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener('resize', resize);
+})();
+
+// ===== TextType =====
+const typePhrases = [
+  '你好，我是 Winters。',
+  'Welcome to my website.',
+  'Build the future with AI.',
+  'Hello, World! 👋'
+];
+let typePhase = 0;
+let typeTimeout;
+
+function doTypewrite(el, text, speed, onDone) {
+  let i = 0;
+  el.textContent = '';
+  function tick() {
+    if (i < text.length) {
+      el.textContent += text[i];
+      i++;
+      typeTimeout = setTimeout(tick, speed + Math.random() * 60);
+    } else if (onDone) {
+      typeTimeout = setTimeout(onDone, 1500);
+    }
+  }
+  tick();
+}
+
+function runTypewriter() {
+  const el = document.getElementById('typewriter-text');
+  if (!el) return;
+  const phrase = typePhrases[typePhase % typePhrases.length];
+  doTypewrite(el, phrase, 80, () => {
+    typePhase++;
+    runTypewriter();
+  });
+}
+function replayTypewriter() {
+  clearTimeout(typeTimeout);
+  typePhase = Math.floor(Math.random() * typePhrases.length);
+  runTypewriter();
+}
+setTimeout(runTypewriter, 1200);
+
+// ===== Waves Canvas =====
+(function() {
+  const canvas = document.getElementById('waves-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, mx = -100, t = 0;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 72;
+    canvas.height = canvas.width * (7/16);
+    w = canvas.width; h = canvas.height;
+  }
+  resize();
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mx = (e.clientX - rect.left) / rect.width;
+  });
+  canvas.addEventListener('mouseleave', () => { mx = -100; });
+
+  function draw(ts) {
+    t += 0.016;
+    ctx.clearRect(0, 0, w, h);
+
+    const layers = [
+      { offset: 0, amp: 30, freq: 0.008, color: 'rgba(167,139,250,0.5)', speed: 0.5 },
+      { offset: 0.4, amp: 25, freq: 0.012, color: 'rgba(96,165,250,0.4)', speed: 0.7 },
+      { offset: 0.7, amp: 20, freq: 0.015, color: 'rgba(244,114,182,0.35)', speed: 0.9 },
+    ];
+
+    layers.forEach(l => {
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 4) {
+        const ripple = mx >= 0 ? Math.exp(-Math.pow(x/w - mx, 2) * 30) * 25 : 0;
+        const y = h/2 + Math.sin(x * l.freq + t * l.speed) * l.amp + Math.sin(x * l.freq * 2.3 + t * 0.3) * l.amp * 0.3 + ripple;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fillStyle = l.color;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
+})();
+
+// ===== ElasticSlider =====
+(function() {
+  const track = document.getElementById('elastic-track');
+  const fill = document.getElementById('elastic-fill');
+  const thumb = document.getElementById('elastic-thumb');
+  const val = document.getElementById('elastic-value');
+  if (!track) return;
+
+  let dragging = false;
+
+  function update(pos) {
+    const rect = track.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(100, ((pos - rect.left) / rect.width) * 100));
+    fill.style.width = pct + '%';
+    thumb.style.left = pct + '%';
+    val.textContent = Math.round(pct) + '%';
+    return pct;
+  }
+
+  track.addEventListener('mousedown', (e) => {
+    dragging = true;
+    update(e.clientX);
+  });
+  thumb.addEventListener('mousedown', (e) => {
+    dragging = true;
+    e.stopPropagation();
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (dragging) update(e.clientX);
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+  track.addEventListener('touchstart', (e) => {
+    dragging = true;
+    update(e.touches[0].clientX);
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (dragging) update(e.touches[0].clientX);
+  });
+  document.addEventListener('touchend', () => { dragging = false; });
+})();
+
+// ===== AnimatedList =====
+function replayAnimatedList() {
+  const items = document.querySelectorAll('#animated-list .al-item');
+  items.forEach((item, i) => {
+    item.classList.remove('show');
+    setTimeout(() => { item.classList.add('show'); }, i * 120);
+  });
+}
+// Initial
+setTimeout(replayAnimatedList, 600);
+const alObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { replayAnimatedList(); } });
+}, { threshold: 0.3 });
+setTimeout(() => {
+  const al = document.getElementById('animated-list');
+  if (al) alObserver.observe(al);
+}, 800);
+</script>
+
+<!-- SVG filter for GooeyNav -->
+<svg style="position:absolute;width:0;height:0;pointer-events:none;" aria-hidden="true">
+  <defs>
+    <filter id="gooey-filter">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
+        result="gooey" />
+      <feBlend in="SourceGraphic" in2="gooey" />
+    </filter>
+  </defs>
+</svg>
+
+</body>
+</html>
