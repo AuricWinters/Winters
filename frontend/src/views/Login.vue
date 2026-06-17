@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-section">
-        <div class="auth-card" :class="{ shake: shakeCard }">
+        <div class="auth-card card-spotlight" :class="{ shake: shakeCard }">
           <!-- 标签切换 -->
           <div class="login-tabs">
             <button

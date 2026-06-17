@@ -23,7 +23,7 @@
         <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
 
-      <div class="settings-card">
+      <div class="settings-card card-spotlight">
         <div class="card-header"><h4 class="card-title">✨ {{ t('外观') }}</h4></div>
         <div class="card-body">
           <div class="setting-item">
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <div class="settings-card">
+      <div class="settings-card card-spotlight">
         <div class="card-header"><h4 class="card-title">🌐 {{ t('语言') }}</h4></div>
         <div class="card-body">
           <div class="language-options">

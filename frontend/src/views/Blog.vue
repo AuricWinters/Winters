@@ -8,7 +8,7 @@
       style="grid-template-columns: 1fr"
     >
       <div class="content-container">
-        <div class="section-card scroll-reveal">
+        <div class="section-card card-spotlight scroll-reveal">
           <h3>{{ t('最近动态') }}</h3>
 
           <!-- 分类筛选按钮 -->
