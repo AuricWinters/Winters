@@ -161,26 +161,6 @@ onMounted(() => {
   position: relative;
   z-index: 1;
 }
-/* Blog 双列卡片布局 */
-.timeline {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-.timeline-item {
-  background: var(--bg-card);
-  border-radius: var(--card-radius);
-  padding: var(--card-padding);
-  border: 1px solid var(--border-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.timeline-item:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-}
-@media (max-width: 768px) {
-  .timeline { grid-template-columns: 1fr; }
-}
 
 /* 分类筛选按钮 */
 .category-filter {

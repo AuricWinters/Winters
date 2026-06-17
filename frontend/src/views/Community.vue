@@ -346,16 +346,8 @@ onMounted(() => {
 .tag-btn:hover { background: rgba(var(--primary-rgb), 0.12); color: var(--primary); }
 .tag-btn.active { background: var(--primary); color: var(--text-on-primary); }
 
-/* ═══ 动态卡片 — Masonry 双列 ═══ */
-.feed {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  align-items: start;
-}
-.feed .post-card.pinned {
-  grid-column: 1 / -1;
-}
+/* ═══ 动态卡片 — 统一 .section-card 风格 ═══ */
+.feed { display: flex; flex-direction: column; gap: 24px; }
 
 .post-card {
   background: var(--bg-card);
