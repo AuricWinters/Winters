@@ -19,9 +19,10 @@
             <span :class="['comp-tag', comp.level]">{{ comp.level }}</span>
           </div>
           <div class="comp-demo">
-            <template v-if="comp.component">
-              <component :is="comp.component" v-bind="comp.props || {}" />
-            </template>
+            <SafeDemo>
+              <template v-if="comp.component">
+                <component :is="comp.component" v-bind="comp.props || {}" />
+              </template>
             <template v-else-if="comp.showDirective">
               <div class="directive-demo" v-spotlight>
                 <span>{{ comp.name }}</span>
@@ -30,6 +31,7 @@
             <template v-else>
               <span style="color:var(--text-secondary)">{{ comp.name }}</span>
             </template>
+            </SafeDemo>
           </div>
         </div>
       </div>
@@ -39,6 +41,7 @@
 
 <script setup>
 import { ref, computed, markRaw } from 'vue'
+import SafeDemo from '../../components/SafeDemo.vue'
 
 // ====== 🔤 文字特效 ======
 import ShinyText from '../../components/ShinyText.vue'
