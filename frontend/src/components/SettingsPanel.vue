@@ -6,7 +6,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <div class="header-content">
-        <h3 class="settings-title">{{ currentView === 'theme' ? t('主题') : t('设置') }}</h3>
+        <h3 class="settings-title">{{ currentView === 'theme' ? t('主题') : currentView === 'effects' ? t('动效') : t('设置') }}</h3>
         <p v-if="currentView === 'main'" class="settings-subtitle">自定义您的网页体验</p>
       </div>
       <button class="close-btn" @click="closePanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
@@ -19,6 +19,15 @@
         <div class="nav-info">
           <span class="nav-label">{{ t('主题') }}</span>
           <span class="nav-hint">{{ t(themeStyleOptions.find(o=>o.value===themeStyle)?.label) }} · {{ t(themeOptions.find(o=>o.value===theme)?.label) }}</span>
+        </div>
+        <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+
+      <div class="nav-item" @click="currentView = 'effects'">
+        <span class="nav-icon">✨</span>
+        <div class="nav-info">
+          <span class="nav-label">{{ t('动效') }}</span>
+          <span class="nav-hint">{{ t('槽位动效配置') }}</span>
         </div>
         <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
@@ -126,9 +135,34 @@
       </div>
     </div>
 
+    <!-- ═══ 动效子页 ═══ -->
+    <div v-if="currentView === 'effects'" class="settings-content">
+      <div class="settings-card sub-card" v-for="slotKey of slotKeys" :key="slotKey">
+        <div class="card-header">
+          <h4 class="card-title">{{ t(slotLabels[slotKey]) }}</h4>
+          <span class="card-hint">{{ t(getOptionLabel(slotKey, effectStore.slots[slotKey])) }}</span>
+        </div>
+        <div class="card-body">
+          <div class="effect-grid">
+            <button v-for="opt in effectStore.slotOptions[slotKey]" :key="opt.value"
+              class="effect-btn"
+              :class="{ active: effectStore.slots[slotKey] === opt.value }"
+              @click="effectStore.setSlot(slotKey, opt.value)">
+              {{ t(opt.label) }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="settings-card sub-card reset-effects-card">
+        <div class="card-body">
+          <button class="reset-effects-btn" @click="handleResetEffects">{{ t('重置全部') }}</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ═══ 底部 ═══ -->
     <div class="settings-footer">
-      <button class="reset-btn" @click="handleReset">{{ t('重置所有设置') }}</button>
+      <button class="reset-btn" @click="handleReset">{{ t(currentView === 'effects' ? '重置全部' : '重置所有设置') }}</button>
     </div>
   </div>
 </template>
@@ -137,6 +171,7 @@
 import { ref, watch } from 'vue';
 import { useSettings } from '../composables/useSettings.js';
 import { useI18n } from '../composables/useI18n.js';
+import { useEffectStore } from '../stores/effects.js';
 
 const { t } = useI18n();
 const emit = defineEmits(['close']);
@@ -149,6 +184,8 @@ const {
     setAnimationEnabled, setFontSize, setCustomThemeMode, setCustomThemeColor,
     resetSettings
 } = useSettings();
+
+const effectStore = useEffectStore();
 
 const currentView = ref('main');
 const isCustomThemeExpanded = ref(false);
@@ -173,6 +210,26 @@ watch(() => customTheme.value, (newTheme) => {
   };
 }, { deep: true });
 
+const slotKeys = Object.keys(effectStore.slotOptions);
+
+const slotLabels = {
+  heading: '标题动效',
+  cardHover: '卡片悬停',
+  cardEntry: '卡片入场',
+  buttonHover: '按钮悬停',
+  bgDecor: '背景装饰',
+  textDecor: '文字装饰',
+  clickFeedback: '点击反馈',
+  pageTransition: '页面切换',
+  navStyle: '导航样式',
+};
+
+function getOptionLabel(slotKey, value) {
+  const options = effectStore.slotOptions[slotKey];
+  const found = options.find(o => o.value === value);
+  return found ? found.label : value;
+}
+
 const closePanel = () => emit('close');
 const handleThemeChange = (v) => setTheme(v);
 const handleThemeStyleChange = (v) => setThemeStyle(v);
@@ -183,7 +240,21 @@ const handleLanguageChange = (v) => setLanguage(v);
 const handleCustomModeChange = (v) => setCustomThemeMode(v);
 const handleColorChange = (type, val) => setCustomThemeColor(type, val);
 const toggleAnimation = () => setAnimationEnabled(!animationEnabled.value);
-const handleReset = () => { if (confirm(`确定要${t('重置所有设置')}吗？`)) { resetSettings(); currentView.value = 'main'; } };
+const handleResetEffects = () => {
+  if (confirm(`确定要${t('重置全部')}吗？`)) {
+    effectStore.resetAll();
+  }
+};
+const handleReset = () => {
+  if (currentView.value === 'effects') {
+    handleResetEffects();
+  } else {
+    if (confirm(`确定要${t('重置所有设置')}吗？`)) {
+      resetSettings();
+      currentView.value = 'main';
+    }
+  }
+};
 
 const getThemePreview = (themeValue) => {
   const map = {
@@ -231,8 +302,9 @@ const getThemePreview = (themeValue) => {
 /* cards */
 .settings-card { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 12px; overflow: hidden; }
 .sub-card { border: 1px solid var(--border-color); box-shadow: none; }
-.card-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border-color); }
+.card-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
 .card-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; }
+.card-hint { font-size: 12px; font-weight: 500; color: var(--text-light); }
 .card-body { padding: 16px 20px; }
 
 .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
@@ -300,6 +372,16 @@ const getThemePreview = (themeValue) => {
 .color-picker { width: 30px; height: 30px; border: none; border-radius: 6px; cursor: pointer; padding: 0; }
 .color-input { flex: 1; min-width: 80px; padding: 6px 10px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); background: var(--bg-main); transition: all 0.2s; }
 .color-input:focus { outline: none; border-color: var(--primary); }
+
+/* ═══ 动效子页 ═══ */
+.effect-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.effect-btn { padding: 10px 8px; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 10px; font-size: 12px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; text-align: center; line-height: 1.3; }
+.effect-btn:hover { border-color: var(--primary); }
+.effect-btn.active { border-color: var(--primary); background: rgba(var(--primary-rgb), 0.08); color: var(--primary); }
+.reset-effects-card { border: 1px solid var(--border-color); box-shadow: none; }
+.reset-effects-card .card-body { display: flex; justify-content: center; padding: 16px; }
+.reset-effects-btn { padding: 10px 28px; background: var(--danger-light); border: none; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--danger-text); cursor: pointer; transition: all 0.2s; }
+.reset-effects-btn:hover { background: rgba(var(--primary-rgb), 0.08); }
 
 /* footer */
 .settings-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); background: var(--bg-glass); }

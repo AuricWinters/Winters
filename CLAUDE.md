@@ -18,9 +18,9 @@ Winters/
 ├── frontend/src/
 │   ├── views/            # 18 个页面
 │   │   └── lab/          # ParticleLab, PianoLab, CodeLab
-│   ├── components/       # 20 个全局组件（Header/Footer/SettingsPanel/Toast + React Bits: ShinyText/GlitchText/StarBorder/GlareHover/GradientText/DecayCard/DotField/MasonryGrid/BounceCards/AnimatedList/CircularText）
+│   ├── components/       # 20 个全局组件（Header/Footer/SettingsPanel/Toast + React Bits: ShinyText/GlitchText/StarBorder/GlareHover/GradientText/DecayCard/DotField/MasonryGrid/BounceCards/AnimatedList/CircularText/RotatingText）
 │   ├── composables/      # 13 个 composable（useParticles/useToast/useScrollReveal/useBackToTop + React Bits: useSpotlight/useTilt/useMagnet/useClickSpark/useBlurReveal/useCountUp/useBounceEntry/useBorderGlow）
-│   ├── stores/           # 4 个 Pinia store（user, settings, data, ai）
+│   ├── stores/           # 5 个 Pinia store（user, settings, data, ai, effects）
 │   ├── router/           # Vue Router，路由守卫 + 懒加载
 │   ├── styles/modules/   # 8 个 CSS 模块（variables, base, layout, header, components, auth-forms, features, utilities）
 │   ├── utils/            # 工具函数（particles.js, throttle.js）
@@ -61,6 +61,7 @@ Winters/
 | `useSettingsStore` | 主题/深色模式/字体/动画偏好（localStorage 持久化） |
 | `useDataStore` | 静态数据（profile.json, projects.json, blogs.json） |
 | `useAIStore` | AI 对话管理（Ollama / OpenAI 双后端） |
+| `useEffectStore` | 动效槽位管理（9 个槽位，localStorage 持久化） |
 
 ## CSS 约定
 
@@ -127,7 +128,8 @@ useParticles('.particles-background');
 ### 设置面板
 - `SettingsPanel.vue` 右侧抽屉面板（`v-if` + `<Transition>` 控制显隐）
 - 通过 `window.openSettingsPanel()` 或 `new Event('openSettings')` 打开
-- 与 `useSettingsStore` 共享数据源
+- 与 `useSettingsStore` 共享数据源，同时接入 `useEffectStore` 管理动效槽位
+- 三层导航：主页 → 主题子页 / 动效子页（9 个动效槽位，每槽位选项按钮 grid，实时响应）
 
 ### 路由守卫
 - `/profile` 需认证：检查 `localStorage.getItem('isLoggedIn') === 'true'`
@@ -156,7 +158,8 @@ python main.py       # FastAPI（localhost:8000）
 ### 已完成
 - 8 套设计师主题（手账/墨韵/极光/樱吹雪/森语/午夜/暮光/极简 + 自定义），每套亮暗双模式
 - 手账风格全局纸质感 + 圆角/直角独立切换
-- SettingsPanel 两层导航（主页 → 主题子页）
+- SettingsPanel 三层导航（主页 → 主题子页 / 动效子页）
+- 9 个动效槽位实时配置（标题/卡片/按钮/背景/文字/点击/页面/导航），Pinia + localStorage 持久化
 - 全站 i18n（zh-CN/zh-TW/en-US），24 个文件接入，locale 在 `src/locales/`
 - 主题持久化：刷新不丢设置（App.vue 初始化 store），旧主题名自动迁移
 
