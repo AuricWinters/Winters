@@ -222,7 +222,7 @@
           </div>
         </div></CardHoverSlot>
 
-        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
+        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
           <h3>{{ t('网站数据') }}</h3>
           <div class="stats-grid">
             <div style="font-size: 13px; color: var(--text-secondary)">
@@ -248,7 +248,7 @@
               </p>
             </div>
           </div>
-        </div>
+        </div></CardHoverSlot>
       </div>
     </div>
   </div>

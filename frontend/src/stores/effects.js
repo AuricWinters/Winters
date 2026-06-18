@@ -10,7 +10,7 @@ const defaultSlots = {
   cardHover: 'spotlight',       // Spotlight | Tilt | BorderGlow | GlareHover | None
   cardEntry: 'fadeUp',          // BounceCards | BlurReveal | AnimatedList | fadeUp | None
   buttonHover: 'magnet',        // Magnet | StarBorder | None
-  bgDecor: 'none',              // DotField | Waves | LightRays | PixelSnow | ColorBends | None
+  bgDecor: 'dotField',          // DotField | Waves | LightRays | PixelSnow | ColorBends | None
   textDecor: 'none',            // CircularText | CountUp | TextType | FallingText | None
   clickFeedback: 'clickSpark',  // ClickSpark | Crosshair | GhostCursor | None
   pageTransition: 'fade',       // fade | BlurReveal | None
