@@ -1,236 +1,391 @@
 <template>
-  <div ref="containerRef" :class="['carousel-container', { round }]" :style="containerStyle">
+  <div class="carousel-container scroll-reveal">
     <div
-      class="carousel-track"
-      :style="trackStyle"
-      @pointerdown="onPointerDown"
-      @pointermove="onPointerMove"
-      @pointerup="onPointerUp"
-      @pointerleave="onPointerUp"
+      ref="carouselWrapper"
+      class="carousel-wrapper"
     >
       <div
-        v-for="(item, index) in itemsForRender"
-        :key="`${item?.id ?? index}-${index}`"
-        :class="['carousel-item', { round }]"
-        :style="getItemStyle(index)"
+        class="carousel-slides"
+        :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
       >
-        <div class="carousel-item-header">
-          <span class="carousel-icon-container" v-html="item.icon"></span>
-        </div>
-        <div class="carousel-item-content">
-          <div class="carousel-item-title">{{ item.title }}</div>
-          <p class="carousel-item-description">{{ item.description }}</p>
+        <div
+          v-for="(slide, index) in slides"
+          :key="index"
+          class="carousel-slide"
+        >
+          <div class="carousel-content">
+            <h3 class="carousel-title">
+              {{ t(slide.title) }}
+            </h3>
+            <p class="carousel-description">
+              {{ t(slide.description) }}
+            </p>
+            <div class="carousel-actions">
+              <a
+                v-if="slide.link"
+                :href="slide.link"
+                class="carousel-button"
+              >{{ t('查看详情') }}</a>
+            </div>
+          </div>
+          <div class="carousel-image-container">
+            <div
+              class="carousel-image"
+              :style="{ backgroundImage: `url(${slide.image})` }"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div :class="['carousel-indicators-container', { round }]">
-      <div class="carousel-indicators">
-        <button
-          v-for="(_, index) in items"
-          :key="index"
-          type="button"
-          :class="['carousel-indicator', activeIndex === index ? 'active' : 'inactive']"
-          :aria-label="`Go to slide ${index + 1}`"
-          :aria-current="activeIndex === index"
-          @click="goTo(index)"
-        />
-      </div>
+
+    <!-- 导航按钮 -->
+    <button
+      class="carousel-nav carousel-nav-left"
+      :aria-label="t('上一张')"
+      @click="prevSlide"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+      </svg>
+    </button>
+    <button
+      class="carousel-nav carousel-nav-right"
+      :aria-label="t('下一张')"
+      @click="nextSlide"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+      </svg>
+    </button>
+
+    <!-- 指示器 -->
+    <div class="carousel-indicators">
+      <button
+        v-for="(slide, index) in slides"
+        :key="index"
+        class="carousel-indicator"
+        :class="{ active: currentSlide === index }"
+        :aria-label="`${t('第')} ${index + 1} ${t('张')}`"
+        @click="goToSlide(index)"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useI18n } from '../composables/useI18n.js';
+const { t } = useI18n();
 
 const props = defineProps({
-  items: { type: Array, default: () => [] },
-  baseWidth: { type: Number, default: 300 },
-  autoplay: { type: Boolean, default: false },
-  autoplayDelay: { type: Number, default: 3000 },
-  pauseOnHover: { type: Boolean, default: false },
-  loop: { type: Boolean, default: false },
-  round: { type: Boolean, default: false },
-})
+  slides: {
+    type: Array,
+    default: () => [
+      {
+        title: 'Personal Website',
+        description: '基于 Glassmorphism 风格的个人展示空间，包含个人信息、项目展示和技能介绍。',
+        image:
+          'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20personal%20website%20with%20glassmorphism%20design%20showing%20portfolio%20and%20skills&image_size=landscape_16_9',
+        link: '#',
+      },
+      {
+        title: 'Chemistry Manager',
+        description: '一套轻量级的化学药品库存管理系统，帮助实验室高效管理化学品。',
+        image:
+          'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chemistry%20inventory%20management%20system%20interface%20with%20modern%20design&image_size=landscape_16_9',
+        link: '#',
+      },
+      {
+        title: 'Todo List App',
+        description: '简洁高效的待办事项管理工具，支持任务分类和进度跟踪。',
+        image:
+          'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=todo%20list%20application%20with%20modern%20UI%20design&image_size=landscape_16_9',
+        link: '#',
+      },
+      {
+        title: 'AI 对话系统',
+        description: '基于现代AI技术的智能对话系统，支持多种场景的交互。',
+        image:
+          'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20chat%20interface%20with%20modern%20design%20and%20purple%20accent%20colors&image_size=landscape_16_9',
+        link: '/ai',
+      },
+    ],
+  },
+  autoplay: {
+    type: Boolean,
+    default: true,
+  },
+  interval: {
+    type: Number,
+    default: 5000,
+  },
+});
 
-const containerPadding = 16
-const gap = 16
-const itemWidth = computed(() => props.baseWidth - containerPadding * 2)
-const trackItemOffset = computed(() => itemWidth.value + gap)
+const currentSlide = ref(0);
+const carouselWrapper = ref(null);
+let autoplayTimer = null;
 
-const itemsForRender = computed(() => {
-  if (!props.loop) return props.items
-  if (props.items.length === 0) return []
-  return [props.items[props.items.length - 1], ...props.items, props.items[0]]
-})
+const nextSlide = () => {
+  currentSlide.value = (currentSlide.value + 1) % props.slides.length;
+  resetAutoplay();
+};
 
-const containerRef = ref(null)
-const position = ref(props.loop ? 1 : 0)
-const isHovered = ref(false)
-let isDragging = false
-let startX = 0
-let offsetX = 0
-let hasMoved = false
-let autoplayTimer = null
+const prevSlide = () => {
+  currentSlide.value = (currentSlide.value - 1 + props.slides.length) % props.slides.length;
+  resetAutoplay();
+};
 
-const activeIndex = computed(() => {
-  if (props.items.length === 0) return 0
-  if (props.loop) return (position.value - 1 + props.items.length) % props.items.length
-  return Math.min(position.value, props.items.length - 1)
-})
+const goToSlide = (index) => {
+  currentSlide.value = index;
+  resetAutoplay();
+};
 
-const containerStyle = computed(() => ({
-  width: props.baseWidth + 'px',
-  ...(props.round ? { height: props.baseWidth + 'px', borderRadius: '50%' } : {}),
-}))
-
-const trackStyle = computed(() => {
-  const x = -(position.value * trackItemOffset.value) + offsetX
-  return {
-    width: itemWidth.value + 'px',
-    gap: gap + 'px',
-    transform: `translateX(${x}px)`,
-    transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
-    perspective: '1000px',
-    perspectiveOrigin: `${position.value * trackItemOffset.value + itemWidth.value / 2}px 50%`,
+const startAutoplay = () => {
+  if (props.autoplay && props.slides.length > 1) {
+    autoplayTimer = setInterval(nextSlide, props.interval);
   }
-})
+};
 
-function getItemStyle(index) {
-  const range = [-(index + 1) * trackItemOffset.value, -index * trackItemOffset.value, -(index - 1) * trackItemOffset.value]
-  const x = -(position.value * trackItemOffset.value) + offsetX
-  let rotateY = 0
-  if (x <= range[1] && x >= range[0]) {
-    rotateY = 90 - ((x - range[0]) / (range[1] - range[0])) * 90
-  } else if (x <= range[2] && x >= range[1]) {
-    rotateY = 0 - ((x - range[1]) / (range[2] - range[1])) * 90
-  } else {
-    rotateY = 90
+const stopAutoplay = () => {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
   }
-  return {
-    width: itemWidth.value + 'px',
-    height: props.round ? itemWidth.value + 'px' : '100%',
-    transform: `rotateY(${rotateY}deg)`,
-    ...(props.round ? { borderRadius: '50%' } : {}),
-  }
-}
+};
 
-const defaultItems = [
-  { title: 'Text Animations', description: 'Cool text animations', id: 1, icon: '&#x1F4C4;' },
-  { title: 'Animations', description: 'Smooth animations', id: 2, icon: '&#x25CB;' },
-  { title: 'Components', description: 'Reusable components', id: 3, icon: '&#x2B1C;' },
-  { title: 'Backgrounds', description: 'Beautiful patterns', id: 4, icon: '&#x2B1B;' },
-  { title: 'Common UI', description: 'Common components', id: 5, icon: '&#x2714;' },
-]
+const resetAutoplay = () => {
+  stopAutoplay();
+  startAutoplay();
+};
 
-const items = computed(() => props.items.length ? props.items : defaultItems)
-
-function onPointerDown(e) {
-  isDragging = true
-  hasMoved = false
-  startX = e.clientX
-  offsetX = 0
-}
-
-function onPointerMove(e) {
-  if (!isDragging) return
-  const dx = e.clientX - startX
-  if (Math.abs(dx) > 5) hasMoved = true
-  offsetX = dx
-}
-
-function onPointerUp() {
-  if (!isDragging) return
-  isDragging = false
-  if (!hasMoved) return
-  const direction = offsetX < 0 ? 1 : -1
-  if (Math.abs(offsetX) > 30) {
-    position.value = Math.max(0, Math.min(position.value + direction, itemsForRender.value.length - 1))
-  }
-  offsetX = 0
-
-  if (props.loop && itemsForRender.value.length > 1) {
-    if (position.value === itemsForRender.value.length - 1) {
-      setTimeout(() => { position.value = 1 }, 500)
-    }
-    if (position.value === 0) {
-      setTimeout(() => { position.value = items.value.length }, 500)
-    }
-  }
-}
-
-function goTo(index) {
-  position.value = props.loop ? index + 1 : index
-}
-
-function startAutoplay() {
-  if (props.autoplay && itemsForRender.value.length > 1) {
-    autoplayTimer = setInterval(() => {
-      if (!isHovered.value) {
-        position.value = Math.min(position.value + 1, itemsForRender.value.length - 1)
-        if (props.loop && position.value === itemsForRender.value.length - 1) {
-          setTimeout(() => { position.value = 1 }, 500)
-        }
-      }
-    }, props.autoplayDelay)
-  }
-}
-
-onMounted(async () => {
-  await nextTick()
-  if (props.pauseOnHover && containerRef.value) {
-    containerRef.value.addEventListener('mouseenter', () => { isHovered.value = true })
-    containerRef.value.addEventListener('mouseleave', () => { isHovered.value = false })
-  }
-  startAutoplay()
-})
+onMounted(() => {
+  startAutoplay();
+});
 
 onUnmounted(() => {
-  if (autoplayTimer) clearInterval(autoplayTimer)
-})
+  stopAutoplay();
+});
+
+watch(
+  () => props.slides,
+  () => {
+    currentSlide.value = 0;
+    resetAutoplay();
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
 .carousel-container {
   position: relative;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: var(--shadow-md);
   overflow: hidden;
-  user-select: none;
 }
-.carousel-track {
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-  will-change: transform;
-  touch-action: pan-y;
-}
-.carousel-item {
-  flex-shrink: 0;
-  background: #1a1a2e;
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
   border-radius: 12px;
-  padding: 16px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  backface-visibility: hidden;
 }
-.carousel-item.round {
+
+.carousel-slides {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  min-height: 300px;
+  padding: 20px;
+  background: var(--bg-main);
+  border-radius: 12px;
+}
+
+.carousel-content {
+  flex: 1;
+  max-width: 50%;
+}
+
+.carousel-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.carousel-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.carousel-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.carousel-button {
+  padding: 10px 24px;
+  background: var(--primary);
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: var(--shadow-purple);
+}
+
+.carousel-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -10px rgba(236, 72, 153, 0.4);
+}
+
+.carousel-image-container {
+  flex: 1;
+  max-width: 50%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+}
+
+.carousel-slide:hover .carousel-image {
+  transform: scale(1.05);
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: var(--bg-glass);
+  border: none;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  color: var(--text-main);
+  z-index: 10;
 }
-.carousel-icon-container { font-size: 24px; }
-.carousel-item-title { font-weight: 600; font-size: 16px; color: #fff; }
-.carousel-item-description { font-size: 13px; color: #999; margin: 0; }
-.carousel-indicators-container {
+
+.carousel-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--shadow-lg);
+  color: var(--primary);
+}
+
+.carousel-nav-left {
+  left: 20px;
+}
+
+.carousel-nav-right {
+  right: 20px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  padding: 12px 0;
+  gap: 8px;
+  z-index: 10;
 }
-.carousel-indicators { display: flex; gap: 6px; }
+
 .carousel-indicator {
-  width: 8px; height: 8px; border-radius: 50%;
-  border: none; padding: 0; cursor: pointer;
-  transition: transform 0.15s, background 0.3s;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border-color);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
-.carousel-indicator.active { background: #5227FF; transform: scale(1.2); }
-.carousel-indicator.inactive { background: #333; }
+
+.carousel-indicator:hover {
+  background: var(--bg-glass);
+  transform: scale(1.2);
+}
+
+.carousel-indicator.active {
+  background: var(--primary);
+  transform: scale(1.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 20px;
+  }
+
+  .carousel-slide {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    min-height: 400px;
+  }
+
+  .carousel-content {
+    max-width: 100%;
+  }
+
+  .carousel-image-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .carousel-title {
+    font-size: 20px;
+  }
+
+  .carousel-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-nav-left {
+    left: 10px;
+  }
+
+  .carousel-nav-right {
+    right: 10px;
+  }
+}
 </style>
