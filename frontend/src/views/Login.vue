@@ -21,7 +21,7 @@
       <div class="form-section">
         <StarBorder>
           <div ref="authCardRef" class="auth-card card-spotlight" v-spotlight :class="{ shake: shakeCard }">
-          <GlitchText text="欢迎回来" class="glitch-welcome" />
+          <HeadingEffect text="欢迎回来" />
           <!-- 标签切换 -->
           <div class="login-tabs">
             <button
@@ -231,7 +231,7 @@ import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import LoginPasswordForm from '../components/LoginPasswordForm.vue';
 import LoginCodeForm from '../components/LoginCodeForm.vue';
 import StarBorder from '../components/StarBorder.vue';
-import GlitchText from '../components/GlitchText.vue';
+import HeadingEffect from '../components/GlitchText.vue';
 import { API_BASE } from '../config.js';
 import { useUserStore } from '../stores/user.js';
 import { useParticles } from '../composables/useParticles.js';

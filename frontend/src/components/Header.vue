@@ -1,6 +1,6 @@
 <template>
   <header class="main-header" role="banner">
-    <h1 id="navbar-title"><ShinyText text="WINTERS" /></h1>
+    <h1 id="navbar-title"><HeadingEffect text="WINTERS" /></h1>
     <nav
       role="navigation"
       :aria-label="t('主导航')"
@@ -337,7 +337,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user.js';
 import { useToast } from '../composables/useToast.js';
 import { useI18n } from '../composables/useI18n.js';
-import ShinyText from './ShinyText.vue';
+import HeadingEffect from './ShinyText.vue';
 const { t } = useI18n();
 
 const router = useRouter();

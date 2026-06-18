@@ -7,7 +7,7 @@
       <header class="community-header scroll-reveal">
         <div class="header-top">
           <div class="header-title-row">
-            <h1 class="page-title"><ShinyText :text="t('AI 社区')" /></h1>
+            <h1 class="page-title"><HeadingEffect :text="t('AI 社区')" /></h1>
             <span class="badge">Beta</span>
           </div>
           <button class="post-btn" v-magnet @click="$router.push('/community/new')">
@@ -216,7 +216,7 @@ import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useCommunityStore } from '../stores/community.js';
-import ShinyText from '../components/ShinyText.vue';
+import HeadingEffect from '../components/ShinyText.vue';
 import DecayCard from '../components/DecayCard.vue';
 import { vMagnet } from '../directives/reactBits.js';
 

@@ -9,7 +9,7 @@
     >
       <div class="content-container">
         <div class="section-card card-spotlight card-spotlight scroll-reveal" v-spotlight>
-          <h3><ShinyText :text="t('最近动态')" /></h3>
+          <h3><HeadingEffect :text="t('最近动态')" /></h3>
 
           <!-- 分类筛选按钮 -->
           <div class="category-filter">
@@ -84,7 +84,7 @@ import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useBlurReveal } from '../composables/useBlurReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
-import ShinyText from '../components/ShinyText.vue';
+import HeadingEffect from '../components/ShinyText.vue';
 
 useParticles();
 useScrollReveal();

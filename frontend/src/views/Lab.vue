@@ -6,7 +6,7 @@
       <DotField />
       <header class="lab-header scroll-reveal" v-spotlight>
         <h1 class="display-title">
-          The <span class="highlight"><GradientText text="Lab" /></span>.
+          The <span class="highlight"><HeadingEffect text="Lab" /></span>.
           <span class="badge">Experimental</span>
         </h1>
         <p class="subtitle">
@@ -208,7 +208,7 @@ import { onMounted, onUnmounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
-import GradientText from '../components/GradientText.vue';
+import HeadingEffect from '../components/GradientText.vue';
 import BounceCards from '../components/BounceCards.vue';
 import DotField from '../components/DotField.vue';
 import GlareHover from '../components/GlareHover.vue';
