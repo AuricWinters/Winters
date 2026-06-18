@@ -21,7 +21,9 @@
           <div class="comp-demo">
             <SafeDemo>
               <template v-if="comp.component">
-                <component :is="comp.component" v-bind="comp.props || {}" />
+                <component :is="comp.component" v-bind="comp.props || {}">
+                  <template #default>{{ comp.slot || comp.name }}</template>
+                </component>
               </template>
             <template v-else-if="comp.showDirective">
               <div class="directive-demo" v-spotlight>
