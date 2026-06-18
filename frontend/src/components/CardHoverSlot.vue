@@ -37,6 +37,7 @@ import GlareHover from './GlareHover.vue'
 const store = useEffectStore()
 const borderGlowRef = ref(null)
 
+// 直接读 store，不用 computed 包裹
 const effect = computed(() => store.slots.cardHover)
 
 // --- borderGlow 鼠标追踪 ---

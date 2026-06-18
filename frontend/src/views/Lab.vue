@@ -208,7 +208,7 @@ import { onMounted, onUnmounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
-import HeadingEffect from '../components/GradientText.vue';
+import HeadingEffect from '../components/HeadingEffect.vue';
 import BounceCards from '../components/BounceCards.vue';
 import DotField from '../components/DotField.vue';
 import GlareHover from '../components/GlareHover.vue';

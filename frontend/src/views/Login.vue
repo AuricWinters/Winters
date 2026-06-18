@@ -231,7 +231,7 @@ import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import LoginPasswordForm from '../components/LoginPasswordForm.vue';
 import LoginCodeForm from '../components/LoginCodeForm.vue';
 import StarBorder from '../components/StarBorder.vue';
-import HeadingEffect from '../components/GlitchText.vue';
+import HeadingEffect from '../components/HeadingEffect.vue';
 import { API_BASE } from '../config.js';
 import { useUserStore } from '../stores/user.js';
 import { useParticles } from '../composables/useParticles.js';

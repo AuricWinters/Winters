@@ -189,7 +189,7 @@
 
       <!-- 右侧：技能专长、项目与兴趣 -->
       <div class="sidebar-container">
-        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
+        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
           <h3>{{ t('我的项目') }}</h3>
           <div class="projects-grid">
             <router-link
@@ -202,9 +202,9 @@
               <div class="project-desc">{{ project.desc }}</div>
             </router-link>
           </div>
-        </div>
+        </div></CardHoverSlot>
 
-        <div class="section-card card-spotlight scroll-reveal" v-spotlight>
+        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
           <h3>{{ t('兴趣爱好') }}</h3>
           <div class="skills-grid">
             <div class="skill-item">
@@ -220,7 +220,7 @@
               💬 {{ t('交流') }}
             </div>
           </div>
-        </div>
+        </div></CardHoverSlot>
 
         <div class="section-card card-spotlight scroll-reveal" v-spotlight>
           <h3>{{ t('网站数据') }}</h3>
@@ -259,7 +259,7 @@ import { useI18n } from '../composables/useI18n.js';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
-import HeadingEffect from '../components/GradientText.vue';
+import HeadingEffect from '../components/HeadingEffect.vue';
 import AnimatedList from '../components/AnimatedList.vue';
 import CircularText from '../components/CircularText.vue';
 import MasonryGrid from '../components/MasonryGrid.vue';

@@ -337,7 +337,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user.js';
 import { useToast } from '../composables/useToast.js';
 import { useI18n } from '../composables/useI18n.js';
-import HeadingEffect from './ShinyText.vue';
+import HeadingEffect from './HeadingEffect.vue';
 const { t } = useI18n();
 
 const router = useRouter();

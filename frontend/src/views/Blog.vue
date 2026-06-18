@@ -84,7 +84,7 @@ import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useBlurReveal } from '../composables/useBlurReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
-import HeadingEffect from '../components/ShinyText.vue';
+import HeadingEffect from '../components/HeadingEffect.vue';
 
 useParticles();
 useScrollReveal();

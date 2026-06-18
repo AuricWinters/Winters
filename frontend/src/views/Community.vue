@@ -221,7 +221,7 @@ import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useCommunityStore } from '../stores/community.js';
-import HeadingEffect from '../components/ShinyText.vue';
+import HeadingEffect from '../components/HeadingEffect.vue';
 import DecayCard from '../components/DecayCard.vue';
 import { vMagnet } from '../directives/reactBits.js';
 import BgDecorSlot from '../components/BgDecorSlot.vue';

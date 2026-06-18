@@ -36,7 +36,7 @@ const currentComponent = computed(() => {
 .bg-decor-slot {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
   overflow: hidden;
 }
