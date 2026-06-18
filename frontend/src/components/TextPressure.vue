@@ -1,6 +1,5 @@
 <template>
   <div ref="containerRef" style="position:relative;width:100%;height:100%;background:transparent">
-    <style v-html="fontStyle"></style>
     <h1
       ref="titleRef"
       :class="['text-pressure-title', { flex, stroke }]"
@@ -49,22 +48,8 @@ const lineHeight = ref(1)
 
 const chars = computed(() => props.text.split(''))
 
-const fontStyle = computed(() => `
-  @font-face {
-    font-family: '${props.fontFamily}';
-    src: url('${props.fontUrl}');
-    font-style: normal;
-  }
-  .flex { display: flex; justify-content: space-between; }
-  .stroke span { position: relative; color: ${props.textColor}; }
-  .stroke span::after {
-    content: attr(data-char);
-    position: absolute; left: 0; top: 0;
-    color: transparent; z-index: -1;
-    -webkit-text-stroke-width: 3px;
-    -webkit-text-stroke-color: ${props.strokeColor};
-  }
-`)
+// font-face & stroke styles moved to <style scoped>
+const fontStyle = computed(() => '')
 
 const titleStyle = computed(() => ({
   fontFamily: props.fontFamily,
