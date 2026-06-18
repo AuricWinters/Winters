@@ -89,7 +89,7 @@ export const useEffectStore = defineStore('effects', () => {
 
   function setSlot(key, value) {
     if (key in slots.value) {
-      slots.value[key] = value
+      slots.value = { ...slots.value, [key]: value }
     }
   }
 
