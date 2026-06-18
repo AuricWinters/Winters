@@ -195,6 +195,29 @@
           </div>
         </GlareHover>
       </article>
+
+      <!-- 组件展览 -->
+      <article
+        class="bento-card card-spotlight card-showcase scroll-reveal" v-spotlight
+        @click="$router.push('/lab/showcase')"
+        style="--delay: 7;"
+      >
+        <div class="card-bg"><div class="mesh-gradient"></div></div>
+        <div class="card-content">
+          <div class="card-top">
+            <span class="tag">New</span>
+            <div class="icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <h2>{{ t('组件实验室') }}</h2>
+            <p>{{ t('84 个 React Bits 动效组件展览，悬停预览实时效果。') }}</p>
+          </div>
+        </div>
+      </article>
       </div>
     </div>
   </div>
@@ -452,6 +475,12 @@ function showDevelopingToast() {
 .card-regex { min-height: 160px; }
 .card-game2048 { min-height: 160px; }
 .card-minesweeper { min-height: 160px; }
+.card-showcase { min-height: 180px; cursor: pointer; }
+.card-showcase .mesh-gradient {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(167,139,250,0.4) 0%, transparent 55%),
+    radial-gradient(circle at 70% 80%, rgba(96,165,250,0.3) 0%, transparent 55%);
+}
 
 .card-game2048 .mesh-gradient {
   background:

@@ -180,6 +180,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/lab/showcase',
+      name: 'Showcase',
+      component: () => import('../views/lab/Showcase.vue'),
+      // 84-component showcase, loaded as separate chunk
+      meta: {
+        title: '组件实验室 - Winters',
+      },
+    },
+    {
       path: '/lab/code',
       name: 'CodeLab',
       component: () => import('../views/lab/CodeLab.vue'),
