@@ -133,7 +133,7 @@ const categories = [
       { name: 'ShinyText', component: markRaw(ShinyText), props: { text: 'Shiny Text' }, level: 'Easy' },
       { name: 'GradientText', component: markRaw(GradientText), props: { text: 'Gradient' }, level: 'Easy' },
       { name: 'GlitchText', component: markRaw(GlitchText), props: { text: 'GLITCH' }, level: 'Easy' },
-      { name: 'RotatingText', component: markRaw(RotatingText), props: { text: 'Rotating' }, level: 'Easy' },
+      { name: 'RotatingText', component: markRaw(RotatingText), props: { texts: ['Hello','World','Vue'] }, level: 'Easy' },
       { name: 'FallingText', component: markRaw(FallingText), props: { text: 'Falling' }, level: 'Medium' },
       { name: 'FuzzyText', component: markRaw(FuzzyText), props: { text: 'Fuzzy' }, level: 'Medium' },
       { name: 'ScrambledText', component: markRaw(ScrambledText), props: { text: 'Scramble' }, level: 'Medium' },
