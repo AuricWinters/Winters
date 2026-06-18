@@ -2,11 +2,12 @@
   <div class="home-page">
     <!-- 粒子背景 -->
     <canvas class="particles-background" />
+    <BgDecorSlot />
 
     <div class="hero-section">
       <!-- 左侧：个人信息与时间线 -->
       <div class="profile-container">
-        <div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal" v-spotlight>
+        <CardHoverSlot><div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal" v-spotlight>
           <img
             src="/img/tx.jpg"
             :alt="t('AuricWinters头像')"
@@ -52,7 +53,7 @@
             </div>
           </div>
           <CircularText text="WINTERS" :size="100" />
-        </div>
+        </div></CardHoverSlot>
 
         <div class="timeline-container scroll-reveal">
           <h3>
@@ -262,6 +263,8 @@ import HeadingEffect from '../components/GradientText.vue';
 import AnimatedList from '../components/AnimatedList.vue';
 import CircularText from '../components/CircularText.vue';
 import MasonryGrid from '../components/MasonryGrid.vue';
+import BgDecorSlot from '../components/BgDecorSlot.vue';
+import CardHoverSlot from '../components/CardHoverSlot.vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useSpotlight } from '../composables/useSpotlight.js';

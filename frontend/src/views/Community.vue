@@ -1,6 +1,7 @@
 <template>
   <div class="community-page">
     <canvas class="particles-background" />
+    <BgDecorSlot />
 
     <div class="community-container">
       <!-- 顶部 -->
@@ -77,6 +78,7 @@
       <!-- ═══ 动态流 ═══ -->
       <div class="feed">
         <!-- 置顶 -->
+        <CardHoverSlot>
         <article v-if="pinnedPost" class="post-card card-spotlight pinned scroll-reveal" v-spotlight @click="$router.push('/community/' + pinnedPost.id)">
           <DecayCard>
           <div class="pin-badge">📌 {{ t('置顶') }}</div>
@@ -108,8 +110,10 @@
           </div>
           </DecayCard>
         </article>
+        </CardHoverSlot>
 
         <!-- 动态列表 -->
+        <CardHoverSlot>
         <article v-for="post in feedPosts" :key="post.id" class="post-card card-spotlight scroll-reveal" v-spotlight :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
           <DecayCard>
           <div class="post-header">
@@ -140,6 +144,7 @@
           </div>
           </DecayCard>
         </article>
+        </CardHoverSlot>
 
         <!-- 加载更多 -->
         <div class="load-more" v-if="store.hasMore">
@@ -219,6 +224,8 @@ import { useCommunityStore } from '../stores/community.js';
 import HeadingEffect from '../components/ShinyText.vue';
 import DecayCard from '../components/DecayCard.vue';
 import { vMagnet } from '../directives/reactBits.js';
+import BgDecorSlot from '../components/BgDecorSlot.vue';
+import CardHoverSlot from '../components/CardHoverSlot.vue';
 
 const { t } = useI18n();
 const { showToast } = useToast();
