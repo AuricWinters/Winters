@@ -158,7 +158,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from '../composables/useI18n.js';
 import { useParticles } from '../composables/useParticles.js';
@@ -385,6 +385,13 @@ function cancelReply() {
 onMounted(() => {
   fetchPost();
   fetchComments();
+});
+
+// 修复 scroll-reveal 闪烁：数据异步加载后手动触发
+watch([post, comments], () => {
+  setTimeout(() => {
+    document.querySelectorAll('.post-detail-page .scroll-reveal').forEach(el => el.classList.add('revealed'));
+  }, 300);
 });
 </script>
 
