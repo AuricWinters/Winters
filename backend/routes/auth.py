@@ -150,7 +150,7 @@ async def login(user: UserLogin):
 
         return {
             "token": create_token(db_user["id"], db_user["account"]),
-            "user": db_user
+            "user": dict(db_user)
         }
 
 
