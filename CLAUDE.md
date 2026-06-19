@@ -36,7 +36,7 @@ Winters/
 └── .trae/specs/          # 30+ 功能 spec（TRAE Agent 生成）
 ```
 
-## 路由（18 条）
+## 路由（24 条）
 
 | 路径 | 页面 | 认证 |
 |------|------|------|
@@ -46,7 +46,7 @@ Winters/
 | `/care` | 暖心关怀 | 否 |
 | `/learning` | AI 学习路线 | 否 |
 | `/system` | 自驱工作站文档 | 否 |
-| `/lab` `/lab/particles` `/lab/piano` `/lab/code` | 实验室 / 粒子 / 钢琴 / 在线IDE | 否 |
+| `/lab` `/lab/particles` `/lab/piano` `/lab/code` `/lab/showcase` `/lab/showcase/text` `/lab/showcase/hover` `/lab/showcase/entry` `/lab/showcase/bg` `/lab/showcase/ui` `/lab/showcase/3d` | 实验室 / 粒子 / 钢琴 / 在线IDE / 组件实验室 / 文字特效 / 悬停交互 / 入场动画 / 背景装饰 / UI组件 / 3D工具 | 否 |
 | `/ai` | AI 聊天 | 否 |
 | `/drive` | 云盘 | 否 |
 | `/contact` | 联系我 | 否 |

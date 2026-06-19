@@ -181,12 +181,45 @@ const router = createRouter({
     },
     {
       path: '/lab/showcase',
-      name: 'Showcase',
-      component: () => import('../views/lab/Showcase.vue'),
-      // 84-component showcase, loaded as separate chunk
-      meta: {
-        title: '组件实验室 - Winters',
-      },
+      name: 'ShowcaseIndex',
+      component: () => import('../views/lab/ShowcaseIndex.vue'),
+      meta: { title: '组件实验室 - Winters' },
+    },
+    {
+      path: '/lab/showcase/text',
+      name: 'ShowcaseText',
+      component: () => import('../views/lab/ShowcaseText.vue'),
+      meta: { title: '文字特效 - Winters' },
+    },
+    {
+      path: '/lab/showcase/hover',
+      name: 'ShowcaseHover',
+      component: () => import('../views/lab/ShowcaseHover.vue'),
+      meta: { title: '悬停交互 - Winters' },
+    },
+    {
+      path: '/lab/showcase/entry',
+      name: 'ShowcaseEntry',
+      component: () => import('../views/lab/ShowcaseEntry.vue'),
+      meta: { title: '入场动画 - Winters' },
+    },
+    {
+      path: '/lab/showcase/bg',
+      name: 'ShowcaseBg',
+      component: () => import('../views/lab/ShowcaseBg.vue'),
+      meta: { title: '背景装饰 - Winters' },
+    },
+    {
+      path: '/lab/showcase/ui',
+      name: 'ShowcaseUi',
+      component: () => import('../views/lab/ShowcaseUi.vue'),
+      meta: { title: 'UI 组件 - Winters' },
+    },
+    {
+      path: '/lab/showcase/3d',
+      name: 'Showcase3d',
+      component: () => import('../views/lab/Showcase3d.vue'),
+      meta: { title: '3D / 工具 - Winters' },
     },
     {
       path: '/lab/code',
