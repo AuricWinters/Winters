@@ -69,6 +69,9 @@ class UserCreate(UserBase):
         description="确认密码（必须与密码一致）",
         example="123456"
     )
+    nickname: str = Field(None, max_length=50, description="用户昵称")
+    phone: str = Field(None, max_length=20, description="手机号")
+    email: str = Field(None, max_length=100, description="邮箱")
 
 
 class UserLogin(UserBase):

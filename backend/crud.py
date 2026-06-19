@@ -83,10 +83,10 @@ def create_user(db: sqlite3.Connection, user_data: UserCreate) -> Dict[str, Any]
         # 插入新用户
         cursor = db.execute(
             """
-            INSERT INTO users (account, password) 
-            VALUES (?, ?)
+            INSERT INTO users (account, password, nickname, phone, email)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (user_data.account, hash_password(user_data.password))
+            (user_data.account, hash_password(user_data.password), user_data.nickname or None, user_data.phone or None, user_data.email or None)
         )
         
         # 获取新创建的用户ID

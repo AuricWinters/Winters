@@ -39,12 +39,12 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 注册
-  async function register(account, password, confirmPassword) {
+  async function register(account, password, confirmPassword, extra = {}) {
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ account, password, confirm_password: confirmPassword })
+        body: JSON.stringify({ account, password, confirm_password: confirmPassword, ...extra })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || '注册失败');
