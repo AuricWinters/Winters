@@ -8,8 +8,8 @@
       style="grid-template-columns: 1fr"
     >
       <div class="content-container">
-        <div class="section-card card-spotlight card-spotlight scroll-reveal" v-spotlight>
-          <h3><HeadingEffect :text="t('最近动态')" /></h3>
+        <div class="section-card scroll-reveal">
+          <h3>{{ t('最近动态') }}</h3>
 
           <!-- 分类筛选按钮 -->
           <div class="category-filter">
@@ -81,10 +81,8 @@ const { t } = useI18n();
 import { reactive, computed, onMounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useBlurReveal } from '../composables/useBlurReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
-import HeadingEffect from '../components/HeadingEffect.vue';
 
 useParticles();
 useScrollReveal();
@@ -134,7 +132,6 @@ async function fetchPosts() {
 
 onMounted(() => {
   fetchPosts();
-  useBlurReveal('.timeline-content h4');
 });
 </script>
 

@@ -1,17 +1,16 @@
 <template>
   <div class="community-page">
     <canvas class="particles-background" />
-    <BgDecorSlot />
 
     <div class="community-container">
       <!-- 顶部 -->
       <header class="community-header scroll-reveal">
         <div class="header-top">
           <div class="header-title-row">
-            <h1 class="page-title"><HeadingEffect :text="t('AI 社区')" /></h1>
+            <h1 class="page-title">{{ t('AI 社区') }}</h1>
             <span class="badge">Beta</span>
           </div>
-          <button class="post-btn" v-magnet @click="$router.push('/community/new')">
+          <button class="post-btn" @click="$router.push('/community/new')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             {{ t('发动态') }}
           </button>
@@ -41,7 +40,7 @@
       <!-- ═══ 左侧边栏：导航区 ═══ -->
       <aside class="left-sidebar">
         <!-- 用户卡片 -->
-        <div class="side-card card-spotlight user-card">
+        <div class="side-card user-card">
           <div class="uc-avatar">凌</div>
           <div class="uc-name">AuricWinters</div>
           <div class="uc-bio">AI 社区站长 · 全栈开发者</div>
@@ -51,7 +50,7 @@
         </div>
 
         <!-- 快捷导航 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">📂 {{ t('板块导航') }}</h4>
           <nav class="nav-list">
             <a v-for="c in categories" :key="c.value"
@@ -64,7 +63,7 @@
         </div>
 
         <!-- 快捷入口 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">⚡ {{ t('快捷入口') }}</h4>
           <div class="quick-links">
             <a href="/ai" class="quick-link">{{ t('🤖 AI 聊天') }}</a>
@@ -78,9 +77,7 @@
       <!-- ═══ 动态流 ═══ -->
       <div class="feed">
         <!-- 置顶 -->
-        <CardHoverSlot>
-        <article v-if="pinnedPost" class="post-card card-spotlight pinned scroll-reveal" v-spotlight @click="$router.push('/community/' + pinnedPost.id)">
-          <DecayCard>
+        <article v-if="pinnedPost" class="post-card pinned scroll-reveal" @click="$router.push('/community/' + pinnedPost.id)">
           <div class="pin-badge">📌 {{ t('置顶') }}</div>
           <div class="post-header">
             <div class="author-avatar">{{ pinnedPost.author_name[0] }}</div>
@@ -108,14 +105,10 @@
               {{ formatCount(pinnedPost.views_count) }}
             </span>
           </div>
-          </DecayCard>
         </article>
-        </CardHoverSlot>
 
         <!-- 动态列表 -->
-        <CardHoverSlot>
-        <article v-for="post in feedPosts" :key="post.id" class="post-card card-spotlight scroll-reveal" v-spotlight :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
-          <DecayCard>
+        <article v-for="post in feedPosts" :key="post.id" class="post-card scroll-reveal" :style="{ '--delay': (post.id % 5) * 0.1 }" @click="$router.push('/community/' + post.id)">
           <div class="post-header">
             <div class="author-avatar">{{ post.author_name[0] }}</div>
             <div class="author-info">
@@ -142,9 +135,7 @@
               {{ formatCount(post.views_count) }}
             </span>
           </div>
-          </DecayCard>
         </article>
-        </CardHoverSlot>
 
         <!-- 加载更多 -->
         <div class="load-more" v-if="store.hasMore">
@@ -155,7 +146,7 @@
       <!-- ═══ 右侧边栏 ═══ -->
       <aside class="sidebar">
         <!-- 社区统计 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">📊 {{ t('社区统计') }}</h4>
           <div class="stats-grid">
             <div class="stat-item">
@@ -170,7 +161,7 @@
         </div>
 
         <!-- 热门话题 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">🔥 {{ t('热门话题') }}</h4>
           <div class="hot-list">
             <div v-for="(topic, i) in hotTopics" :key="i" class="hot-item">
@@ -184,7 +175,7 @@
         </div>
 
         <!-- AI 工具排行 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">🏆 {{ t('AI 工具热度榜') }}</h4>
           <div class="tool-list">
             <div v-for="(tool, i) in aiTools" :key="i" class="tool-item">
@@ -199,7 +190,7 @@
         </div>
 
         <!-- 活跃用户 -->
-        <div class="side-card" v-spotlight>
+        <div class="side-card">
           <h4 class="side-title">⭐ {{ t('本周活跃') }}</h4>
           <div class="user-list">
             <div v-for="u in activeUsers" :key="u.name" class="user-item">
@@ -221,11 +212,6 @@ import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
 import { useCommunityStore } from '../stores/community.js';
-import HeadingEffect from '../components/HeadingEffect.vue';
-import DecayCard from '../components/DecayCard.vue';
-import { vMagnet } from '../directives/reactBits.js';
-import BgDecorSlot from '../components/BgDecorSlot.vue';
-import CardHoverSlot from '../components/CardHoverSlot.vue';
 
 const { t } = useI18n();
 const { showToast } = useToast();

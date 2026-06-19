@@ -2,12 +2,11 @@
   <div class="home-page">
     <!-- 粒子背景 -->
     <canvas class="particles-background" />
-    <BgDecorSlot />
 
     <div class="hero-section">
       <!-- 左侧：个人信息与时间线 -->
       <div class="profile-container">
-        <CardHoverSlot><div ref="profileCardRef" class="profile-header card-spotlight scroll-reveal" v-spotlight>
+        <div class="profile-header scroll-reveal">
           <img
             src="/img/tx.jpg"
             :alt="t('AuricWinters头像')"
@@ -15,7 +14,7 @@
             loading="lazy"
           >
           <div class="profile-info">
-            <h1><HeadingEffect :text="profile.name" /></h1>
+            <h1>{{ profile.name }}</h1>
             <p class="title">
               {{ profile.bio }}
             </p>
@@ -52,8 +51,7 @@
               <span>{{ t('中国 广东 广州') }}</span>
             </div>
           </div>
-          <CircularText text="WINTERS" :size="100" />
-        </div></CardHoverSlot>
+        </div>
 
         <div class="timeline-container scroll-reveal">
           <h3>
@@ -121,7 +119,7 @@
           class="scroll-reveal"
         />
 
-        <div class="skills-split-section card-spotlight scroll-reveal" v-spotlight>
+        <div class="skills-split-section scroll-reveal">
           <div class="skills-left">
             <h3>{{ t('技能专长') }}</h3>
             <div class="skill-bars">
@@ -176,20 +174,22 @@
             </div>
           </div>
           <div class="skills-right">
-            <MasonryGrid>
-              <AnimatedList :items="skills" class="skills-grid">
-                <template #item="{ item }">
-                  <div class="skill-item">{{ item }}</div>
-                </template>
-              </AnimatedList>
-            </MasonryGrid>
+            <div class="skills-grid">
+              <div
+                v-for="skill in skills"
+                :key="skill"
+                class="skill-item"
+              >
+                {{ skill }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 右侧：技能专长、项目与兴趣 -->
       <div class="sidebar-container">
-        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
+        <div class="section-card scroll-reveal">
           <h3>{{ t('我的项目') }}</h3>
           <div class="projects-grid">
             <router-link
@@ -202,9 +202,9 @@
               <div class="project-desc">{{ project.desc }}</div>
             </router-link>
           </div>
-        </div></CardHoverSlot>
+        </div>
 
-        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
+        <div class="section-card scroll-reveal">
           <h3>{{ t('兴趣爱好') }}</h3>
           <div class="skills-grid">
             <div class="skill-item">
@@ -220,9 +220,9 @@
               💬 {{ t('交流') }}
             </div>
           </div>
-        </div></CardHoverSlot>
+        </div>
 
-        <CardHoverSlot><div class="section-card card-spotlight scroll-reveal">
+        <div class="section-card scroll-reveal">
           <h3>{{ t('网站数据') }}</h3>
           <div class="stats-grid">
             <div style="font-size: 13px; color: var(--text-secondary)">
@@ -248,7 +248,7 @@
               </p>
             </div>
           </div>
-        </div></CardHoverSlot>
+        </div>
       </div>
     </div>
   </div>
@@ -259,16 +259,8 @@ import { useI18n } from '../composables/useI18n.js';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
-import HeadingEffect from '../components/HeadingEffect.vue';
-import AnimatedList from '../components/AnimatedList.vue';
-import CircularText from '../components/CircularText.vue';
-import MasonryGrid from '../components/MasonryGrid.vue';
-import BgDecorSlot from '../components/BgDecorSlot.vue';
-import CardHoverSlot from '../components/CardHoverSlot.vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useSpotlight } from '../composables/useSpotlight.js';
-import { useTilt } from '../composables/useTilt.js';
 import { useToast } from '../composables/useToast.js';
 import { useDataStore } from '../stores/data.js';
 
@@ -330,11 +322,6 @@ const handleStats = () => {
   formattedViews.value =
     views.value >= 1000 ? (views.value / 1000).toFixed(1) + 'k' : views.value.toString();
 };
-
-const profileCardRef = ref(null)
-
-useSpotlight(profileCardRef)
-useTilt(profileCardRef, { maxDeg: 8 })
 
 onMounted(() => {
   handleStats();

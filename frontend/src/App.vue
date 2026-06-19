@@ -1,6 +1,5 @@
 <template>
   <div class="app" :class="{ 'no-padding': $route.meta.fullWidth }">
-    <ClickFeedbackSlot />
     <Header />
     <main
       id="main-content"
@@ -9,13 +8,11 @@
     >
       <router-view v-slot="{ Component }">
         <transition
-          v-if="transitionName"
-          :name="transitionName"
+          name="fade"
           mode="out-in"
         >
           <component :is="Component" />
         </transition>
-        <component v-else :is="Component" />
       </router-view>
     </main>
     <Footer v-if="!$route.meta.fullWidth" />
@@ -37,20 +34,13 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useSettingsStore } from './stores/settings.js';
-import ClickFeedbackSlot from './components/ClickFeedbackSlot.vue';
-import { useEffectStore } from './stores/effects.js';
 import Header from './components/Header.vue';
 
 // 确保 store 在应用启动时立即初始化，刷新页面不会丢设置
 useSettingsStore();
-const effectStore = useEffectStore();
-const transitionName = computed(() => {
-  const name = effectStore.slots.pageTransition;
-  return name === 'none' ? '' : name;
-});
 import Footer from './components/Footer.vue';
 import BackToTop from './components/BackToTop.vue';
 import ToastNotification from './components/ToastNotification.vue';

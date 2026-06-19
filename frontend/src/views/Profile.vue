@@ -43,9 +43,9 @@
           </div>
           <!-- 统计 -->
           <div class="profile-stats">
-            <div class="stat-chip"><span class="chip-num" ref="daysNum">{{ stats.days }}</span><span class="chip-label">{{ t('天') }}</span></div>
-            <div class="stat-chip"><span class="chip-num" ref="projectsNum">{{ stats.projects }}</span><span class="chip-label">{{ t('项目') }}</span></div>
-            <div class="stat-chip"><span class="chip-num" ref="activeNum">{{ stats.active }}</span><span class="chip-label">{{ t('活跃') }}</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.days }}</span><span class="chip-label">{{ t('天') }}</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.projects }}</span><span class="chip-label">{{ t('项目') }}</span></div>
+            <div class="stat-chip"><span class="chip-num">{{ stats.active }}</span><span class="chip-label">{{ t('活跃') }}</span></div>
           </div>
         </div>
       </div>
@@ -372,7 +372,6 @@ import { useDataStore } from '../stores/data.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useToast } from '../composables/useToast.js';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
-import { useCountUp } from '../composables/useCountUp.js';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -444,9 +443,6 @@ const stats = computed(() => {
   return { days: daysSince, projects: projectCount, active: hasActiveDays ? activeDays : Math.floor(daysSince * 0.6) };
 });
 
-const daysNum = ref(null);
-const projectsNum = ref(null);
-const activeNum = ref(null);
 const avatarInput = ref(null);
 const triggerAvatarUpload = () => { avatarInput.value?.click(); };
 const handleAvatarChange = (e) => {
@@ -629,11 +625,6 @@ onMounted(async () => {
     const lastKey = localStorage.getItem('winters_last_active');
     if (lastKey !== todayKey) { localStorage.setItem('winters_active_days', String(cached + 1)); localStorage.setItem('winters_last_active', todayKey); }
   } catch { /* ignore */ }
-
-  // CountUp 动画
-  useCountUp(daysNum, { target: stats.value.days });
-  useCountUp(projectsNum, { target: stats.value.projects });
-  useCountUp(activeNum, { target: stats.value.active });
 });
 
 onUnmounted(() => {
