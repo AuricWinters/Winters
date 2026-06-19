@@ -28,6 +28,14 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     except:
         raise HTTPException(401, "无效的认证令牌")
 
+def get_optional_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """不强制登录，没有 token 返回 None"""
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return {"user_id": payload["user_id"], "account": payload["account"]}
+    except:
+        return None
+
 # 创建认证路由器，前缀为 /api/auth
 router = APIRouter(
     prefix="/api/auth",

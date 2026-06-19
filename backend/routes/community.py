@@ -3,22 +3,19 @@ from fastapi import APIRouter, Query, HTTPException, Depends
 from database import get_db
 from models import PostCreate, CommentCreate, LikeRequest
 import crud
-from routes.auth import get_current_user
+from routes.auth import get_current_user, get_optional_user
 
 router = APIRouter(prefix="/api", tags=["community"])
 
-def _uid(user=Depends(get_current_user)) -> int:
-    return user["user_id"] if user else 1
-
 @router.get("/posts")
-def list_posts(page: int = 1, category: str = '', tag: str = '', user=Depends(get_current_user)):
-    viewer_id = user["user_id"]
+def list_posts(page: int = 1, category: str = '', tag: str = '', user=Depends(get_optional_user)):
+    viewer_id = user["user_id"] if user else 0
     with get_db() as db:
         return crud.get_posts(db, page=page, category=category, tag=tag, viewer_id=viewer_id)
 
 @router.get("/posts/{post_id}")
-def get_post(post_id: int, user=Depends(get_current_user)):
-    viewer_id = user["user_id"]
+def get_post(post_id: int, user=Depends(get_optional_user)):
+    viewer_id = user["user_id"] if user else 0
     with get_db() as db:
         post = crud.get_post_by_id(db, post_id, viewer_id)
         if not post: raise HTTPException(404, "动态不存在")
