@@ -14,104 +14,43 @@ export const useUserStore = defineStore('user', () => {
   const username = computed(() => user.value?.nickname || user.value?.username || 'User');
   const userId = computed(() => user.value?.id || null);
 
-  // 登录（支持密码和验证码登录）
-  async function login(identifier, password, isCodeLogin = false) {
+  // 登录（密码登录）
+  async function login(account, password) {
     try {
-      if (!identifier) {
-        throw new Error('账号不能为空');
-      }
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ account, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '登录失败');
 
-      if (!isCodeLogin && !password) {
-        throw new Error('密码不能为空');
-      }
+      token.value = data.token;
+      user.value = data.user;
 
-      if (isCodeLogin && !password) {
-        throw new Error('验证码不能为空');
-      }
-
-      // 本地模拟登录逻辑
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // 生成脱敏的手机号格式：111****1111
-      const maskedPhone = identifier.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
-      
-      const mockUser = {
-        id: Date.now(),
-        username: maskedPhone,
-        phone: identifier,
-        nickname: maskedPhone,
-        email: '',
-        avatar: '',
-        bio: '',
-        createdAt: new Date().toISOString()
-      };
-
-      const mockData = {
-        access_token: 'mock_token_' + Date.now(),
-        refresh_token: 'mock_refresh_' + Date.now(),
-        user: mockUser
-      };
-
-      // 保存状态
-      token.value = mockData.access_token;
-      refreshToken.value = mockData.refresh_token;
-      user.value = mockData.user;
-
-      // 持久化
-      localStorage.setItem('winters_token', mockData.access_token);
-      localStorage.setItem('winters_refresh_token', mockData.refresh_token);
-      localStorage.setItem('winters_user', JSON.stringify(mockData.user));
+      localStorage.setItem('winters_token', data.token);
+      localStorage.setItem('winters_user', JSON.stringify(data.user));
       localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', mockData.user.username);
 
-      return { success: true, user: mockData.user };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
 
   // 注册
-  async function register(phone, email, password, nickname) {
+  async function register(account, password, confirmPassword) {
     try {
-      // 本地模拟注册逻辑
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ account, password, confirm_password: confirmPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '注册失败');
 
-      if (!phone || !email || !password) {
-        throw new Error('注册信息不完整');
-      }
-
-      // 生成脱敏的手机号格式：111****1111
-      const maskedPhone = phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
-
-      const mockUser = {
-        id: Date.now(),
-        username: nickname || maskedPhone,
-        nickname: nickname || maskedPhone,
-        phone: phone,
-        email: email,
-        avatar: '',
-        bio: '',
-        createdAt: new Date().toISOString()
-      };
-
-      const mockData = {
-        access_token: 'mock_token_' + Date.now(),
-        refresh_token: 'mock_refresh_' + Date.now(),
-        user: mockUser
-      };
-
-      // 注册成功后自动登录
-      token.value = mockData.access_token;
-      refreshToken.value = mockData.refresh_token;
-      user.value = mockData.user;
-
-      localStorage.setItem('winters_token', mockData.access_token);
-      localStorage.setItem('winters_refresh_token', mockData.refresh_token);
-      localStorage.setItem('winters_user', JSON.stringify(mockData.user));
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', mockData.user.username);
-
-      return { success: true, user: mockData.user };
+      // 注册成功自动登录
+      return await login(account, password);
     } catch (error) {
       return { success: false, error: error.message };
     }

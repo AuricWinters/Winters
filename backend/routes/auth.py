@@ -3,19 +3,35 @@
 提供用户注册、登录、Token 管理等认证相关接口
 """
 
-from fastapi import APIRouter, HTTPException, status
-import sys
-import os
+from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import jwt
+import sys, os, datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database import get_db
 from models import UserCreate, UserLogin, UserResponse, MessageResponse, SendCodeRequest, CodeLoginRequest, ResetPasswordRequest, SocialLoginRequest, SocialLoginResponse
 import crud
 import utils
 
+JWT_SECRET = "winters-secret-key-2026"
+JWT_ALGORITHM = "HS256"
+security = HTTPBearer()
+
+def create_token(user_id: int, account: str) -> str:
+    payload = {"user_id": user_id, "account": account, "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)}
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return {"user_id": payload["user_id"], "account": payload["account"]}
+    except:
+        raise HTTPException(401, "无效的认证令牌")
+
 # 创建认证路由器，前缀为 /api/auth
 router = APIRouter(
     prefix="/api/auth",
-    tags=["认证"]  # 用于 Swagger 文档分组
+    tags=["认证"]
 )
 
 
@@ -83,7 +99,7 @@ async def register(user: UserCreate):
     return MessageResponse(message="注册成功")
 
 
-@router.post("/login", response_model=UserResponse)
+@router.post("/login")
 async def login(user: UserLogin):
     """
     用户登录接口
@@ -131,16 +147,11 @@ async def login(user: UserLogin):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="密码错误"
             )
-        
-        # 构造响应数据（不返回密码）
-        return UserResponse(
-            id=db_user["id"],
-            account=db_user["account"],
-            nickname=db_user.get("nickname"),
-            phone=db_user.get("phone"),
-            email=db_user.get("email"),
-            created_at=db_user["created_at"]
-        )
+
+        return {
+            "token": create_token(db_user["id"], db_user["account"]),
+            "user": db_user
+        }
 
 
 @router.post("/send-code", response_model=MessageResponse)

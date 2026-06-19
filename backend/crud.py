@@ -43,6 +43,14 @@ def get_user_by_account(db: sqlite3.Connection, account: str) -> Optional[Dict[s
         raise Exception(f"数据库查询错误: {e}")
 
 
+import bcrypt
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+def check_password(password: str, hashed: str) -> bool:
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
 def create_user(db: sqlite3.Connection, user_data: UserCreate) -> Dict[str, Any]:
     """
     创建新用户
@@ -78,7 +86,7 @@ def create_user(db: sqlite3.Connection, user_data: UserCreate) -> Dict[str, Any]
             INSERT INTO users (account, password) 
             VALUES (?, ?)
             """,
-            (user_data.account, user_data.password)
+            (user_data.account, hash_password(user_data.password))
         )
         
         # 获取新创建的用户ID
@@ -139,7 +147,7 @@ def verify_password(db: sqlite3.Connection, account: str, password: str) -> bool
             return False
         
         # 验证密码（明文比较，生产环境应使用哈希）
-        is_valid = user["password"] == password
+        is_valid = check_password(password, user["password"])
         
         if is_valid:
             print(f"[OK] 密码验证成功: {account}")
@@ -330,7 +338,7 @@ def reset_password(db: sqlite3.Connection, account: str, new_password: str) -> b
     try:
         cursor = db.execute(
             "UPDATE users SET password = ? WHERE account = ?",
-            (new_password, account)
+            (hash_password(new_password), account)
         )
         
         if cursor.rowcount > 0:
@@ -397,7 +405,7 @@ def reset_password_by_phone(db: sqlite3.Connection, phone: str, new_password: st
     try:
         cursor = db.execute(
             "UPDATE users SET password = ? WHERE phone = ?",
-            (new_password, phone)
+            (hash_password(new_password), phone)
         )
         
         if cursor.rowcount > 0:

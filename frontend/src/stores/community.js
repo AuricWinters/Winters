@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
+function authHeaders() {
+  const token = localStorage.getItem('winters_token') || '';
+  return token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+}
+
 export const useCommunityStore = defineStore('community', () => {
   const posts = ref([]);
   const loading = ref(false);
@@ -17,7 +22,7 @@ export const useCommunityStore = defineStore('community', () => {
     loading.value = true;
     try {
       const params = new URLSearchParams({ page: page.value, category: category.value, tag: tag.value });
-      const res = await fetch(`/api/posts?${params}`);
+      const res = await fetch(`/api/posts?${params}`, { headers: authHeaders() });
       const data = await res.json();
       if (reset) posts.value = data.posts;
       else posts.value.push(...data.posts);
@@ -37,7 +42,7 @@ export const useCommunityStore = defineStore('community', () => {
 
   async function toggleLike(post) {
     try {
-      const res = await fetch(`/api/posts/${post.id}/like`, { method: 'POST' });
+      const res = await fetch(`/api/posts/${post.id}/like`, { method: 'POST', headers: authHeaders() });
       const data = await res.json();
       post.liked = data.liked;
       post.likes_count = data.likes_count;
