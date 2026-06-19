@@ -294,7 +294,7 @@ const handleRegister = async () => {
   isLoading.value = true;
 
   try {
-    const result = await userStore.register(form.phone, form.email, form.password);
+    const result = await userStore.register(form.phone, form.password, form.confirmPassword);
 
     if (result.success) {
       showToast(t('注册成功！正在跳转...'), 'success');
