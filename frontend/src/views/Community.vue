@@ -137,6 +137,14 @@
           </div>
         </article>
 
+        <!-- 空状态 -->
+        <div v-if="!store.loading && feedPosts.length === 0 && !store.tag && !store.category" class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3>{{ t('还没有动态') }}</h3>
+          <p>{{ t('成为第一个分享的人吧') }}</p>
+          <button class="empty-cta" @click="$router.push('/community/new')">{{ t('发布第一条动态') }}</button>
+        </div>
+
         <!-- 加载更多 -->
         <div class="load-more" v-if="store.hasMore">
           <button class="load-btn" @click="loadMore">{{ t('加载更多') }}</button>
@@ -413,6 +421,18 @@ onMounted(() => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .load-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* ═══ 空状态 ═══ */
+.empty-state { text-align: center; padding: 60px 20px; }
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-main); }
+.empty-state p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+.empty-cta {
+  padding: 10px 28px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.empty-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.3); }
 
 /* ═══ 左侧边栏 ═══ */
 .left-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 16px; }

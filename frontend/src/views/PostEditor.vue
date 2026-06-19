@@ -105,6 +105,7 @@ import { useI18n } from '../composables/useI18n.js';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
 import { useToast } from '../composables/useToast.js';
+import { useCommunityStore } from '../stores/community.js';
 
 const { t } = useI18n();
 const { showToast } = useToast();
@@ -182,6 +183,7 @@ async function handleSubmit() {
 
     if (res.ok) {
       showToast(t('发布成功'), 'success');
+      useCommunityStore().fetchPosts(true);
       router.push('/community');
     } else {
       const data = await res.json().catch(() => ({}));
