@@ -120,15 +120,15 @@
                 <form @submit.prevent="handleChangePassword" class="j-form">
                   <div class="field-row">
                     <span class="field-emoji">🔒</span>
-                    <input v-model="pwdForm.current" type="password" :placeholder="t('当前密码')" :disabled="saving" />
+                    <input v-model="pwdForm.current" type="password" autocomplete="current-password" :placeholder="t('当前密码')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">🆕</span>
-                    <input v-model="pwdForm.newPwd" type="password" :placeholder="t('新密码（至少6位）')" :disabled="saving" />
+                    <input v-model="pwdForm.newPwd" type="password" autocomplete="new-password" :placeholder="t('新密码（至少6位）')" :disabled="saving" />
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">✅</span>
-                    <input v-model="pwdForm.confirm" type="password" :placeholder="t('确认新密码')" :disabled="saving" />
+                    <input v-model="pwdForm.confirm" type="password" autocomplete="new-password" :placeholder="t('确认新密码')" :disabled="saving" />
                   </div>
                   <p v-if="pwdError" class="field-error">{{ pwdError }}</p>
                   <button type="submit" class="j-btn-sm" :disabled="saving">
