@@ -718,7 +718,7 @@ onUnmounted(() => {
 .j-form { display: flex; flex-direction: column; gap: 10px; }
 .field-row { display: flex; align-items: center; gap: 12px; border-bottom: 1.5px dashed var(--border-color); padding-bottom: 6px; }
 .field-emoji { font-size: 20px; flex-shrink: 0; }
-.field-row input, .field-row textarea { flex: 1; border: none; background: transparent; padding: 12px 0; font-size: 15px; color: var(--text-main); outline: none; font-family: inherit; resize: none; }
+.field-row input, .field-row textarea { flex: 1; border: none; background: transparent; padding: 12px 0; font-size: 15px; color: var(--text-main); outline: none; font-family: inherit; resize: none; caret-color: var(--primary); }
 .field-row input::placeholder, .field-row textarea::placeholder { color: var(--text-secondary); opacity: 0.6; }
 .field-badge { font-size: 11px; padding: 2px 10px; border-radius: 10px; flex-shrink: 0; }
 .field-badge.ok { background: var(--success-light); color: var(--success-text); }
