@@ -244,11 +244,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'Winters';
   
-  // 检查是否需要登录
+  // 检查 JWT token 是否存在
   if (to.meta.requiresAuth) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      // 未登录，重定向到登录页
+    const token = localStorage.getItem('winters_token');
+    if (!token) {
       next({ name: 'Login' });
     } else {
       next();
