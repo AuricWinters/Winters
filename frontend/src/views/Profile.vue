@@ -459,10 +459,9 @@ const handleAvatarChange = async (e) => {
   e.target.value = '';
 };
 
-const loadUserProfile = async () => {
+const loadUserProfile = () => {
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 300));
     const info = userStore.user;
     if (info) {
       user.username = info.username || info.phone || t('用户');
@@ -471,7 +470,7 @@ const loadUserProfile = async () => {
       form.nickname = user.nickname; form.phone = user.phone; form.email = user.email; form.bio = user.bio;
     }
   } catch { showToast(t('加载用户信息失败'), 'error'); }
-  finally { saving.value = false; }
+  saving.value = false;
 };
 
 const handleUpdateProfile = async () => {

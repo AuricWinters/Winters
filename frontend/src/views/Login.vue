@@ -450,7 +450,7 @@ const sendCode = async () => {
     }
   } catch (error) {
     codeCountdown.value = 60;
-    showToast(t('验证码已发送（模拟）'), 'success');
+    showToast(t('验证码已发送'), 'success');
 
     countdownTimer = setInterval(() => {
       codeCountdown.value--;
