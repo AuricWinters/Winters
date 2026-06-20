@@ -28,7 +28,7 @@ def get_user_by_account(db: sqlite3.Connection, account: str) -> Optional[Dict[s
     """
     try:
         cursor = db.execute(
-            "SELECT id, account, password, created_at FROM users WHERE account = ?",
+            "SELECT id, account, password, nickname, phone, email, is_admin, created_at FROM users WHERE account = ?",
             (account,)
         )
         user = cursor.fetchone()

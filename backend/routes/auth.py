@@ -156,9 +156,11 @@ async def login(user: UserLogin):
                 detail="密码错误"
             )
 
+        user_data = dict(db_user)
+        user_data.pop("password", None)  # 不返回密码
         return {
             "token": create_token(db_user["id"], db_user["account"]),
-            "user": dict(db_user)
+            "user": user_data
         }
 
 
