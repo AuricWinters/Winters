@@ -502,10 +502,17 @@ const handleChangePassword = async () => {
   if (pwdForm.newPwd !== pwdForm.confirm) { pwdError.value = t('两次输入的密码不一致'); return; }
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 600));
+    const token = localStorage.getItem('winters_token') || '';
+    const res = await fetch('/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ old_password: pwdForm.current, new_password: pwdForm.newPwd })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || '修改失败');
     pwdForm.current = ''; pwdForm.newPwd = ''; pwdForm.confirm = '';
     showToast(t('密码修改成功 🔒'), 'success');
-  } catch { showToast(t('修改失败，请重试'), 'error'); }
+  } catch (e) { pwdError.value = e.message; }
   finally { saving.value = false; }
 };
 

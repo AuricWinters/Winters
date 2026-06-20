@@ -327,6 +327,21 @@ async def reset_password(request: ResetPasswordRequest):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="密码重置失败，用户不存在"
             )
+
+
+@router.post("/change-password")
+async def change_password(request: dict, user=Depends(get_current_user)):
+    old_pw = request.get("old_password", "")
+    new_pw = request.get("new_password", "")
+    if not old_pw or not new_pw or len(new_pw) < 6:
+        raise HTTPException(400, "密码至少6位")
+    with get_db() as db:
+        if not crud.verify_password(db, user["account"], old_pw):
+            raise HTTPException(400, "旧密码错误")
+        from crud import hash_password
+        db.execute("UPDATE users SET password = ? WHERE id = ?", (hash_password(new_pw), user["user_id"]))
+        db.commit()
+    return {"message": "密码修改成功"}
         
     return MessageResponse(message="密码重置成功")
 
