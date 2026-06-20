@@ -41,7 +41,8 @@ Winters/
 | 路径 | 页面 | 认证 |
 |------|------|------|
 | `/` | 首页 | 否 |
-| `/blog` | 动态 | 否 |
+| `/blog` | 动态（社区帖子流） | 否 |
+| `/community` `/community/new` `/community/:id` | AI 社区 / 发帖 / 详情 | 部分（发帖需登录） |
 | `/projects` `/projects/:id` | 项目列表 / 详情 | 否 |
 | `/care` | 暖心关怀 | 否 |
 | `/learning` | AI 学习路线 | 否 |
@@ -57,10 +58,11 @@ Winters/
 
 | Store | 职责 |
 |-------|------|
-| `useUserStore` | 认证、用户信息（localStorage 持久化，mock 后端） |
+| `useUserStore` | 认证/用户信息（JWT + bcrypt，真 API，非 mock） |
 | `useSettingsStore` | 主题/深色模式/字体/动画偏好（localStorage 持久化） |
 | `useDataStore` | 静态数据（profile.json, projects.json, blogs.json） |
 | `useAIStore` | AI 对话管理（Ollama / OpenAI 双后端） |
+| `useCommunityStore` | 社区帖子/标签/分页/点赞（后端 API 驱动） |
 | `useEffectStore` | 动效槽位管理（9 个槽位，localStorage 持久化） |
 
 ## CSS 约定
@@ -139,8 +141,9 @@ useParticles('.particles-background');
 
 - FastAPI 运行在 `localhost:8000`
 - Vite dev server 代理：`/api` → `http://localhost:8000`，`/ws` → `ws://localhost:8000`
-- SQLite 数据库：`backend/data/winters.db`
-- 认证：mock 实现（本地模拟登录），API 端点完整
+- SQLite 数据库：`backend/data/winters.db`（6 表：users/posts/comments/likes/tags/verification_codes）
+- 当前版本：v0.5.3 | 下一步：v0.6.0 社区完善
+- 认证：JWT + bcrypt 真实现，`/api/auth/*` 9 端点（register/login/code/reset-password/change-password/social）
 
 ## 开发命令
 
