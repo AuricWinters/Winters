@@ -398,26 +398,22 @@ const handleCodeLogin = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone: form.phone, code: form.code }),
     });
-
     if (response.ok) {
-      const result = await userStore.login(form.phone, form.code, true);
-
-      if (result.success) {
-        showToast(t('登录成功！正在跳转...'), 'success');
-        setTimeout(() => {
-          router.push('/');
-        }, 1000);
-      } else {
-        showToast(result.error, 'error');
-        triggerShake();
-      }
+      const data = await response.json();
+      userStore.token = data.token || '';
+      userStore.user = data.user || data;
+      if (data.token) localStorage.setItem('winters_token', data.token);
+      if (data.user) localStorage.setItem('winters_user', JSON.stringify(data.user));
+      localStorage.setItem('isLoggedIn', 'true');
+      showToast(t('登录成功！正在跳转...'), 'success');
+      setTimeout(() => router.push('/'), 1000);
     } else {
       const error = await response.json();
       showToast(error.detail || t('登录失败'), 'error');
       triggerShake();
     }
   } catch (error) {
-    showToast(t('验证码登录功能开发中'), 'info');
+    showToast(t('网络错误，请重试'), 'error');
   } finally {
     isLoading.value = false;
   }

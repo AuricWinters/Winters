@@ -114,17 +114,13 @@ const filteredPosts = computed(() => {
 async function fetchPosts() {
   state.loading = true;
   state.error = null;
-
   try {
-    // 模拟网络请求延迟
-    await new Promise(resolve => setTimeout(resolve, 500));
-    state.posts = dataStore.blogs;
+    const res = await fetch('/api/posts?page=1');
+    const data = await res.json();
+    state.posts = (data.posts || []).map(p => ({ ...p, id: p.id, title: p.title, content: p.content, created_at: p.created_at }));
   } catch (err) {
-    state.error = err.message;
-    showToast({
-      message: '加载博客数据失败，请稍后重试',
-      type: 'error',
-    });
+    state.posts = dataStore.blogs;
+  } finally {
   } finally {
     state.loading = false;
   }

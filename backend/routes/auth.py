@@ -254,15 +254,10 @@ async def code_login(request: CodeLoginRequest):
                 detail="该手机号未注册"
             )
         
-        # 构造响应数据（不返回密码）
-        return UserResponse(
-            id=db_user["id"],
-            account=db_user["account"],
-            nickname=db_user.get("nickname"),
-            phone=db_user.get("phone"),
-            email=db_user.get("email"),
-            created_at=db_user["created_at"]
-        )
+        # 返回 token
+        user_data = dict(db_user)
+        user_data.pop("password", None)
+        return {"token": create_token(db_user["id"], db_user["account"]), "user": user_data}
 
 
 @router.post("/reset-password", response_model=MessageResponse)
