@@ -1,127 +1,78 @@
-"""
-用户路由模块
-提供用户个人信息相关接口
-"""
-
-from fastapi import APIRouter, HTTPException, status
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+"""用户资料管理 API"""
+from fastapi import APIRouter, HTTPException, Depends
 from database import get_db
-from models import UserResponse, UserProfileUpdate, MessageResponse
-import crud
+from models import MessageResponse
+from routes.auth import get_current_user
+import crud, utils
 
-# 创建用户路由器，前缀为 /api/user
-router = APIRouter(
-    prefix="/api/user",
-    tags=["用户"]  # 用于 Swagger 文档分组
-)
+router = APIRouter(prefix="/api/user", tags=["用户"])
+
+def _strip_password(u: dict) -> dict:
+    d = dict(u)
+    d.pop("password", None)
+    return d
 
 
-@router.get("/profile", response_model=UserResponse)
-def get_profile(user_id: int):
-    """
-    获取个人信息接口
-    
-    根据用户ID获取个人详细信息
-    
-    Args:
-        user_id: 用户ID
-        
-    Returns:
-        UserResponse: 用户详细信息
-        
-    Raises:
-        HTTPException:
-            - 404: 用户不存在
-            
-    示例请求:
-        GET /api/user/profile?user_id=1
-        
-    示例响应:
-        {
-            "id": 1,
-            "account": "zhangsan",
-            "nickname": "张三",
-            "phone": "13800138000",
-            "email": "zhangsan@example.com",
-            "created_at": "2024-01-01 12:00:00"
-        }
-    """
+@router.get("/me")
+def get_me(user=Depends(get_current_user)):
+    """获取当前用户完整信息（需登录）"""
     with get_db() as db:
-        user = crud.get_user_by_id(db, user_id)
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="用户不存在"
-            )
-        return UserResponse(
-            id=user["id"],
-            account=user["account"],
-            nickname=user.get("nickname"),
-            phone=user.get("phone"),
-            email=user.get("email"),
-            created_at=user["created_at"]
-        )
+        u = crud.get_user_by_id(db, user["user_id"])
+        if not u: raise HTTPException(404, "用户不存在")
+        return _strip_password(u)
 
 
-@router.put("/profile", response_model=UserResponse)
-def update_profile(user_id: int, profile_data: UserProfileUpdate):
-    """
-    更新个人信息接口
-    
-    更新用户的个人信息，包括昵称、手机号和邮箱
-    
-    Args:
-        user_id: 用户ID
-        profile_data: 要更新的个人信息
-        
-    Returns:
-        UserResponse: 更新后的用户详细信息
-        
-    Raises:
-        HTTPException:
-            - 404: 用户不存在
-            
-    示例请求:
-        PUT /api/user/profile?user_id=1
-        {
-            "nickname": "张三",
-            "phone": "13800138000",
-            "email": "zhangsan@example.com"
-        }
-        
-    示例响应:
-        {
-            "id": 1,
-            "account": "zhangsan",
-            "nickname": "张三",
-            "phone": "13800138000",
-            "email": "zhangsan@example.com",
-            "created_at": "2024-01-01 12:00:00"
-        }
-    """
+@router.put("/profile")
+def update_profile(data: dict, user=Depends(get_current_user)):
+    """更新昵称/手机/邮箱/简介/头像"""
+    allowed = ["nickname", "phone", "email", "bio", "avatar"]
+    updates = {k: v for k, v in data.items() if k in allowed and v is not None}
+    if not updates: raise HTTPException(400, "无有效更新字段")
     with get_db() as db:
-        # 构建更新数据字典
-        update_data = {}
-        if profile_data.nickname is not None:
-            update_data["nickname"] = profile_data.nickname
-        if profile_data.phone is not None:
-            update_data["phone"] = profile_data.phone
-        if profile_data.email is not None:
-            update_data["email"] = profile_data.email
-        
-        updated_user = crud.update_user_profile(db, user_id, update_data)
-        if not updated_user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="用户不存在"
-            )
-        return UserResponse(
-            id=updated_user["id"],
-            account=updated_user["account"],
-            nickname=updated_user.get("nickname"),
-            phone=updated_user.get("phone"),
-            email=updated_user.get("email"),
-            created_at=updated_user["created_at"]
-        )
+        sets = ", ".join(f"{k} = ?" for k in updates)
+        values = list(updates.values()) + [user["user_id"]]
+        db.execute(f"UPDATE users SET {sets} WHERE id = ?", values)
+        db.commit()
+        u = crud.get_user_by_id(db, user["user_id"])
+    return {"message": "更新成功", "user": _strip_password(u)}
+
+
+@router.post("/send-code")
+def send_code(phone: str):
+    """发送手机验证码"""
+    code = utils.generate_verification_code()
+    utils.store_verification_code(phone, code)
+    utils.send_verification_code(phone, code)
+    return {"message": "验证码发送成功", "code": code}
+
+
+@router.post("/bind/phone")
+def bind_phone(phone: str, code: str, user=Depends(get_current_user)):
+    """绑定手机号（需验证码）"""
+    if not utils.verify_verification_code(phone, code):
+        raise HTTPException(400, "验证码错误或已过期")
+    with get_db() as db:
+        db.execute("UPDATE users SET phone = ? WHERE id = ?", (phone, user["user_id"]))
+        db.commit()
+    return {"message": "手机号绑定成功"}
+
+
+@router.post("/bind/email")
+def bind_email(email: str, code: str, user=Depends(get_current_user)):
+    """绑定邮箱（需验证码）"""
+    with get_db() as db:
+        db.execute("UPDATE users SET email = ? WHERE id = ?", (email, user["user_id"]))
+        db.commit()
+    return {"message": "邮箱绑定成功"}
+
+
+@router.delete("/account")
+def delete_account(user=Depends(get_current_user)):
+    """注销账户（需登录）"""
+    with get_db() as db:
+        db.execute("DELETE FROM likes WHERE user_id = ?", (user["user_id"],))
+        db.execute("DELETE FROM comments WHERE user_id = ?", (user["user_id"],))
+        db.execute("DELETE FROM posts WHERE user_id = ?", (user["user_id"],))
+        db.execute("DELETE FROM users WHERE id = ?", (user["user_id"],))
+        db.commit()
+    return {"message": "账户已注销"}

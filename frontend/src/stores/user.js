@@ -77,78 +77,54 @@ export const useUserStore = defineStore('user', () => {
     };
   }
 
-  // 更新用户信息
+  // 更新用户信息（真API）
   async function updateUserInfo(updates) {
     try {
-      // 本地模拟更新逻辑
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // 更新本地用户信息
-      user.value = { ...user.value, ...updates };
-
-      // 持久化
-      localStorage.setItem('winters_user', JSON.stringify(user.value));
-      if (updates.username || updates.nickname) {
-        localStorage.setItem('username', updates.username || updates.nickname || user.value.username);
-      }
-
-      return { success: true, user: user.value };
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(updates)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '更新失败');
+      user.value = data.user;
+      localStorage.setItem('winters_user', JSON.stringify(data.user));
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
 
-  // 获取用户详情
+  // 获取用户详情（从服务器）
   async function getUserInfo() {
     try {
-      // 本地模拟获取用户信息
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // 如果用户信息不存在，返回空对象
-      if (!user.value) {
-        return { success: false, error: '用户未登录' };
-      }
-
-      return { success: true, user: user.value };
+      const res = await fetch('/api/user/me', { headers: getAuthHeaders() });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '获取失败');
+      user.value = data;
+      localStorage.setItem('winters_user', JSON.stringify(data));
+      return { success: true, user: data };
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
 
-  // 刷新令牌
-  async function refreshTokenFunc() {
+  // 注销账户
+  async function deleteAccount() {
     try {
-      // 本地模拟刷新令牌
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      const newToken = 'mock_token_' + Date.now();
-      const newRefreshToken = 'mock_refresh_' + Date.now();
-
-      token.value = newToken;
-      refreshToken.value = newRefreshToken;
-
-      localStorage.setItem('winters_token', newToken);
-      localStorage.setItem('winters_refresh_token', newRefreshToken);
-
-      return { success: true, token: newToken };
+      const res = await fetch('/api/user/account', { method: 'DELETE', headers: getAuthHeaders() });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '注销失败');
+      logout();
+      return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
 
   return {
-    token,
-    refreshToken,
-    user,
-    isLoggedIn,
-    username,
-    userId,
-    login,
-    register,
-    logout,
-    getAuthHeaders,
-    updateUserInfo,
-    getUserInfo,
-    refreshTokenFunc,
+    token, refreshToken, user, isLoggedIn, username, userId,
+    login, register, logout, getAuthHeaders,
+    updateUserInfo, getUserInfo, deleteAccount,
   };
 });

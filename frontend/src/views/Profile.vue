@@ -470,20 +470,19 @@ const loadUserProfile = async () => {
   finally { saving.value = false; }
 };
 
-const persistUser = () => {
-  const updated = { ...userStore.user, nickname: user.nickname, phone: user.phone, email: user.email, avatar: user.avatar, bio: user.bio };
-  userStore.user = updated;
-  localStorage.setItem('winters_user', JSON.stringify(updated));
-};
-
 const handleUpdateProfile = async () => {
   if (!validateForm()) { showToast(t('请检查表单信息'), 'warning'); return; }
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 500));
-    user.nickname = form.nickname; user.phone = form.phone; user.email = form.email; user.bio = form.bio;
-    persistUser();
-    showToast(t('个人信息更新成功 ✨'), 'success');
+    const result = await userStore.updateUserInfo({
+      nickname: form.nickname, phone: form.phone, email: form.email, bio: form.bio
+    });
+    if (result.success) {
+      user.nickname = form.nickname; user.phone = form.phone; user.email = form.email; user.bio = form.bio;
+      showToast(t('个人信息更新成功 ✨'), 'success');
+    } else {
+      showToast(result.error || t('更新失败'), 'error');
+    }
   } catch { showToast(t('更新失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
@@ -527,7 +526,9 @@ const sendCode = async (type) => {
   if (codeCountdown.value > 0) return;
   codeSending.value = true;
   try {
-    await new Promise(r => setTimeout(r, 300));
+    const phone = type === 'phone' ? bindPanel.phone : user.phone;
+    if (!phone) { showToast(t('请先输入手机号'), 'warning'); codeSending.value = false; return; }
+    await fetch(`/api/user/send-code?phone=${encodeURIComponent(phone)}`);
     codeCountdown.value = 60;
     codeTimer = setInterval(() => { codeCountdown.value--; if (codeCountdown.value <= 0) { clearInterval(codeTimer); codeTimer = null; } }, 1000);
     showToast(t('验证码已发送 📨'), 'success');
@@ -541,12 +542,15 @@ const handleBindPhone = async () => {
   if (!bindPanel.phone || !bindPanel.phoneCode) { showToast(t('请填写手机号和验证码'), 'warning'); return; }
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 500));
+    const token = localStorage.getItem('winters_token') || '';
+    const res = await fetch(`/api/user/bind/phone?phone=${encodeURIComponent(bindPanel.phone)}&code=${encodeURIComponent(bindPanel.phoneCode)}`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || '绑定失败');
     user.phone = bindPanel.phone; form.phone = bindPanel.phone;
     bindPanel.phone = ''; bindPanel.phoneCode = ''; bindPanel.phoneOpen = false;
-    persistUser();
+    await userStore.getUserInfo();
     showToast(t('手机号绑定成功 📱'), 'success');
-  } catch { showToast(t('绑定失败，请重试'), 'error'); }
+  } catch (e) { showToast(e.message || t('绑定失败'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -554,12 +558,15 @@ const handleBindEmail = async () => {
   if (!bindPanel.email || !bindPanel.emailCode) { showToast(t('请填写邮箱和验证码'), 'warning'); return; }
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 500));
+    const token = localStorage.getItem('winters_token') || '';
+    const res = await fetch(`/api/user/bind/email?email=${encodeURIComponent(bindPanel.email)}&code=${encodeURIComponent(bindPanel.emailCode)}`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || '绑定失败');
     user.email = bindPanel.email; form.email = bindPanel.email;
     bindPanel.email = ''; bindPanel.emailCode = ''; bindPanel.emailOpen = false;
-    persistUser();
+    await userStore.getUserInfo();
     showToast(t('邮箱绑定成功 📧'), 'success');
-  } catch { showToast(t('绑定失败，请重试'), 'error'); }
+  } catch (e) { showToast(e.message || t('绑定失败'), 'error'); }
   finally { saving.value = false; }
 };
 
@@ -606,13 +613,13 @@ const handleDeleteAccount = async () => {
   if (!deletePassword.value) { showToast(t('请输入密码确认'), 'warning'); return; }
   saving.value = true;
   try {
-    await new Promise(r => setTimeout(r, 800));
-    // 清除所有本地用户数据，模拟账户注销
-    userStore.logout();
-    localStorage.removeItem('winters_active_days');
-    localStorage.removeItem('winters_last_active');
-    showToast(t('本地账户数据已清除 💔'), 'info');
-    setTimeout(() => router.push('/'), 500);
+    const result = await userStore.deleteAccount();
+    if (result.success) {
+      showToast(t('账户已注销 💔'), 'info');
+      setTimeout(() => router.push('/'), 500);
+    } else {
+      showToast(result.error || t('注销失败'), 'error');
+    }
   } catch { showToast(t('注销失败，请重试'), 'error'); }
   finally { saving.value = false; }
 };
