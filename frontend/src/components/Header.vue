@@ -35,6 +35,17 @@
           {{ t('动态') }}
         </router-link>
         <router-link
+          to="/community"
+          class="nav-item"
+          :class="{ active: $route.path.startsWith('/community') }"
+          role="tab"
+          :aria-selected="$route.path.startsWith('/community')"
+          @mouseenter="moveGliderTo($event)"
+          @focus="moveGliderTo($event)"
+        >
+          {{ t('社区') }}
+        </router-link>
+        <router-link
           to="/drive"
           class="nav-item"
           :class="{ active: $route.path === '/drive' }"
