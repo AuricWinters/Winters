@@ -385,37 +385,34 @@ async def social_login(request: SocialLoginRequest):
         )
     
     try:
-        # 根据提供商调用相应的登录函数
         if request.provider == "wechat":
             user_info = utils.mock_wechat_login(request.code)
-            provider_id = user_info.get("openid")
+            account = f"wechat_{user_info.get('openid','')}"
         elif request.provider == "github":
             user_info = utils.mock_github_login(request.code)
-            provider_id = user_info.get("id")
-        
-        # 创建或更新用户
-        social_user = utils.create_or_update_social_user(
-            request.provider, provider_id, user_info
-        )
-        
-        # 模拟用户ID和创建时间
-        # 实际项目中应该从数据库获取
-        user_response = UserResponse(
-            id=1,  # 模拟ID
-            account=social_user["account"],
-            nickname=social_user["nickname"],
-            created_at="2024-01-01 12:00:00"  # 模拟时间
-        )
-        
-        return SocialLoginResponse(
-            user=user_response,
-            message="登录成功"
-        )
+            account = f"github_{user_info.get('id','')}"
+
+        # 查找或创建用户
+        with get_db() as db:
+            db_user = crud.get_user_by_account(db, account)
+            if not db_user:
+                from crud import hash_password
+                import secrets
+                db.execute(
+                    "INSERT INTO users (account, password, nickname, phone, email) VALUES (?, ?, ?, ?, ?)",
+                    (account, hash_password(secrets.token_hex(16)), user_info.get("nickname",""), "", "")
+                )
+                db.commit()
+                db_user = crud.get_user_by_account(db, account)
+
+            user_data = dict(db_user)
+            user_data.pop("password", None)
+            return {
+                "token": create_token(db_user["id"], db_user["account"]),
+                "user": user_data
+            }
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"第三方登录失败: {str(e)}"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"第三方登录失败: {str(e)}")
 
 
 @router.get("/social/callback/{provider}")

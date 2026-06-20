@@ -445,12 +445,16 @@ const stats = computed(() => {
 
 const avatarInput = ref(null);
 const triggerAvatarUpload = () => { avatarInput.value?.click(); };
-const handleAvatarChange = (e) => {
+const handleAvatarChange = async (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
   if (file.size > 1 * 1024 * 1024) { showToast(t('图片不能超过 1MB'), 'warning'); return; }
   const reader = new FileReader();
-  reader.onload = (ev) => { user.avatar = ev.target.result; showToast(t('头像已更新 ✨'), 'success'); persistUser(); };
+  reader.onload = async (ev) => {
+    user.avatar = ev.target.result;
+    await userStore.updateUserInfo({ avatar: ev.target.result });
+    showToast(t('头像已更新 ✨'), 'success');
+  };
   reader.readAsDataURL(file);
   e.target.value = '';
 };

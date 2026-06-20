@@ -465,43 +465,20 @@ const sendCode = async () => {
 
 const socialLogin = async (type) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const response = await fetch(`${API_BASE}/api/auth/social/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        provider: type,
-        code: 'mock_code_' + Date.now(),
-      }),
+      body: JSON.stringify({ provider: type, code: 'mock_code_' + Date.now() }),
     });
-
     if (response.ok) {
       const data = await response.json();
-
-      const mockUser = {
-        id: Date.now(),
-        username: type === 'wechat' ? t('微信用户') : t('GitHub用户'),
-        nickname: type === 'wechat' ? t('微信用户') : t('GitHub用户'),
-      };
-
-      const mockData = {
-        access_token: 'mock_token_' + Date.now(),
-        refresh_token: 'mock_refresh_' + Date.now(),
-        user: mockUser,
-      };
-
-      userStore.token = mockData.access_token;
-      userStore.refreshToken = mockData.refresh_token;
-      userStore.user = mockData.user;
-
-      localStorage.setItem('winters_token', mockData.access_token);
-      localStorage.setItem('winters_refresh_token', mockData.refresh_token);
-      localStorage.setItem('winters_user', JSON.stringify(mockData.user));
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', mockData.user.username);
-
-      showToast(`${type === 'wechat' ? t('微信') : 'GitHub'}登录成功！`, 'success');
+      if (data.token) {
+        userStore.token = data.token;
+        userStore.user = data.user;
+        localStorage.setItem('winters_token', data.token);
+        localStorage.setItem('winters_user', JSON.stringify(data.user));
+        localStorage.setItem('isLoggedIn', 'true');
+        showToast(`${type === 'wechat' ? '微信' : 'GitHub'}登录成功！`, 'success');
       setTimeout(() => {
         router.push('/');
       }, 1000);
@@ -526,7 +503,7 @@ const handleRegister = async () => {
   isLoading.value = true;
 
   try {
-    const result = await userStore.register(form.username, form.email, form.password);
+    const result = await userStore.register(form.username, form.password, form.password);
 
     if (result.success) {
       showToast(t('注册成功！正在跳转...'), 'success');
