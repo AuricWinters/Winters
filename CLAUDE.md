@@ -16,13 +16,13 @@
 ```
 Winters/
 ├── frontend/src/
-│   ├── views/            # 18 个页面
-│   │   └── lab/          # ParticleLab, PianoLab, CodeLab
-│   ├── components/       # 20 个全局组件（Header/Footer/SettingsPanel/Toast + React Bits: ShinyText/GlitchText/StarBorder/GlareHover/GradientText/DecayCard/DotField/MasonryGrid/BounceCards/AnimatedList/CircularText/RotatingText）
-│   ├── composables/      # 13 个 composable（useParticles/useToast/useScrollReveal/useBackToTop + React Bits: useSpotlight/useTilt/useMagnet/useClickSpark/useBlurReveal/useCountUp/useBounceEntry/useBorderGlow）
-│   ├── stores/           # 5 个 Pinia store（user, settings, data, ai, effects）
+│   ├── views/            # 30 个页面
+│   │   └── lab/          # ParticleLab, PianoLab, CodeLab, Game2048Lab, MinesweeperLab, ShowcaseIndex/Text/Hover/Entry/Bg/Ui/3d
+│   ├── components/       # 91 个全局组件（含 Header/Footer/SettingsPanel/Toast、React Bits 动效组件、Lab 组件、登录表单等）
+│   ├── composables/      # 15 个 composable（useParticles/useToast/useScrollReveal/useBackToTop/useI18n/useSettings + React Bits: useSpotlight/useTilt/useMagnet/useClickSpark/useBlurReveal/useCountUp/useBounceEntry/useBorderGlow）
+│   ├── stores/           # 6 个 Pinia store（user, settings, data, ai, community, effects）
 │   ├── router/           # Vue Router，路由守卫 + 懒加载
-│   ├── styles/modules/   # 8 个 CSS 模块（variables, base, layout, header, components, auth-forms, features, utilities）
+│   ├── styles/modules/   # 9 个 CSS 模块（variables, base, layout, header, components, auth-forms, features, utilities, journal）
 │   ├── utils/            # 工具函数（particles.js, throttle.js）
 │   └── data/             # 静态数据（profile.json, projects.json, blogs.json, learning-plan.js）
 ├── backend/
@@ -32,11 +32,11 @@ Winters/
 │   ├── crud.py           # 用户 CRUD
 │   ├── executor.py       # 代码执行引擎
 │   ├── utils.py          # 验证码 / 第三方登录
-│   └── routes/           # auth, user, code, websocket
+│   └── routes/           # auth, community, user, code, websocket
 └── .trae/specs/          # 30+ 功能 spec（TRAE Agent 生成）
 ```
 
-## 路由（24 条）
+## 路由（30 条）
 
 | 路径 | 页面 | 认证 |
 |------|------|------|
@@ -47,14 +47,14 @@ Winters/
 | `/care` | 暖心关怀 | 否 |
 | `/learning` | AI 学习路线 | 否 |
 | `/system` | 自驱工作站文档 | 否 |
-| `/lab` `/lab/particles` `/lab/piano` `/lab/code` `/lab/showcase` `/lab/showcase/text` `/lab/showcase/hover` `/lab/showcase/entry` `/lab/showcase/bg` `/lab/showcase/ui` `/lab/showcase/3d` | 实验室 / 粒子 / 钢琴 / 在线IDE / 组件实验室 / 文字特效 / 悬停交互 / 入场动画 / 背景装饰 / UI组件 / 3D工具 | 否 |
+| `/lab` `/lab/particles` `/lab/piano` `/lab/code` `/lab/2048` `/lab/minesweeper` `/lab/showcase` `/lab/showcase/text` `/lab/showcase/hover` `/lab/showcase/entry` `/lab/showcase/bg` `/lab/showcase/ui` `/lab/showcase/3d` | 实验室 / 粒子 / 钢琴 / 在线IDE / 2048 / 扫雷 / 组件实验室 / 文字特效 / 悬停交互 / 入场动画 / 背景装饰 / UI组件 / 3D工具 | 否 |
 | `/ai` | AI 聊天 | 否 |
 | `/drive` | 云盘 | 否 |
 | `/contact` | 联系我 | 否 |
 | `/login` `/register` `/reset-password` | 登录 / 注册 / 重置密码 | 否 |
 | `/profile` | 个人中心 | **是** |
 
-## 状态管理（Pinia）
+## 状态管理（Pinia，6 个 store）
 
 | Store | 职责 |
 |-------|------|
@@ -142,8 +142,8 @@ useParticles('.particles-background');
 - FastAPI 运行在 `localhost:8000`
 - Vite dev server 代理：`/api` → `http://localhost:8000`，`/ws` → `ws://localhost:8000`
 - SQLite 数据库：`backend/data/winters.db`（6 表：users/posts/comments/likes/tags/verification_codes）
-- 当前版本：v0.5.3 | 下一步：v0.6.0 社区完善
-- 认证：JWT + bcrypt 真实现，`/api/auth/*` 9 端点（register/login/code/reset-password/change-password/social）
+- 当前版本：v1.0.0
+- 认证：JWT + bcrypt 真实现，`/api/auth/*` 9 端点（status/register/login/code/reset-password/change-password/social/login/social/callback）
 
 ## 开发命令
 

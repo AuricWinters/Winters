@@ -7,13 +7,35 @@
     @pointerup="endDrag"
     @pointerleave="endDrag"
   >
-    <svg class="curved-loop-svg" viewBox="0 0 1440 120">
-      <text ref="measureRef" xml:space="preserve" style="visibility:hidden;opacity:0;pointer-events:none">{{ displayText }}</text>
+    <svg
+      class="curved-loop-svg"
+      viewBox="0 0 1440 120"
+    >
+      <text
+        ref="measureRef"
+        xml:space="preserve"
+        style="visibility:hidden;opacity:0;pointer-events:none"
+      >{{ displayText }}</text>
       <defs>
-        <path :id="pathId" :d="pathD" fill="none" stroke="transparent" />
+        <path
+          :id="pathId"
+          :d="pathD"
+          fill="none"
+          stroke="transparent"
+        />
       </defs>
-      <text v-if="ready" font-weight="bold" xml:space="preserve" :class="className">
-        <textPath ref="textPathRef" :href="'#' + pathId" :startOffset="offset + 'px'" xml:space="preserve">{{ totalText }}</textPath>
+      <text
+        v-if="ready"
+        font-weight="bold"
+        xml:space="preserve"
+        :class="className"
+      >
+        <textPath
+          ref="textPathRef"
+          :href="'#' + pathId"
+          :startOffset="offset + 'px'"
+          xml:space="preserve"
+        >{{ totalText }}</textPath>
       </text>
     </svg>
   </div>

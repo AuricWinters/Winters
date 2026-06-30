@@ -14,180 +14,225 @@
       </header>
 
       <div class="bento-grid">
-      <!-- Canvas Particles -->
-      <article 
-        class="bento-card card-particles scroll-reveal" 
-        @click="goToParticleLab"
-        style="--delay: 1;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-          <div class="dot-pattern"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Interactive</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <!-- Canvas Particles -->
+        <article 
+          class="bento-card card-particles scroll-reveal" 
+          style="--delay: 1;"
+          @click="goToParticleLab"
+        >
+          <div class="card-bg">
+            <div class="mesh-gradient" />
+            <div class="dot-pattern" />
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag">Interactive</span>
+              <div class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    d="M5 19L19 5M19 5v10M19 5H9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('Canvas 粒子动画') }}</h2>
+              <p>{{ t('基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('Canvas 粒子动画') }}</h2>
-            <p>{{ t('基于原生 Canvas API 构建的高性能粒子交互系统，支持万级粒子渲染与鼠标排斥物理模拟。') }}</p>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Web Audio -->
-      <article 
-        class="bento-card card-audio scroll-reveal" 
-        @click="goToPianoLab"
-        style="--delay: 2;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <!-- <span class="tag">Audio API</span> -->
-            <span class="tag wip">{{ t('开发中') }}</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <!-- Web Audio -->
+        <article 
+          class="bento-card card-audio scroll-reveal" 
+          style="--delay: 2;"
+          @click="goToPianoLab"
+        >
+          <div class="card-bg">
+            <div class="mesh-gradient" />
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <!-- <span class="tag">Audio API</span> -->
+              <span class="tag wip">{{ t('开发中') }}</span>
+              <div class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    d="M5 19L19 5M19 5v10M19 5H9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('Web Audio 钢琴') }}</h2>
+              <p>{{ t('利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('Web Audio 钢琴') }}</h2>
-            <p>{{ t('利用浏览器底层 AudioContext 开发的虚拟合成器，包含实时音频波形分析与按键发声交互。') }}</p>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- 2D Physics -->
-      <article 
-        class="bento-card card-physics disabled scroll-reveal" 
-        @click="showDevelopingToast"
-        style="--delay: 3;"
-      >
-        <div class="card-bg"></div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag wip">{{ t('开发中') }}</span>
+        <!-- 2D Physics -->
+        <article 
+          class="bento-card card-physics disabled scroll-reveal" 
+          style="--delay: 3;"
+          @click="showDevelopingToast"
+        >
+          <div class="card-bg" />
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag wip">{{ t('开发中') }}</span>
             <!-- <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div> -->
-          </div>
-          <div class="card-bottom">
-            <h2>{{ t('2D 物理引擎') }}</h2>
-            <p>{{ t('使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。') }}</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- 编程学习 -->
-      <article 
-        class="bento-card card-code scroll-reveal" 
-        @click="goToCodeLab"
-        style="--delay: 3;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <!-- <span class="tag">Code Lab</span> -->
-            <span class="tag wip">{{ t('开发中') }}</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('2D 物理引擎') }}</h2>
+              <p>{{ t('使用 Matter.js 实现的基础物理碰撞模拟器，用于测试重力、摩擦与刚体碰撞效果。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('编程学习实验室') }}</h2>
-            <p>{{ t('学习C、Python、JavaScript等多种编程语言的基础知识，通过交互式教程和示例代码快速掌握编程技能。') }}</p>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Regex Visualizer -->
-      <article 
-        class="bento-card card-regex disabled scroll-reveal" 
-        @click="showDevelopingToast"
-        style="--delay: 4;"
-      >
-        <div class="card-bg"></div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag wip">{{ t('开发中') }}</span>
+        <!-- 编程学习 -->
+        <article 
+          class="bento-card card-code scroll-reveal" 
+          style="--delay: 3;"
+          @click="goToCodeLab"
+        >
+          <div class="card-bg">
+            <div class="mesh-gradient" />
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <!-- <span class="tag">Code Lab</span> -->
+              <span class="tag wip">{{ t('开发中') }}</span>
+              <div class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    d="M5 19L19 5M19 5v10M19 5H9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('编程学习实验室') }}</h2>
+              <p>{{ t('学习C、Python、JavaScript等多种编程语言的基础知识，通过交互式教程和示例代码快速掌握编程技能。') }}</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Regex Visualizer -->
+        <article 
+          class="bento-card card-regex disabled scroll-reveal" 
+          style="--delay: 4;"
+          @click="showDevelopingToast"
+        >
+          <div class="card-bg" />
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag wip">{{ t('开发中') }}</span>
             <!-- <div class="icon-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div> -->
-          </div>
-          <div class="card-bottom">
-            <h2>{{ t('正则表达式可视化') }}</h2>
-            <p>{{ t('将复杂的正则表达式逻辑结构图形化，支持在线编辑与实时语法树生成，极大提升调试效率。') }}</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- 2048 -->
-      <article
-        class="bento-card card-game2048 scroll-reveal"
-        @click="goToGame2048Lab"
-        style="--delay: 5;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-          <div class="dot-pattern"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Game</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('正则表达式可视化') }}</h2>
+              <p>{{ t('将复杂的正则表达式逻辑结构图形化，支持在线编辑与实时语法树生成，极大提升调试效率。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('2048') }}</h2>
-            <p>{{ t('经典数字合并游戏，滑动方块达成2048。含连击倍率、撤销、粒子特效和音效。') }}</p>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- 扫雷 -->
-      <article
-        class="bento-card card-minesweeper scroll-reveal"
-        @click="goToMinesweeperLab"
-        style="--delay: 6;"
-      >
-        <div class="card-bg">
-          <div class="mesh-gradient"></div>
-        </div>
-        <div class="card-content">
-          <div class="card-top">
-            <span class="tag">Game</span>
-            <div class="icon-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 19L19 5M19 5v10M19 5H9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <!-- 2048 -->
+        <article
+          class="bento-card card-game2048 scroll-reveal"
+          style="--delay: 5;"
+          @click="goToGame2048Lab"
+        >
+          <div class="card-bg">
+            <div class="mesh-gradient" />
+            <div class="dot-pattern" />
+          </div>
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag">Game</span>
+              <div class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    d="M5 19L19 5M19 5v10M19 5H9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('2048') }}</h2>
+              <p>{{ t('经典数字合并游戏，滑动方块达成2048。含连击倍率、撤销、粒子特效和音效。') }}</p>
             </div>
           </div>
-          <div class="card-bottom">
-            <h2>{{ t('扫雷') }}</h2>
-            <p>{{ t('经典扫雷游戏豪华版。支持左键翻开、右键标旗、双击快速翻开、多难度选择和12套主题。') }}</p>
+        </article>
+
+        <!-- 扫雷 -->
+        <article
+          class="bento-card card-minesweeper scroll-reveal"
+          style="--delay: 6;"
+          @click="goToMinesweeperLab"
+        >
+          <div class="card-bg">
+            <div class="mesh-gradient" />
           </div>
-        </div>
-      </article>
+          <div class="card-content">
+            <div class="card-top">
+              <span class="tag">Game</span>
+              <div class="icon-btn">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path
+                    d="M5 19L19 5M19 5v10M19 5H9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="card-bottom">
+              <h2>{{ t('扫雷') }}</h2>
+              <p>{{ t('经典扫雷游戏豪华版。支持左键翻开、右键标旗、双击快速翻开、多难度选择和12套主题。') }}</p>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </div>

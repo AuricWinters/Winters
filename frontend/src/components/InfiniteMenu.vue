@@ -1,11 +1,26 @@
 <template>
   <div style="position:relative;width:100%;height:100%">
-    <canvas ref="canvasRef" id="infinite-grid-menu-canvas"></canvas>
-    <div v-if="activeItem" class="infinite-menu-ui">
-      <h2 :class="['face-title', { inactive: isMoving, active: !isMoving }]">{{ activeItem.title }}</h2>
-      <p :class="['face-description', { inactive: isMoving, active: !isMoving }]">{{ activeItem.description }}</p>
-      <div :class="['action-button', { inactive: isMoving, active: !isMoving }]" @click="handleButtonClick">
-        <p class="action-button-icon">&#x2197;</p>
+    <canvas
+      id="infinite-grid-menu-canvas"
+      ref="canvasRef"
+    />
+    <div
+      v-if="activeItem"
+      class="infinite-menu-ui"
+    >
+      <h2 :class="['face-title', { inactive: isMoving, active: !isMoving }]">
+        {{ activeItem.title }}
+      </h2>
+      <p :class="['face-description', { inactive: isMoving, active: !isMoving }]">
+        {{ activeItem.description }}
+      </p>
+      <div
+        :class="['action-button', { inactive: isMoving, active: !isMoving }]"
+        @click="handleButtonClick"
+      >
+        <p class="action-button-icon">
+          &#x2197;
+        </p>
       </div>
     </div>
   </div>

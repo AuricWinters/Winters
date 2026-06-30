@@ -1,5 +1,10 @@
 <template>
-  <div v-if="error" class="safe-error">{{ error }}</div>
+  <div
+    v-if="error"
+    class="safe-error"
+  >
+    {{ error }}
+  </div>
   <slot v-else />
 </template>
 

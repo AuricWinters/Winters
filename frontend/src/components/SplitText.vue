@@ -1,5 +1,11 @@
 <template>
-  <component :is="tag" ref="elRef" class="split-parent" :class="className" :style="rootStyle">
+  <component
+    :is="tag"
+    ref="elRef"
+    class="split-parent"
+    :class="className"
+    :style="rootStyle"
+  >
     {{ text }}
   </component>
 </template>

@@ -1,56 +1,160 @@
 <template>
-  <div class="minesweeper-page" :data-theme="themeName">
+  <div
+    class="minesweeper-page"
+    :data-theme="themeName"
+  >
     <canvas class="particles-background" />
-    <div class="main-container" id="mainContainer">
+    <div
+      id="mainContainer"
+      class="main-container"
+    >
       <!-- 头部 -->
       <div class="header">
         <div class="title-group">
           <span class="game-title"><span class="icon">💣</span>{{ t('扫雷') }}</span>
         </div>
         <div class="header-actions">
-          <button class="sound-btn" id="btnSound" :title="t('音效开关')">🔊</button>
-          <button class="sound-btn" id="btnSettings" :title="t('设置')">⚙️</button>
+          <button
+            id="btnSound"
+            class="sound-btn"
+            :title="t('音效开关')"
+          >
+            🔊
+          </button>
+          <button
+            id="btnSettings"
+            class="sound-btn"
+            :title="t('设置')"
+          >
+            ⚙️
+          </button>
         </div>
       </div>
 
       <!-- 难度选择 -->
-      <div class="difficulty-bar" id="difficultyBar">
-        <button class="diff-btn active" data-preset="beginner">🌱 {{ t('初级') }}</button>
-        <button class="diff-btn" data-preset="intermediate">🌿 {{ t('中级') }}</button>
-        <button class="diff-btn" data-preset="expert">🔥 {{ t('高级') }}</button>
-        <button class="diff-btn" data-preset="custom" id="btnCustomPreset">⚙️ {{ t('自定义') }}</button>
+      <div
+        id="difficultyBar"
+        class="difficulty-bar"
+      >
+        <button
+          class="diff-btn active"
+          data-preset="beginner"
+        >
+          🌱 {{ t('初级') }}
+        </button>
+        <button
+          class="diff-btn"
+          data-preset="intermediate"
+        >
+          🌿 {{ t('中级') }}
+        </button>
+        <button
+          class="diff-btn"
+          data-preset="expert"
+        >
+          🔥 {{ t('高级') }}
+        </button>
+        <button
+          id="btnCustomPreset"
+          class="diff-btn"
+          data-preset="custom"
+        >
+          ⚙️ {{ t('自定义') }}
+        </button>
       </div>
 
       <!-- 自定义设置面板 -->
-      <div class="settings-panel hidden" id="settingsPanel">
+      <div
+        id="settingsPanel"
+        class="settings-panel hidden"
+      >
         <div class="setting-group">
           <span class="setting-label">{{ t('行数') }}</span>
-          <input type="range" id="rangeRows" min="8" max="50" value="16" step="1">
-          <span class="setting-value" id="valRows">16</span>
+          <input
+            id="rangeRows"
+            type="range"
+            min="8"
+            max="50"
+            value="16"
+            step="1"
+          >
+          <span
+            id="valRows"
+            class="setting-value"
+          >16</span>
         </div>
         <div class="setting-group">
           <span class="setting-label">{{ t('列数') }}</span>
-          <input type="range" id="rangeCols" min="8" max="50" value="16" step="1">
-          <span class="setting-value" id="valCols">16</span>
+          <input
+            id="rangeCols"
+            type="range"
+            min="8"
+            max="50"
+            value="16"
+            step="1"
+          >
+          <span
+            id="valCols"
+            class="setting-value"
+          >16</span>
         </div>
         <div class="setting-group">
           <span class="setting-label">{{ t('雷数') }}</span>
-          <input type="range" id="rangeMines" min="8" max="400" value="40" step="1">
-          <span class="setting-value" id="valMines">40</span>
+          <input
+            id="rangeMines"
+            type="range"
+            min="8"
+            max="400"
+            value="40"
+            step="1"
+          >
+          <span
+            id="valMines"
+            class="setting-value"
+          >40</span>
         </div>
-        <button class="btn-apply" id="btnApplyCustom">✅ {{ t('应用设置') }}</button>
+        <button
+          id="btnApplyCustom"
+          class="btn-apply"
+        >
+          ✅ {{ t('应用设置') }}
+        </button>
       </div>
 
       <!-- 游戏面板 -->
-      <div class="board-wrapper" id="boardWrapper">
+      <div
+        id="boardWrapper"
+        class="board-wrapper"
+      >
         <div class="status-bar">
-          <div class="counter-box" id="mineCounter">000</div>
-          <button class="face-btn" id="faceBtn">🙂</button>
-          <div class="timer-box" id="timerDisplay">000</div>
+          <div
+            id="mineCounter"
+            class="counter-box"
+          >
+            000
+          </div>
+          <button
+            id="faceBtn"
+            class="face-btn"
+          >
+            🙂
+          </button>
+          <div
+            id="timerDisplay"
+            class="timer-box"
+          >
+            000
+          </div>
         </div>
-        <div class="grid-container" id="gridContainer">
-          <div class="mine-grid" id="mineGrid"></div>
-          <canvas id="particleCanvas"></canvas>
+        <div
+          id="gridContainer"
+          class="grid-container"
+        >
+          <div
+            id="mineGrid"
+            class="mine-grid"
+          />
+          <canvas id="particleCanvas" />
         </div>
       </div>
 
@@ -63,48 +167,104 @@
       </div>
 
       <!-- 设置弹窗 -->
-      <div class="modal-overlay hidden" id="settingsModal">
+      <div
+        id="settingsModal"
+        class="modal-overlay hidden"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <span class="modal-title">⚙️ {{ t('设置') }}</span>
-            <button class="modal-close" id="btnSettingsClose">✕</button>
+            <button
+              id="btnSettingsClose"
+              class="modal-close"
+            >
+              ✕
+            </button>
           </div>
           <div class="modal-body">
             <div class="modal-setting">
               <span class="modal-setting-label">🚀 {{ t('游戏速度') }}</span>
               <div class="modal-speed-row">
                 <span class="speed-tag">{{ t('慢') }}</span>
-                <input type="range" id="rangeSpeed" min="0" max="100" value="60" step="1">
+                <input
+                  id="rangeSpeed"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="60"
+                  step="1"
+                >
                 <span class="speed-tag">{{ t('快') }}</span>
               </div>
-              <span class="setting-value" id="valSpeed">60%</span>
+              <span
+                id="valSpeed"
+                class="setting-value"
+              >60%</span>
             </div>
-            <div class="modal-divider"></div>
+            <div class="modal-divider" />
             <div class="modal-setting">
               <span class="modal-setting-label">🌓 {{ t('明暗模式') }}</span>
-              <div class="theme-toggle base-row" id="baseToggle">
-                <span class="theme-btn active" data-base-val="dark">🌙 {{ t('暗色') }}</span>
-                <span class="theme-btn" data-base-val="light">☀️ {{ t('亮色') }}</span>
+              <div
+                id="baseToggle"
+                class="theme-toggle base-row"
+              >
+                <span
+                  class="theme-btn active"
+                  data-base-val="dark"
+                >🌙 {{ t('暗色') }}</span>
+                <span
+                  class="theme-btn"
+                  data-base-val="light"
+                >☀️ {{ t('亮色') }}</span>
               </div>
             </div>
-            <div class="modal-divider"></div>
+            <div class="modal-divider" />
             <div class="modal-setting">
               <span class="modal-setting-label">🎨 {{ t('色彩主题') }}</span>
-              <div class="theme-toggle" id="accentToggle">
-                <span class="theme-btn active" data-accent-val="default">🎯 {{ t('默认') }}</span>
-                <span class="theme-btn" data-accent-val="forest">🌲 {{ t('森林') }}</span>
-                <span class="theme-btn" data-accent-val="ocean">🌊 {{ t('海洋') }}</span>
-                <span class="theme-btn" data-accent-val="sunset">🌅 {{ t('日落') }}</span>
-                <span class="theme-btn" data-accent-val="neon">💜 {{ t('霓虹') }}</span>
-                <span class="theme-btn" data-accent-val="retro">📜 {{ t('复古') }}</span>
-                <span class="theme-btn" data-accent-val="lavender">💐 {{ t('薰衣') }}</span>
+              <div
+                id="accentToggle"
+                class="theme-toggle"
+              >
+                <span
+                  class="theme-btn active"
+                  data-accent-val="default"
+                >🎯 {{ t('默认') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="forest"
+                >🌲 {{ t('森林') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="ocean"
+                >🌊 {{ t('海洋') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="sunset"
+                >🌅 {{ t('日落') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="neon"
+                >💜 {{ t('霓虹') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="retro"
+                >📜 {{ t('复古') }}</span>
+                <span
+                  class="theme-btn"
+                  data-accent-val="lavender"
+                >💐 {{ t('薰衣') }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button class="back-btn" @click="$router.push('/lab')">{{ t('返回实验室') }}</button>
+    <button
+      class="back-btn"
+      @click="$router.push('/lab')"
+    >
+      {{ t('返回实验室') }}
+    </button>
   </div>
 </template>
 

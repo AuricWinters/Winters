@@ -3,10 +3,23 @@
     <!-- 粒子背景 -->
     <canvas class="particles-background" />
 
-    <div class="container" v-if="project">
+    <div
+      v-if="project"
+      class="container"
+    >
       <div class="back-link">
-        <router-link to="/projects" class="back-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <router-link
+          to="/projects"
+          class="back-btn"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
           {{ t('返回项目列表') }}
@@ -16,15 +29,24 @@
       <div class="detail-card glass-card scroll-reveal">
         <header class="detail-header">
           <div class="header-top">
-            <div class="status-badge" :class="project.status || 'completed'">
+            <div
+              class="status-badge"
+              :class="project.status || 'completed'"
+            >
               {{ project.status === 'in-progress' ? t('进行中') : t('已完成') }}
             </div>
           </div>
           <h1>{{ project.title }}</h1>
-          <p class="summary">{{ project.desc }}</p>
+          <p class="summary">
+            {{ project.desc }}
+          </p>
           
           <div class="tech-tags">
-            <span v-for="tech in project.tech" :key="tech" class="tech-tag">
+            <span
+              v-for="tech in project.tech"
+              :key="tech"
+              class="tech-tag"
+            >
               {{ tech }}
             </span>
           </div>
@@ -37,10 +59,18 @@
               <p>{{ project.fullDesc || project.desc }}</p>
             </div>
 
-            <div class="content-section" v-if="project.features">
+            <div
+              v-if="project.features"
+              class="content-section"
+            >
               <h3>{{ t('核心功能') }}</h3>
               <ul class="features-list">
-                <li v-for="feature in project.features" :key="feature">{{ feature }}</li>
+                <li
+                  v-for="feature in project.features"
+                  :key="feature"
+                >
+                  {{ feature }}
+                </li>
               </ul>
             </div>
           </section>
@@ -49,10 +79,19 @@
             <div class="content-section">
               <h3>{{ t('项目链接') }}</h3>
               <div class="project-links">
-                <router-link v-if="project.link" :to="project.link" class="link-btn primary">
+                <router-link
+                  v-if="project.link"
+                  :to="project.link"
+                  class="link-btn primary"
+                >
                   {{ t('查看项目') }}
                 </router-link>
-                <a v-if="project.github" :href="project.github" target="_blank" class="link-btn secondary">
+                <a
+                  v-if="project.github"
+                  :href="project.github"
+                  target="_blank"
+                  class="link-btn secondary"
+                >
                   {{ t('查看 GitHub 源码') }}
                 </a>
               </div>
@@ -62,10 +101,15 @@
       </div>
     </div>
 
-    <div class="container" v-else>
+    <div
+      v-else
+      class="container"
+    >
       <div class="not-found">
         <h2>{{ t('未找到该项目') }}</h2>
-        <router-link to="/projects">{{ t('返回列表') }}</router-link>
+        <router-link to="/projects">
+          {{ t('返回列表') }}
+        </router-link>
       </div>
     </div>
   </div>

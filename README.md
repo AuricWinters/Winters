@@ -10,10 +10,12 @@
 - **暖心关怀** — 200+ 条暖心话语弹窗，液态玻璃拟态，温暖每一天
 - **AI 学习路线** — 6 阶段 21 周完整学习计划，进度跟踪 + 本地持久化
 - **自驱工作站** — Claude Code 完整架构文档，精美可视化展示
-- **实验室** — 3 个子实验室：
+- **实验室** — 多个子实验室：
   - 🎨 **粒子实验室** — Canvas 粒子系统，鼠标交互，实时参数调节
   - 🎹 **钢琴实验室** — Web Audio API 合成器，键盘映射，频率可视化
   - 💻 **CodeLab** — Monaco Editor + xterm.js 在线 IDE，支持 7 种编程语言
+  - 🎮 **2048 / 扫雷** — 小游戏实验室
+  - 🧩 **组件展示实验室** — 文字 / 悬停 / 入场 / 背景 / UI / 3D 特效
 - **AI 聊天** — 支持 Ollama / OpenAI 双后端切换
 - **云盘** — 文件上传/下载/删除管理
 - **认证系统** — 密码登录 / 验证码登录 / 第三方登录（微信、GitHub），密码重置
@@ -29,8 +31,8 @@
 |------|------|
 | Vue 3 | Composition API (`<script setup>`) |
 | Vite 5 | 构建工具，HMR 热更新 |
-| Vue Router 4 | 18 条路由，懒加载，路由守卫 |
-| Pinia 3 | 状态管理（4 个 store） |
+| Vue Router 4 | 30 条路由，懒加载，路由守卫 |
+| Pinia 3 | 状态管理（6 个 store） |
 | Monaco Editor | 在线代码编辑器 |
 | xterm.js | WebSocket 交互式终端 |
 | highlight.js | 代码语法高亮（8 种语言） |
@@ -85,12 +87,29 @@ npm run build
 
 ```
 GET  /                              # 健康检查
+
+# 认证（9 端点）
+GET  /api/auth/status               # 认证服务状态
 POST /api/auth/register             # 用户注册
 POST /api/auth/login                # 密码登录
 POST /api/auth/send-code            # 发送短信验证码
 POST /api/auth/login/code           # 验证码登录
 POST /api/auth/reset-password       # 验证码重置密码
+POST /api/auth/change-password      # 修改密码（需登录）
 POST /api/auth/social/login         # 第三方登录
+GET  /api/auth/social/callback/{provider}  # 第三方登录回调
+
+# 社区
+GET  /api/posts                     # 动态列表
+GET  /api/posts/{id}                # 动态详情
+POST /api/posts                     # 发布动态（需登录）
+PUT  /api/posts/{id}                # 更新动态（需登录）
+DELETE /api/posts/{id}              # 删除动态（需登录）
+POST /api/posts/{id}/like           # 点赞 / 取消点赞（需登录）
+GET  /api/posts/{id}/comments       # 评论列表
+POST /api/posts/{id}/comments       # 发表评论（需登录）
+GET  /api/tags                      # 热门标签
+
 POST /api/code/execute              # 代码执行（6种语言）
 GET  /api/code/languages            # 支持的语言列表
 GET  /api/user/profile              # 获取用户资料
@@ -109,8 +128,9 @@ WS   /ws/code/execute               # WebSocket 交互式终端
 │   ├── executor.py                 # 代码执行引擎
 │   ├── utils.py                    # 验证码 / 第三方登录
 │   └── routes/
-│       ├── auth.py                 # 认证 API (8 端点)
+│       ├── auth.py                 # 认证 API (9 端点)
 │       ├── code.py                 # 代码执行 API
+│       ├── community.py            # AI 社区 API
 │       ├── user.py                 # 用户资料 API
 │       └── websocket.py           # WS 交互式终端
 │
@@ -118,19 +138,28 @@ WS   /ws/code/execute               # WebSocket 交互式终端
 │   └── src/
 │       ├── main.js                 # 应用入口
 │       ├── App.vue                 # 根组件
-│       ├── router/index.js         # 路由配置 (18 条)
-│       ├── stores/                 # Pinia 状态管理 (4 个)
-│       ├── components/             # 全局组件 (10 个)
-│       ├── views/                  # 页面视图 (18 个)
+│       ├── router/index.js         # 路由配置 (30 条)
+│       ├── stores/                 # Pinia 状态管理 (6 个)
+│       ├── components/             # 全局组件 (91 个)
+│       ├── views/                  # 页面视图 (30 个)
 │       │   └── lab/
 │       │       ├── ParticleLab.vue # Canvas 粒子实验室
 │       │       ├── PianoLab.vue    # Web Audio 钢琴
-│       │       └── CodeLab.vue     # 在线 IDE
-│       ├── composables/            # 组合式函数 (5 个)
+│       │       ├── CodeLab.vue     # 在线 IDE
+│       │       ├── Game2048Lab.vue # 2048 小游戏
+│       │       ├── MinesweeperLab.vue # 扫雷小游戏
+│       │       ├── ShowcaseIndex.vue  # 组件实验室首页
+│       │       ├── ShowcaseText.vue   # 文字特效展示
+│       │       ├── ShowcaseHover.vue  # 悬停交互展示
+│       │       ├── ShowcaseEntry.vue  # 入场动画展示
+│       │       ├── ShowcaseBg.vue     # 背景装饰展示
+│       │       ├── ShowcaseUi.vue     # UI 组件展示
+│       │       └── Showcase3d.vue     # 3D / 工具展示
+│       ├── composables/            # 组合式函数 (15 个)
 │       ├── utils/                  # 工具函数 (2 个)
 │       ├── data/                   # 静态 JSON 数据 (4 个)
 │       └── styles/                 # CSS 样式
-│           └── modules/            # 8 个样式模块
+│           └── modules/            # 9 个样式模块
 │
 └── .trae/                          # 项目规范文档
 ```

@@ -1,6 +1,6 @@
 <template>
   <div class="learning-page">
-    <canvas class="particles-background"></canvas>
+    <canvas class="particles-background" />
 
     <div class="learning-content">
       <!-- 标题 -->
@@ -27,16 +27,28 @@
         <div class="progress-head">
           <span>{{ t('进度') }}: {{ progressPercent }}%</span>
           <span>{{ t('已完成') }}: {{ completedSteps }}/{{ totalSteps }}</span>
-          <button class="reset-btn" @click="resetProgress">{{ t('重置') }}</button>
+          <button
+            class="reset-btn"
+            @click="resetProgress"
+          >
+            {{ t('重置') }}
+          </button>
         </div>
         <div class="progress-track">
-          <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+          <div
+            class="progress-fill"
+            :style="{ width: progressPercent + '%' }"
+          />
         </div>
       </div>
 
       <!-- 时间线 -->
       <div class="timeline">
-        <section v-for="(phase, pi) in plan" :key="pi" class="phase-card">
+        <section
+          v-for="(phase, pi) in plan"
+          :key="pi"
+          class="phase-card"
+        >
           <h2 class="phase-head">
             {{ phase.phase }}
             <span class="phase-date">{{ phase.period }}</span>
@@ -47,35 +59,61 @@
             :key="wi"
             class="week-card"
           >
-            <div class="week-head" @click="toggleWeek(pi, wi)">
+            <div
+              class="week-head"
+              @click="toggleWeek(pi, wi)"
+            >
               <div class="week-head-left">
                 <span class="week-num">{{ wi + 1 }}</span>
                 <span class="week-title">{{ week.title }}</span>
-                <span v-if="week.period" class="week-date">{{ week.period }}</span>
+                <span
+                  v-if="week.period"
+                  class="week-date"
+                >{{ week.period }}</span>
               </div>
-              <span class="week-arrow" :class="{ open: !weeksCollapsed[`${pi}-${wi}`] }">▼</span>
+              <span
+                class="week-arrow"
+                :class="{ open: !weeksCollapsed[`${pi}-${wi}`] }"
+              >▼</span>
             </div>
 
-            <ul v-show="!weeksCollapsed[`${pi}-${wi}`]" class="task-list">
+            <ul
+              v-show="!weeksCollapsed[`${pi}-${wi}`]"
+              class="task-list"
+            >
               <li
                 v-for="(task, ti) in week.tasks"
                 :key="ti"
                 class="task-item"
                 :class="{ collapsed: tasksCollapsed[taskKey(pi, wi, ti)] }"
               >
-                <div class="task-head" @click="toggleTask(pi, wi, ti)">
+                <div
+                  class="task-head"
+                  @click="toggleTask(pi, wi, ti)"
+                >
                   <div class="task-head-left">
                     <span>{{ task.title }}</span>
                   </div>
                   <div class="task-head-right">
-                    <span class="task-badge" :class="{ done: isTaskDone(pi, wi, ti) }">
+                    <span
+                      class="task-badge"
+                      :class="{ done: isTaskDone(pi, wi, ti) }"
+                    >
                       {{ isTaskDone(pi, wi, ti) ? t('已完成') : t('未完成') }}
                     </span>
-                    <span v-if="task.steps?.length" class="task-arrow" :class="{ open: !tasksCollapsed[taskKey(pi, wi, ti)] }">▲</span>
+                    <span
+                      v-if="task.steps?.length"
+                      class="task-arrow"
+                      :class="{ open: !tasksCollapsed[taskKey(pi, wi, ti)] }"
+                    >▲</span>
                   </div>
                 </div>
 
-                <ul v-if="task.steps?.length" v-show="!tasksCollapsed[taskKey(pi, wi, ti)]" class="step-list">
+                <ul
+                  v-if="task.steps?.length"
+                  v-show="!tasksCollapsed[taskKey(pi, wi, ti)]"
+                  class="step-list"
+                >
                   <li
                     v-for="(step, si) in task.steps"
                     :key="si"
@@ -85,7 +123,10 @@
                   >
                     <span class="step-num">{{ si + 1 }}</span>
                     <span class="step-text">{{ step }}</span>
-                    <span class="step-badge" :class="{ done: progress[stepKey(pi, wi, ti, si)] }">
+                    <span
+                      class="step-badge"
+                      :class="{ done: progress[stepKey(pi, wi, ti, si)] }"
+                    >
                       {{ progress[stepKey(pi, wi, ti, si)] ? t('已完成') : t('未完成') }}
                     </span>
                   </li>

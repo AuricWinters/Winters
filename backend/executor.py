@@ -380,7 +380,7 @@ class CodeExecutor:
             return {
                 "success": False,
                 "output": "",
-                error: f"Python 执行准备失败: {str(e)}"
+                "error": f"Python 执行准备失败: {str(e)}"
             }
 
     def _execute_c(
@@ -444,7 +444,7 @@ class CodeExecutor:
             return {
                 "success": False,
                 "output": "",
-                error: f"C 执行过程出错: {str(e)}"
+                "error": f"C 执行过程出错: {str(e)}"
             }
         finally:
             # 确保清理临时文件
@@ -559,7 +559,7 @@ class CodeExecutor:
             return {
                 "success": False,
                 "output": "",
-                error: f"PHP 执行准备失败: {str(e)}"
+                "error": f"PHP 执行准备失败: {str(e)}"
             }
 
     def _safe_delete_files(self, file_paths: list):

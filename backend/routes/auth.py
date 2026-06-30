@@ -13,7 +13,7 @@ from models import UserCreate, UserLogin, UserResponse, MessageResponse, SendCod
 import crud
 import utils
 
-JWT_SECRET = "winters-secret-key-2026"
+JWT_SECRET = os.environ.get("WINTERS_JWT_SECRET", "dev-secret-do-not-use-in-production")
 JWT_ALGORITHM = "HS256"
 security = HTTPBearer()
 

@@ -1,5 +1,8 @@
 <template>
-  <div class="heatmap-container" :class="{ embedded: embedded }">
+  <div
+    class="heatmap-container"
+    :class="{ embedded: embedded }"
+  >
     <div class="heatmap-header">
       <h4>{{ t('活动情况') }}</h4>
       <span class="heatmap-subtitle">{{ currentMonthName }} · {{ totalContributions }}{{ t('次活动') }}</span>

@@ -1,5 +1,8 @@
 <template>
-  <div ref="containerRef" style="position:relative;width:100%;height:100%;background:transparent">
+  <div
+    ref="containerRef"
+    style="position:relative;width:100%;height:100%;background:transparent"
+  >
     <h1
       ref="titleRef"
       :class="['text-pressure-title', { flex, stroke }]"

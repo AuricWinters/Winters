@@ -21,10 +21,16 @@
   >
     <slot />
   </div>
-  <GlareHover v-else-if="effect === 'glareHover'" class="card-hover-slot">
+  <GlareHover
+    v-else-if="effect === 'glareHover'"
+    class="card-hover-slot"
+  >
     <slot />
   </GlareHover>
-  <div v-else class="card-hover-slot">
+  <div
+    v-else
+    class="card-hover-slot"
+  >
     <slot />
   </div>
 </template>

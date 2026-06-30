@@ -1,7 +1,16 @@
 <template>
-  <ShinyText v-if="slot === 'shinyText'" :text="text" />
-  <GradientText v-else-if="slot === 'gradientText'" :text="text" />
-  <GlitchText v-else-if="slot === 'glitchText'" :text="text" />
+  <ShinyText
+    v-if="slot === 'shinyText'"
+    :text="text"
+  />
+  <GradientText
+    v-else-if="slot === 'gradientText'"
+    :text="text"
+  />
+  <GlitchText
+    v-else-if="slot === 'glitchText'"
+    :text="text"
+  />
   <span v-else>{{ text }}</span>
 </template>
 

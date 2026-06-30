@@ -11,7 +11,10 @@
       aria-hidden="true"
     >
       <!-- SVG filter definitions for the noise/glitch effect on link hover -->
-      <svg class="crosshair-svg" aria-hidden="true">
+      <svg
+        class="crosshair-svg"
+        aria-hidden="true"
+      >
         <defs>
           <filter :id="`${uid}-noise-x`">
             <feTurbulence
@@ -20,7 +23,10 @@
               baseFrequency="0.000001"
               numOctaves="1"
             />
-            <feDisplacementMap in="SourceGraphic" scale="40" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              scale="40"
+            />
           </filter>
           <filter :id="`${uid}-noise-y`">
             <feTurbulence
@@ -29,7 +35,10 @@
               baseFrequency="0.000001"
               numOctaves="1"
             />
-            <feDisplacementMap in="SourceGraphic" scale="40" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              scale="40"
+            />
           </filter>
         </defs>
       </svg>

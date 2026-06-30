@@ -1,5 +1,12 @@
 <template>
-  <component :is="tag" ref="elRef" :class="['shuffle-parent', { 'is-ready': ready }, className]" :style="{ textAlign, ...style }">{{ text }}</component>
+  <component
+    :is="tag"
+    ref="elRef"
+    :class="['shuffle-parent', { 'is-ready': ready }, className]"
+    :style="{ textAlign, ...style }"
+  >
+    {{ text }}
+  </component>
 </template>
 
 <script setup>

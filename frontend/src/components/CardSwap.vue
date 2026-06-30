@@ -1,6 +1,10 @@
 <template>
-  <div ref="containerRef" class="card-swap-container" :style="{ width: typeof width === 'number' ? width + 'px' : width, height: typeof height === 'number' ? height + 'px' : height }">
-    <slot></slot>
+  <div
+    ref="containerRef"
+    class="card-swap-container"
+    :style="{ width: typeof width === 'number' ? width + 'px' : width, height: typeof height === 'number' ? height + 'px' : height }"
+  >
+    <slot />
   </div>
 </template>
 

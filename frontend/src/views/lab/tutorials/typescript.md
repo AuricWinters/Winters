@@ -667,7 +667,7 @@ const request = axios.create({
 
 // 请求拦截器 - 自动附加 token
 request.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('winters_token');
     if (token) {
         config.headers.Authorization = 'Bearer ${token}';
     }

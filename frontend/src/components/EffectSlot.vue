@@ -1,5 +1,8 @@
 <template>
-  <component :is="componentName" v-bind="props">
+  <component
+    :is="componentName"
+    v-bind="props"
+  >
     <slot />
   </component>
 </template>

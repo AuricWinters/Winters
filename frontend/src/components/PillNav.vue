@@ -1,13 +1,36 @@
 <template>
   <div class="pill-nav-container">
-    <nav :class="['pill-nav', className]" aria-label="Primary" :style="cssVars">
-      <a class="pill-logo" href="#" aria-label="Home" @mouseenter="handleLogoEnter">
-        <img :src="logo" :alt="logoAlt" ref="logoImgRef" />
+    <nav
+      :class="['pill-nav', className]"
+      aria-label="Primary"
+      :style="cssVars"
+    >
+      <a
+        class="pill-logo"
+        href="#"
+        aria-label="Home"
+        @mouseenter="handleLogoEnter"
+      >
+        <img
+          ref="logoImgRef"
+          :src="logo"
+          :alt="logoAlt"
+        >
       </a>
 
-      <div class="pill-nav-items desktop-only" ref="navItemsRef">
-        <ul class="pill-list" role="menubar">
-          <li v-for="(item, i) in items" :key="item.href" role="none">
+      <div
+        ref="navItemsRef"
+        class="pill-nav-items desktop-only"
+      >
+        <ul
+          class="pill-list"
+          role="menubar"
+        >
+          <li
+            v-for="(item, i) in items"
+            :key="item.href"
+            role="none"
+          >
             <a
               role="menuitem"
               :href="item.href"
@@ -16,26 +39,50 @@
               @mouseenter="handleEnter(i)"
               @mouseleave="handleLeave(i)"
             >
-              <span class="hover-circle" aria-hidden="true" :ref="el => { if (el) circleRefs[i] = el }" />
+              <span
+                :ref="el => { if (el) circleRefs[i] = el }"
+                class="hover-circle"
+                aria-hidden="true"
+              />
               <span class="label-stack">
                 <span class="pill-label">{{ item.label }}</span>
-                <span class="pill-label-hover" aria-hidden="true">{{ item.label }}</span>
+                <span
+                  class="pill-label-hover"
+                  aria-hidden="true"
+                >{{ item.label }}</span>
               </span>
             </a>
           </li>
         </ul>
       </div>
 
-      <button class="mobile-menu-button mobile-only" @click="toggleMobileMenu" aria-label="Toggle menu" ref="hamburgerRef">
+      <button
+        ref="hamburgerRef"
+        class="mobile-menu-button mobile-only"
+        aria-label="Toggle menu"
+        @click="toggleMobileMenu"
+      >
         <span class="hamburger-line" />
         <span class="hamburger-line" />
       </button>
     </nav>
 
-    <div class="mobile-menu-popover mobile-only" ref="mobileMenuRef" :style="cssVars" v-show="isMobileMenuOpen">
+    <div
+      v-show="isMobileMenuOpen"
+      ref="mobileMenuRef"
+      class="mobile-menu-popover mobile-only"
+      :style="cssVars"
+    >
       <ul class="mobile-menu-list">
-        <li v-for="item in items" :key="item.href">
-          <a :href="item.href" :class="['mobile-menu-link', { 'is-active': activeHref === item.href }]" @click="isMobileMenuOpen = false">
+        <li
+          v-for="item in items"
+          :key="item.href"
+        >
+          <a
+            :href="item.href"
+            :class="['mobile-menu-link', { 'is-active': activeHref === item.href }]"
+            @click="isMobileMenuOpen = false"
+          >
             {{ item.label }}
           </a>
         </li>

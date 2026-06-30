@@ -36,4 +36,3 @@ export function getLanguageById(id) {
 // 导出所有可用的语言ID列表
 export const languageIds = languages.map(lang => lang.id)
 
-console.log(`[Tutorials] Loaded ${languages.length} languages:`, languageIds.join(', '))

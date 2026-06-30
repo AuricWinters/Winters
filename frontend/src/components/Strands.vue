@@ -1,5 +1,9 @@
 <template>
-  <canvas ref="canvasRef" :class="['strands-container', className]" :style="style"></canvas>
+  <canvas
+    ref="canvasRef"
+    :class="['strands-container', className]"
+    :style="style"
+  />
 </template>
 
 <script setup>

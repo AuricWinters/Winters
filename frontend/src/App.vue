@@ -1,5 +1,8 @@
 <template>
-  <div class="app" :class="{ 'no-padding': $route.meta.fullWidth }">
+  <div
+    class="app"
+    :class="{ 'no-padding': $route.meta.fullWidth }"
+  >
     <Header />
     <main
       id="main-content"

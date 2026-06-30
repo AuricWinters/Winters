@@ -5,8 +5,18 @@
     <div class="container">
       <!-- 返回链接 -->
       <div class="back-link">
-        <router-link to="/community" class="back-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <router-link
+          to="/community"
+          class="back-btn"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
           {{ t('返回社区') }}
@@ -14,16 +24,27 @@
       </div>
 
       <!-- 加载状态 -->
-      <div v-if="loading" class="loading-state">
-        <div class="loading-spinner"></div>
+      <div
+        v-if="loading"
+        class="loading-state"
+      >
+        <div class="loading-spinner" />
         <p>{{ t('加载中...') }}</p>
       </div>
 
       <!-- 错误状态 -->
-      <div v-else-if="error" class="error-state">
+      <div
+        v-else-if="error"
+        class="error-state"
+      >
         <h2>{{ t('加载失败') }}</h2>
         <p>{{ error }}</p>
-        <button class="retry-btn" @click="fetchPost">{{ t('重试') }}</button>
+        <button
+          class="retry-btn"
+          @click="fetchPost"
+        >
+          {{ t('重试') }}
+        </button>
       </div>
 
       <!-- 帖子详情 -->
@@ -31,41 +52,83 @@
         <article class="post-card scroll-reveal">
           <!-- 作者信息 -->
           <div class="post-header">
-            <div class="author-avatar">{{ post.author_name?.[0] || post.author?.name?.[0] || '?' }}</div>
+            <div class="author-avatar">
+              {{ post.author_name?.[0] || post.author?.name?.[0] || '?' }}
+            </div>
             <div class="author-info">
-              <div class="author-name">{{ post.author_name || post.author?.name || t('匿名用户') }}</div>
-              <div class="post-time">{{ formatDate(post.created_at) }}</div>
+              <div class="author-name">
+                {{ post.author_name || post.author?.name || t('匿名用户') }}
+              </div>
+              <div class="post-time">
+                {{ formatDate(post.created_at) }}
+              </div>
             </div>
           </div>
 
           <!-- 标题 -->
-          <h1 class="post-title">{{ post.title }}</h1>
+          <h1 class="post-title">
+            {{ post.title }}
+          </h1>
 
           <!-- 正文 -->
-          <div class="post-content" v-html="post.content"></div>
+          <div
+            class="post-content"
+            v-html="post.content"
+          />
 
           <!-- 标签 -->
-          <div class="post-tags" v-if="post.tags && post.tags.length">
-            <span v-for="tag in post.tags" :key="tag" class="post-tag">#{{ tag }}</span>
+          <div
+            v-if="post.tags && post.tags.length"
+            class="post-tags"
+          >
+            <span
+              v-for="tag in post.tags"
+              :key="tag"
+              class="post-tag"
+            >#{{ tag }}</span>
           </div>
 
           <!-- 互动栏 -->
           <div class="post-actions">
-            <button class="action-item" :class="{ liked: post.liked }" @click="handleLike" :disabled="likeLoading">
-              <svg viewBox="0 0 24 24" :fill="post.liked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            <button
+              class="action-item"
+              :class="{ liked: post.liked }"
+              :disabled="likeLoading"
+              @click="handleLike"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                :fill="post.liked ? 'currentColor' : 'none'"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
               {{ formatCount(post.likes || post.likes_count || 0) }}
             </button>
             <span class="action-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
               {{ formatCount(post.comments_count || post.comments || 0) }}
             </span>
             <span class="action-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                />
               </svg>
               {{ formatCount(post.views || post.views_count || 0) }}
             </span>
@@ -74,7 +137,9 @@
 
         <!-- ═══ 评论区 ═══ -->
         <section class="comment-section scroll-reveal">
-          <h2 class="section-title">{{ t('评论') }} <span class="comment-count">({{ commentCount }})</span></h2>
+          <h2 class="section-title">
+            {{ t('评论') }} <span class="comment-count">({{ commentCount }})</span>
+          </h2>
 
           <!-- 评论表单 -->
           <div class="comment-form">
@@ -83,42 +148,77 @@
               :placeholder="replyTo ? t('回复') + ' @' + replyTo.author_name : t('写下你的评论...')"
               class="comment-textarea"
               rows="4"
-            ></textarea>
+            />
             <div class="form-actions">
-              <button v-if="replyTo" class="cancel-reply-btn" @click="cancelReply">
+              <button
+                v-if="replyTo"
+                class="cancel-reply-btn"
+                @click="cancelReply"
+              >
                 {{ t('取消回复') }}
               </button>
-              <button class="submit-btn" @click="submitComment" :disabled="!commentContent.trim() || commentLoading">
+              <button
+                class="submit-btn"
+                :disabled="!commentContent.trim() || commentLoading"
+                @click="submitComment"
+              >
                 {{ commentLoading ? t('提交中...') : (replyTo ? t('回复') : t('发表评论')) }}
               </button>
             </div>
           </div>
 
           <!-- 评论加载状态 -->
-          <div v-if="commentsLoading" class="loading-state small">
-            <div class="loading-spinner"></div>
+          <div
+            v-if="commentsLoading"
+            class="loading-state small"
+          >
+            <div class="loading-spinner" />
             <p>{{ t('加载评论中...') }}</p>
           </div>
 
           <!-- 评论列表 -->
-          <div v-else-if="rootComments.length === 0" class="empty-comments">
+          <div
+            v-else-if="rootComments.length === 0"
+            class="empty-comments"
+          >
             <p>{{ t('暂无评论，来写第一条评论吧') }}</p>
           </div>
 
-          <div v-else class="comment-list">
-            <div v-for="comment in rootComments" :key="comment.id" class="comment-item">
+          <div
+            v-else
+            class="comment-list"
+          >
+            <div
+              v-for="comment in rootComments"
+              :key="comment.id"
+              class="comment-item"
+            >
               <!-- 主评论 -->
               <div class="comment-main">
-                <div class="comment-avatar">{{ comment.author_name?.[0] || '?' }}</div>
+                <div class="comment-avatar">
+                  {{ comment.author_name?.[0] || '?' }}
+                </div>
                 <div class="comment-body">
                   <div class="comment-header">
                     <span class="comment-author">{{ comment.author_name || t('匿名用户') }}</span>
                     <span class="comment-time">{{ formatDate(comment.created_at) }}</span>
                   </div>
-                  <p class="comment-text">{{ comment.content }}</p>
-                  <button class="reply-btn" @click="setReplyTo(comment)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  <p class="comment-text">
+                    {{ comment.content }}
+                  </p>
+                  <button
+                    class="reply-btn"
+                    @click="setReplyTo(comment)"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      width="14"
+                      height="14"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                     {{ t('回复') }}
                   </button>
@@ -126,22 +226,44 @@
               </div>
 
               <!-- 嵌套回复 -->
-              <div v-if="comment.replies && comment.replies.length" class="replies">
-                <div v-for="reply in comment.replies" :key="reply.id" class="comment-item reply-item">
+              <div
+                v-if="comment.replies && comment.replies.length"
+                class="replies"
+              >
+                <div
+                  v-for="reply in comment.replies"
+                  :key="reply.id"
+                  class="comment-item reply-item"
+                >
                   <div class="comment-main">
-                    <div class="comment-avatar small">{{ reply.author_name?.[0] || '?' }}</div>
+                    <div class="comment-avatar small">
+                      {{ reply.author_name?.[0] || '?' }}
+                    </div>
                     <div class="comment-body">
                       <div class="comment-header">
                         <span class="comment-author">{{ reply.author_name || t('匿名用户') }}</span>
                         <span class="comment-time">{{ formatDate(reply.created_at) }}</span>
                       </div>
                       <p class="comment-text">
-                        <span v-if="reply.parent_author" class="mention">@{{ reply.parent_author }} </span>
+                        <span
+                          v-if="reply.parent_author"
+                          class="mention"
+                        >@{{ reply.parent_author }} </span>
                         {{ reply.content }}
                       </p>
-                      <button class="reply-btn" @click="setReplyTo(reply)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                      <button
+                        class="reply-btn"
+                        @click="setReplyTo(reply)"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          width="14"
+                          height="14"
+                        >
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
                         {{ t('回复') }}
                       </button>

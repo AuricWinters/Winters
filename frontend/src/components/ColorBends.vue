@@ -1,5 +1,8 @@
 <template>
-  <div ref="containerRef" class="color-bends-container">
+  <div
+    ref="containerRef"
+    class="color-bends-container"
+  >
     <canvas ref="canvasRef" />
   </div>
 </template>

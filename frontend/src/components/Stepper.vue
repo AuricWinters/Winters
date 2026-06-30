@@ -1,8 +1,14 @@
 <template>
-  <div class="stepper-outer" :class="$attrs.class">
+  <div
+    class="stepper-outer"
+    :class="$attrs.class"
+  >
     <div :class="['step-circle-container', stepCircleContainerClassName]">
       <div :class="['step-indicator-row', stepContainerClassName]">
-        <template v-for="(_, index) in stepsArray" :key="index">
+        <template
+          v-for="(_, index) in stepsArray"
+          :key="index"
+        >
           <div
             :class="[
               'step-indicator',
@@ -18,31 +24,73 @@
             "
           >
             <div class="step-indicator-inner">
-              <svg v-if="currentStep > index + 1" class="check-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              <svg
+                v-if="currentStep > index + 1"
+                class="check-icon"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
-              <div v-else-if="currentStep === index + 1" class="active-dot" />
-              <span v-else class="step-number">{{ index + 1 }}</span>
+              <div
+                v-else-if="currentStep === index + 1"
+                class="active-dot"
+              />
+              <span
+                v-else
+                class="step-number"
+              >{{ index + 1 }}</span>
             </div>
           </div>
-          <div v-if="index < stepsArray.length - 1" :class="['step-connector', { complete: currentStep > index + 1 }]" />
+          <div
+            v-if="index < stepsArray.length - 1"
+            :class="['step-connector', { complete: currentStep > index + 1 }]"
+          />
         </template>
       </div>
 
-      <div :class="['stepper-content', contentClassName]" :style="contentStyle">
-        <div v-if="!isCompleted" class="step-transition" :style="transitionStyle" :key="currentStep">
+      <div
+        :class="['stepper-content', contentClassName]"
+        :style="contentStyle"
+      >
+        <div
+          v-if="!isCompleted"
+          :key="currentStep"
+          class="step-transition"
+          :style="transitionStyle"
+        >
           <slot :name="`step-${currentStep}`">
-            <div class="step-default">{{ stepsArray[currentStep - 1] }}</div>
+            <div class="step-default">
+              {{ stepsArray[currentStep - 1] }}
+            </div>
           </slot>
         </div>
       </div>
 
-      <div v-if="!isCompleted" :class="['footer-container', footerClassName]">
+      <div
+        v-if="!isCompleted"
+        :class="['footer-container', footerClassName]"
+      >
         <div :class="['footer-nav', currentStep !== 1 ? 'spread' : 'end']">
-          <button v-if="currentStep !== 1" class="back-button" @click="handleBack" v-bind="backButtonProps">
+          <button
+            v-if="currentStep !== 1"
+            class="back-button"
+            v-bind="backButtonProps"
+            @click="handleBack"
+          >
             {{ backButtonText }}
           </button>
-          <button class="next-button" @click="isLastStep ? handleComplete() : handleNext()" v-bind="nextButtonProps">
+          <button
+            class="next-button"
+            v-bind="nextButtonProps"
+            @click="isLastStep ? handleComplete() : handleNext()"
+          >
             {{ isLastStep ? 'Complete' : nextButtonText }}
           </button>
         </div>

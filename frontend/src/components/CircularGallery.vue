@@ -1,6 +1,15 @@
 <template>
-  <div ref="containerRef" class="circular-gallery" tabindex="0" role="region" aria-label="Circular image gallery">
-    <canvas ref="canvasRef" style="width:100%;height:100%;display:block"></canvas>
+  <div
+    ref="containerRef"
+    class="circular-gallery"
+    tabindex="0"
+    role="region"
+    aria-label="Circular image gallery"
+  >
+    <canvas
+      ref="canvasRef"
+      style="width:100%;height:100%;display:block"
+    />
   </div>
 </template>
 

@@ -1,11 +1,20 @@
 <template>
   <div class="showcase-page">
     <header class="showcase-header">
-      <router-link to="/lab/showcase" class="back-link">← 组件实验室</router-link>
+      <router-link
+        to="/lab/showcase"
+        class="back-link"
+      >
+        ← 组件实验室
+      </router-link>
       <h1>🖱️ 悬停交互</h1>
     </header>
     <div class="showcase-grid">
-      <ShowcaseCard v-for="comp in components" :key="comp.name" :comp="comp" />
+      <ShowcaseCard
+        v-for="comp in components"
+        :key="comp.name"
+        :comp="comp"
+      />
     </div>
   </div>
 </template>

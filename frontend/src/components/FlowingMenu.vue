@@ -1,22 +1,46 @@
 <template>
-  <div class="menu-wrap" :style="{ backgroundColor: bgColor }">
+  <div
+    class="menu-wrap"
+    :style="{ backgroundColor: bgColor }"
+  >
     <nav class="menu">
-      <div v-for="(item, idx) in items" :key="idx" class="menu__item" :style="getItemStyle(idx)" ref="itemRefs">
+      <div
+        v-for="(item, idx) in items"
+        :key="idx"
+        ref="itemRefs"
+        class="menu__item"
+        :style="getItemStyle(idx)"
+      >
         <a
           class="menu__item-link"
           :href="item.link"
+          :style="{ color: textColor }"
           @mouseenter="e => handleEnter(e, idx)"
           @mouseleave="e => handleLeave(e, idx)"
-          :style="{ color: textColor }"
         >
           {{ item.text }}
         </a>
-        <div class="marquee" ref="marqueeRefs" :style="{ backgroundColor: marqueeBgColor }">
+        <div
+          ref="marqueeRefs"
+          class="marquee"
+          :style="{ backgroundColor: marqueeBgColor }"
+        >
           <div class="marquee__inner-wrap">
-            <div class="marquee__inner" :ref="el => { if (el) marqueeInnerRefs[idx] = el }">
-              <div v-for="n in repetitions" :key="n" class="marquee__part" :style="{ color: marqueeTextColor }">
+            <div
+              :ref="el => { if (el) marqueeInnerRefs[idx] = el }"
+              class="marquee__inner"
+            >
+              <div
+                v-for="n in repetitions"
+                :key="n"
+                class="marquee__part"
+                :style="{ color: marqueeTextColor }"
+              >
                 <span>{{ item.text }}</span>
-                <div class="marquee__img" :style="{ backgroundImage: `url(${item.image})` }" />
+                <div
+                  class="marquee__img"
+                  :style="{ backgroundImage: `url(${item.image})` }"
+                />
               </div>
             </div>
           </div>

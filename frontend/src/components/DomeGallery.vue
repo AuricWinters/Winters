@@ -1,8 +1,18 @@
 <template>
-  <div ref="rootRef" class="sphere-root" :style="rootVars">
-    <main ref="mainRef" class="sphere-main">
+  <div
+    ref="rootRef"
+    class="sphere-root"
+    :style="rootVars"
+  >
+    <main
+      ref="mainRef"
+      class="sphere-main"
+    >
       <div class="stage">
-        <div ref="sphereRef" class="sphere">
+        <div
+          ref="sphereRef"
+          class="sphere"
+        >
           <div
             v-for="(it, i) in items"
             :key="i"
@@ -14,8 +24,19 @@
             :data-size-y="it.sizeY"
             :style="getItemStyle(it)"
           >
-            <div class="item__image" role="button" tabindex="0" :aria-label="it.alt" @click="onTileClick" @pointerup="onTilePointerUp">
-              <img :src="it.src" draggable="false" :alt="it.alt" />
+            <div
+              class="item__image"
+              role="button"
+              tabindex="0"
+              :aria-label="it.alt"
+              @click="onTileClick"
+              @pointerup="onTilePointerUp"
+            >
+              <img
+                :src="it.src"
+                draggable="false"
+                :alt="it.alt"
+              >
             </div>
           </div>
         </div>

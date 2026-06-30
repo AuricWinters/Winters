@@ -1,7 +1,18 @@
 <template>
-  <component :is="as" ref="containerRef" :class="['text-type', className]">
-    <span class="text-type__content" :style="{ color: currentColor }">{{ displayedText }}</span>
-    <span v-if="showCursor" ref="cursorRef" :class="['text-type__cursor', cursorClassName, { 'text-type__cursor--hidden': hideCursor }]">{{ cursorCharacter }}</span>
+  <component
+    :is="as"
+    ref="containerRef"
+    :class="['text-type', className]"
+  >
+    <span
+      class="text-type__content"
+      :style="{ color: currentColor }"
+    >{{ displayedText }}</span>
+    <span
+      v-if="showCursor"
+      ref="cursorRef"
+      :class="['text-type__cursor', cursorClassName, { 'text-type__cursor--hidden': hideCursor }]"
+    >{{ cursorCharacter }}</span>
   </component>
 </template>
 

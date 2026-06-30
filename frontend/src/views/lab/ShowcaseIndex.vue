@@ -1,12 +1,22 @@
 <template>
   <div class="showcase-page">
     <header class="showcase-header">
-      <router-link to="/lab" class="back-link">← 实验室</router-link>
+      <router-link
+        to="/lab"
+        class="back-link"
+      >
+        ← 实验室
+      </router-link>
       <h1>🧪 组件实验室</h1>
       <p>84 个 React Bits 组件 · 点击卡片进入分类浏览</p>
     </header>
     <div class="category-grid">
-      <router-link v-for="cat in categories" :key="cat.key" :to="cat.link" class="category-card">
+      <router-link
+        v-for="cat in categories"
+        :key="cat.key"
+        :to="cat.link"
+        class="category-card"
+      >
         <span class="cat-icon">{{ cat.icon }}</span>
         <span class="cat-label">{{ cat.label }}</span>
         <span class="cat-count">{{ cat.count }}</span>

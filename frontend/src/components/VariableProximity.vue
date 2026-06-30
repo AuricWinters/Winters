@@ -1,6 +1,13 @@
 <template>
-  <span :ref="forwardRef" :class="[className, 'variable-proximity']" :style="{ display: 'inline', ...style }">
-    <template v-for="(word, wordIdx) in words" :key="wordIdx">
+  <span
+    :ref="forwardRef"
+    :class="[className, 'variable-proximity']"
+    :style="{ display: 'inline', ...style }"
+  >
+    <template
+      v-for="(word, wordIdx) in words"
+      :key="wordIdx"
+    >
       <span style="display:inline-block;white-space:nowrap">
         <span
           v-for="(letter, letterIdx) in word.split('')"
@@ -10,9 +17,15 @@
           aria-hidden="true"
         >{{ letter }}</span>
       </span>
-      <span v-if="wordIdx < words.length - 1" style="display:inline-block">&nbsp;</span>
+      <span
+        v-if="wordIdx < words.length - 1"
+        style="display:inline-block"
+      >&nbsp;</span>
     </template>
-    <span class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">{{ label }}</span>
+    <span
+      class="sr-only"
+      style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0"
+    >{{ label }}</span>
   </span>
 </template>
 

@@ -7,12 +7,22 @@
     <div class="comp-demo">
       <SafeDemo>
         <template v-if="comp.component">
-          <component :is="comp.component" v-bind="comp.props || {}">
-            <template #default>{{ comp.slot || comp.name }}</template>
+          <component
+            :is="comp.component"
+            v-bind="comp.props || {}"
+          >
+            <template #default>
+              {{ comp.slot || comp.name }}
+            </template>
           </component>
         </template>
         <template v-else-if="comp.showDirective">
-          <div class="directive-demo" v-spotlight><span>{{ comp.name }}</span></div>
+          <div
+            v-spotlight
+            class="directive-demo"
+          >
+            <span>{{ comp.name }}</span>
+          </div>
         </template>
         <template v-else>
           <span class="comp-placeholder">{{ comp.name }}</span>

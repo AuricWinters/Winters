@@ -2,32 +2,56 @@
   <div class="code-lab-page">
     <div class="code-lab-container">
       <!-- 侧边栏语言选择 -->
-      <aside class="sidebar" :class="{ 'sidebar-collapsed': isSidebarCollapsed }">
+      <aside
+        class="sidebar"
+        :class="{ 'sidebar-collapsed': isSidebarCollapsed }"
+      >
         <div class="sidebar-header">
           <h3>{{ t('编程语言') }}</h3>
-          <button class="toggle-btn" @click="toggleSidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+          <button
+            class="toggle-btn"
+            @click="toggleSidebar"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                d="M15 18l-6-6 6-6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
         <nav class="language-nav">
-          <div class="radio-container" :style="{ '--total-radio': languages.length }">
-            <template v-for="(lang, index) in languages" :key="lang.id">
+          <div
+            class="radio-container"
+            :style="{ '--total-radio': languages.length }"
+          >
+            <template
+              v-for="lang in languages"
+              :key="lang.id"
+            >
               <input 
-                type="radio" 
                 :id="`lang-${lang.id}`" 
+                type="radio" 
                 name="language" 
                 :checked="selectedLang === lang.id"
                 @change="selectLanguage(lang.id)"
-              />
-              <label :for="`lang-${lang.id}`" class="language-item">
+              >
+              <label
+                :for="`lang-${lang.id}`"
+                class="language-item"
+              >
                 <span class="lang-icon">{{ lang.icon }}</span>
                 <span class="lang-name">{{ t(lang.name) }}</span>
               </label>
             </template>
             <div class="glider-container">
-              <div class="glider"></div>
+              <div class="glider" />
             </div>
           </div>
         </nav>
@@ -48,25 +72,36 @@
           <h1 v-if="currentLanguage">
             {{ t(currentLanguage.name) }} {{ t(currentLanguage.version) }}
           </h1>
-          <p v-if="currentLanguage" class="lang-desc">
+          <p
+            v-if="currentLanguage"
+            class="lang-desc"
+          >
             {{ t(currentLanguage.description) }}
           </p>
         </header>
 
         <!-- 学习任务 -->
-        <section class="tasks-section" v-if="currentLanguage">
+        <section
+          v-if="currentLanguage"
+          class="tasks-section"
+        >
           <h2>{{ t('学习任务') }}</h2>
           <div class="tasks-grid">
             <div
-              class="task-card"
               v-for="task in currentLanguage.tutorials"
               :key="task.id"
+              class="task-card"
               @click="showTutorial(task)"
             >
-              <div class="task-icon">{{ task.icon }}</div>
+              <div class="task-icon">
+                {{ task.icon }}
+              </div>
               <h3>{{ t(task.title) }}</h3>
               <p>{{ t(task.description) }}</p>
-              <span class="difficulty" :class="task.difficulty">
+              <span
+                class="difficulty"
+                :class="task.difficulty"
+              >
                 {{ getDifficultyText(task.difficulty) }}
               </span>
             </div>
@@ -77,51 +112,110 @@
 
     <!-- 教程弹窗 -->
     <Transition name="modal-transition">
-      <div class="tutorial-modal" v-if="showModal" @click.self="closeModal">
+      <div
+        v-if="showModal"
+        class="tutorial-modal"
+        @click.self="closeModal"
+      >
         <div class="modal-content">
-          <button class="close-btn" @click="closeModal">×</button>
+          <button
+            class="close-btn"
+            @click="closeModal"
+          >
+            ×
+          </button>
           <!-- 左右分栏容器 -->
           <div class="split-container">
             <!-- 左侧：教程内容区 (55%) -->
             <div class="tutorial-panel">
-              <Transition :name="'slide-' + transitionDirection" mode="out-in">
-                <article class="md-document" :key="currentTutorial.id">
+              <Transition
+                :name="'slide-' + transitionDirection"
+                mode="out-in"
+              >
+                <article
+                  :key="currentTutorial.id"
+                  class="md-document"
+                >
                   <!-- 文档标题区 -->
                   <header class="doc-header">
-                    <h1 class="doc-title">{{ t(currentTutorial.title) }}</h1>
+                    <h1 class="doc-title">
+                      {{ t(currentTutorial.title) }}
+                    </h1>
                     <p class="doc-meta">
-                      <span class="difficulty-badge" :class="currentTutorial.difficulty">{{ getDifficultyText(currentTutorial.difficulty) }}</span>
+                      <span
+                        class="difficulty-badge"
+                        :class="currentTutorial.difficulty"
+                      >{{ getDifficultyText(currentTutorial.difficulty) }}</span>
                       {{ t(currentTutorial.description) }}
                     </p>
                   </header>
 
                   <!-- 正文内容：像MD文档一样的自然流 -->
-                  <div class="doc-content" v-for="(example, index) in currentTutorial.examples" :key="index">
+                  <div
+                    v-for="(example, index) in currentTutorial.examples"
+                    :key="index"
+                    class="doc-content"
+                  >
                     <!-- 章节标题 (对应 ### ) -->
-                    <h3 class="section-title">{{ t(example.title) }}</h3>
+                    <h3 class="section-title">
+                      {{ t(example.title) }}
+                    </h3>
 
                     <!-- 代码块 (对应 ``` ) -->
                     <figure class="code-figure">
                       <!-- 顶部工具栏：语言标签 + 复制按钮 -->
                       <div class="code-header">
                         <span class="code-language">{{ detectLanguage(example) }}</span>
-                        <button class="copy-btn" @click="copyCode(example.code)" :title="t('复制代码')">
-                          <svg v-if="copiedCode !== example.code" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        <button
+                          class="copy-btn"
+                          :title="t('复制代码')"
+                          @click="copyCode(example.code)"
+                        >
+                          <svg
+                            v-if="copiedCode !== example.code"
+                            viewBox="0 0 24 24"
+                            width="14"
+                            height="14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <rect
+                              x="9"
+                              y="9"
+                              width="13"
+                              height="13"
+                              rx="2"
+                              ry="2"
+                            />
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                           </svg>
-                          <svg v-else viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
+                          <svg
+                            v-else
+                            viewBox="0 0 24 24"
+                            width="14"
+                            height="14"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
                           </svg>
                         </button>
                       </div>
 
                       <!-- 代码内容：带行号 + 语法高亮 -->
-                      <pre class="code-block"><code class="hljs" v-html="getLineNumberedCode(highlightCode(example.code, detectLanguage(example)))"></code></pre>
+                      <pre class="code-block"><code
+class="hljs"
+                                                    v-html="getLineNumberedCode(highlightCode(example.code, detectLanguage(example)))"
+                      /></pre>
                     </figure>
 
                     <!-- 说明文字 (对应普通段落或 > 引用块) -->
-                    <div class="explanation" v-html="formatExplanation(example.explanation)"></div>
+                    <div
+                      class="explanation"
+                      v-html="formatExplanation(example.explanation)"
+                    />
                   </div>
                 </article>
               </Transition>
@@ -130,8 +224,8 @@
               <div class="tutorial-nav">
                 <div class="tutorial-nav-left">
                   <button
-                    class="nav-btn"
                     v-if="hasPrevTutorial && !isAnimating"
+                    class="nav-btn"
                     @click="prevTutorial"
                   >
                     ← {{ t(getPrevTutorialTitle()) }}
@@ -139,8 +233,8 @@
                 </div>
                 <div class="tutorial-nav-right">
                   <button
-                    class="nav-btn"
                     v-if="hasNextTutorial && !isAnimating"
+                    class="nav-btn"
                     @click="nextTutorial"
                   >
                     {{ t(getNextTutorialTitle()) }} →
@@ -150,7 +244,7 @@
             </div>
 
             <!-- 分隔线 -->
-            <div class="split-divider"></div>
+            <div class="split-divider" />
 
             <!-- 右侧：代码编辑器区 (45%) -->
             <div class="editor-panel">
@@ -160,15 +254,27 @@
                   <span class="editor-language">{{ detectLanguage(currentTutorial.examples[0]) }}</span>
                 </div>
                 <div class="toolbar-right">
-                  <button class="tool-btn run-btn" @click="runCode" :disabled="isRunning">
+                  <button
+                    class="tool-btn run-btn"
+                    :disabled="isRunning"
+                    @click="runCode"
+                  >
                     <span v-if="!isRunning">{{ t('▶ 运行') }}</span>
                     <span v-else-if="executionMode === 'backend'">{{ t('⏳ 连接后端...') }}</span>
                     <span v-else>{{ t('⏳ 运行中...') }}</span>
                   </button>
-                  <button class="tool-btn" @click="resetEditor" :title="t('重置为示例代码')">
+                  <button
+                    class="tool-btn"
+                    :title="t('重置为示例代码')"
+                    @click="resetEditor"
+                  >
                     ↺ {{ t('重置') }}
                   </button>
-                  <button class="tool-btn" @click="clearEditor" :title="t('清空编辑器')">
+                  <button
+                    class="tool-btn"
+                    :title="t('清空编辑器')"
+                    @click="clearEditor"
+                  >
                     🗑 {{ t('清空') }}
                   </button>
                 </div>
@@ -187,14 +293,23 @@
               </div>
 
               <!-- 交互式终端区域 -->
-              <div class="terminal-container" ref="terminalContainer">
+              <div
+                ref="terminalContainer"
+                class="terminal-container"
+              >
                 <div class="terminal-header">
                   <span class="terminal-title">🖥️ {{ t('终端') }}</span>
-                  <span class="terminal-status" :class="terminalStatusClass">
+                  <span
+                    class="terminal-status"
+                    :class="terminalStatusClass"
+                  >
                     {{ terminalStatusText }}
                   </span>
                 </div>
-                <div ref="terminalElement" class="terminal-body"></div>
+                <div
+                  ref="terminalElement"
+                  class="terminal-body"
+                />
               </div>
             </div>
           </div>

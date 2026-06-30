@@ -1,6 +1,12 @@
 <template>
-  <div class="dotfield-wrap" ref="wrapRef">
-    <canvas ref="canvasRef" class="dotfield-canvas" />
+  <div
+    ref="wrapRef"
+    class="dotfield-wrap"
+  >
+    <canvas
+      ref="canvasRef"
+      class="dotfield-canvas"
+    />
   </div>
 </template>
 

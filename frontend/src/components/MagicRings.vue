@@ -1,5 +1,8 @@
 <template>
-  <canvas ref="canvasRef" :style="{ filter: blur > 0 ? `blur(${blur}px)` : 'none', width: '100%', height: '100%', display: 'block' }"></canvas>
+  <canvas
+    ref="canvasRef"
+    :style="{ filter: blur > 0 ? `blur(${blur}px)` : 'none', width: '100%', height: '100%', display: 'block' }"
+  />
 </template>
 
 <script setup>

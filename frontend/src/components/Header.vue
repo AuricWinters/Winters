@@ -1,6 +1,11 @@
 <template>
-  <header class="main-header" role="banner">
-    <h1 id="navbar-title">WINTERS</h1>
+  <header
+    class="main-header"
+    role="banner"
+  >
+    <h1 id="navbar-title">
+      WINTERS
+    </h1>
     <nav
       role="navigation"
       :aria-label="t('主导航')"
@@ -109,11 +114,11 @@
       </div>
     </nav>
     <div
-        id="auth-button-container"
-        role="region"
-        aria-label="用户认证"
-        style="position: relative; z-index: 10000;"
-      >
+      id="auth-button-container"
+      role="region"
+      aria-label="用户认证"
+      style="position: relative; z-index: 10000;"
+    >
       <button
         v-if="!userStore.isLoggedIn"
         class="login-btn"
@@ -128,9 +133,9 @@
       >
         <button
           class="user-avatar"
-          @click="toggleUserMenu"
           :class="{ active: userMenuOpen }"
           style="cursor: pointer; z-index: 10001; position: relative;"
+          @click="toggleUserMenu"
         >
           <img
             v-if="userStore.user?.avatar"
@@ -138,7 +143,10 @@
             :alt="userStore.username"
             class="avatar-img"
           >
-          <div v-else class="avatar-placeholder">
+          <div
+            v-else
+            class="avatar-placeholder"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -161,7 +169,10 @@
             </svg>
           </div>
           <span class="username">{{ userStore.username }}</span>
-          <span class="menu-arrow" :class="{ active: userMenuOpen }"></span>
+          <span
+            class="menu-arrow"
+            :class="{ active: userMenuOpen }"
+          />
         </button>
         <div
           class="user-dropdown"
@@ -180,8 +191,12 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
             </svg>
             {{ t('设置') }}
           </button>
@@ -213,7 +228,7 @@
             </svg>
             {{ t('个人中心') }}
           </router-link>
-          <div class="dropdown-divider"></div>
+          <div class="dropdown-divider" />
           <button
             class="dropdown-item logout"
             @click="logout"

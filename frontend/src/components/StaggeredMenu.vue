@@ -1,12 +1,39 @@
 <template>
-  <div :class="wrapperClasses" :style="accentColor ? { '--sm-accent': accentColor } : undefined" :data-position="position" :data-open="isOpen || undefined">
-    <div ref="preLayersRef" class="sm-prelayers" aria-hidden="true">
-      <div v-for="(c, i) in preLayerColors" :key="i" class="sm-prelayer" :style="{ background: c }" />
+  <div
+    :class="wrapperClasses"
+    :style="accentColor ? { '--sm-accent': accentColor } : undefined"
+    :data-position="position"
+    :data-open="isOpen || undefined"
+  >
+    <div
+      ref="preLayersRef"
+      class="sm-prelayers"
+      aria-hidden="true"
+    >
+      <div
+        v-for="(c, i) in preLayerColors"
+        :key="i"
+        class="sm-prelayer"
+        :style="{ background: c }"
+      />
     </div>
 
-    <header class="staggered-menu-header" aria-label="Main navigation header">
-      <div class="sm-logo" aria-label="Logo">
-        <img :src="logoUrl" alt="Logo" class="sm-logo-img" draggable="false" width="110" height="24" />
+    <header
+      class="staggered-menu-header"
+      aria-label="Main navigation header"
+    >
+      <div
+        class="sm-logo"
+        aria-label="Logo"
+      >
+        <img
+          :src="logoUrl"
+          alt="Logo"
+          class="sm-logo-img"
+          draggable="false"
+          width="110"
+          height="24"
+        >
       </div>
 
       <button
@@ -14,36 +41,103 @@
         class="sm-toggle"
         :aria-label="isOpen ? 'Close menu' : 'Open menu'"
         :aria-expanded="isOpen"
-        @click="toggleMenu"
         type="button"
+        @click="toggleMenu"
       >
-        <span ref="textWrapRef" class="sm-toggle-textWrap" aria-hidden="true">
-          <span ref="textInnerRef" class="sm-toggle-textInner" :style="{ transform: `translateY(${-textShift}%)` }">
-            <span v-for="(line, i) in textLines" :key="i" class="sm-toggle-line">{{ line }}</span>
+        <span
+          ref="textWrapRef"
+          class="sm-toggle-textWrap"
+          aria-hidden="true"
+        >
+          <span
+            ref="textInnerRef"
+            class="sm-toggle-textInner"
+            :style="{ transform: `translateY(${-textShift}%)` }"
+          >
+            <span
+              v-for="(line, i) in textLines"
+              :key="i"
+              class="sm-toggle-line"
+            >{{ line }}</span>
           </span>
         </span>
-        <span ref="iconRef" class="sm-icon" aria-hidden="true" :style="{ transform: `rotate(${iconRotate}deg)` }">
-          <span ref="plusHRef" class="sm-icon-line" />
-          <span ref="plusVRef" class="sm-icon-line sm-icon-line-v" :style="{ transform: `rotate(${plusVRotate}deg)` }" />
+        <span
+          ref="iconRef"
+          class="sm-icon"
+          aria-hidden="true"
+          :style="{ transform: `rotate(${iconRotate}deg)` }"
+        >
+          <span
+            ref="plusHRef"
+            class="sm-icon-line"
+          />
+          <span
+            ref="plusVRef"
+            class="sm-icon-line sm-icon-line-v"
+            :style="{ transform: `rotate(${plusVRotate}deg)` }"
+          />
         </span>
       </button>
     </header>
 
-    <aside ref="panelRef" class="staggered-menu-panel" :aria-hidden="!isOpen" :style="panelStyle">
+    <aside
+      ref="panelRef"
+      class="staggered-menu-panel"
+      :aria-hidden="!isOpen"
+      :style="panelStyle"
+    >
       <div class="sm-panel-inner">
-        <ul class="sm-panel-list" role="list" :data-numbering="displayItemNumbering || undefined">
-          <li v-for="(it, idx) in displayItems" :key="it.label + idx" class="sm-panel-itemWrap">
-            <a class="sm-panel-item" :href="it.link" :aria-label="it.ariaLabel" :data-index="idx + 1">
-              <span class="sm-panel-itemLabel" :style="getItemLabelStyle(idx)">{{ it.label }}</span>
+        <ul
+          class="sm-panel-list"
+          role="list"
+          :data-numbering="displayItemNumbering || undefined"
+        >
+          <li
+            v-for="(it, idx) in displayItems"
+            :key="it.label + idx"
+            class="sm-panel-itemWrap"
+          >
+            <a
+              class="sm-panel-item"
+              :href="it.link"
+              :aria-label="it.ariaLabel"
+              :data-index="idx + 1"
+            >
+              <span
+                class="sm-panel-itemLabel"
+                :style="getItemLabelStyle(idx)"
+              >{{ it.label }}</span>
             </a>
           </li>
         </ul>
 
-        <div v-if="displaySocials && socialItems.length" class="sm-socials" aria-label="Social links">
-          <h3 class="sm-socials-title" :style="{ opacity: socialOpacity }">Socials</h3>
-          <ul class="sm-socials-list" role="list">
-            <li v-for="(s, i) in socialItems" :key="s.label + i" class="sm-socials-item">
-              <a :href="s.link" target="_blank" rel="noopener noreferrer" class="sm-socials-link" :style="{ transform: `translateY(${socialLinkOffsets[i]}px)`, opacity: socialOpacities[i] }">
+        <div
+          v-if="displaySocials && socialItems.length"
+          class="sm-socials"
+          aria-label="Social links"
+        >
+          <h3
+            class="sm-socials-title"
+            :style="{ opacity: socialOpacity }"
+          >
+            Socials
+          </h3>
+          <ul
+            class="sm-socials-list"
+            role="list"
+          >
+            <li
+              v-for="(s, i) in socialItems"
+              :key="s.label + i"
+              class="sm-socials-item"
+            >
+              <a
+                :href="s.link"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sm-socials-link"
+                :style="{ transform: `translateY(${socialLinkOffsets[i]}px)`, opacity: socialOpacities[i] }"
+              >
                 {{ s.label }}
               </a>
             </li>

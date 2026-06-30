@@ -6,13 +6,24 @@
       <div class="editor-card">
         <!-- 页面标题 -->
         <div class="editor-header scroll-reveal">
-          <h1 class="page-title">{{ t('发布动态') }}</h1>
-          <p class="header-desc">{{ t('分享你的想法、经验或问题') }}</p>
+          <h1 class="page-title">
+            {{ t('发布动态') }}
+          </h1>
+          <p class="header-desc">
+            {{ t('分享你的想法、经验或问题') }}
+          </p>
         </div>
 
-        <form class="editor-form" novalidate @submit.prevent="handleSubmit">
+        <form
+          class="editor-form"
+          novalidate
+          @submit.prevent="handleSubmit"
+        >
           <!-- 分类 -->
-          <div class="form-group scroll-reveal" style="--delay: 0.05">
+          <div
+            class="form-group scroll-reveal"
+            style="--delay: 0.05"
+          >
             <label class="form-label">{{ t('分类') }} <span class="required">*</span></label>
             <div class="category-group">
               <button
@@ -26,12 +37,21 @@
                 {{ cat.icon }} {{ t(cat.label) }}
               </button>
             </div>
-            <span v-if="errors.category" class="form-error">{{ errors.category }}</span>
+            <span
+              v-if="errors.category"
+              class="form-error"
+            >{{ errors.category }}</span>
           </div>
 
           <!-- 标题 -->
-          <div class="form-group scroll-reveal" style="--delay: 0.1">
-            <label class="form-label" for="editor-title">{{ t('标题') }}</label>
+          <div
+            class="form-group scroll-reveal"
+            style="--delay: 0.1"
+          >
+            <label
+              class="form-label"
+              for="editor-title"
+            >{{ t('标题') }}</label>
             <div class="input-wrapper">
               <input
                 id="editor-title"
@@ -39,13 +59,19 @@
                 type="text"
                 :placeholder="t('输入标题（可选，短动态可不填）')"
                 maxlength="120"
-              />
+              >
             </div>
           </div>
 
           <!-- 内容 -->
-          <div class="form-group scroll-reveal" style="--delay: 0.15">
-            <label class="form-label" for="editor-content">
+          <div
+            class="form-group scroll-reveal"
+            style="--delay: 0.15"
+          >
+            <label
+              class="form-label"
+              for="editor-content"
+            >
               {{ t('内容') }} <span class="required">*</span>
             </label>
             <textarea
@@ -56,39 +82,67 @@
               maxlength="10000"
             />
             <div class="field-footer">
-              <span v-if="errors.content" class="form-error">{{ errors.content }}</span>
+              <span
+                v-if="errors.content"
+                class="form-error"
+              >{{ errors.content }}</span>
               <span class="char-count">{{ form.content.length }} / 10000</span>
             </div>
           </div>
 
           <!-- 标签 -->
-          <div class="form-group scroll-reveal" style="--delay: 0.2">
-            <label class="form-label" for="editor-tags">{{ t('标签') }}</label>
+          <div
+            class="form-group scroll-reveal"
+            style="--delay: 0.2"
+          >
+            <label
+              class="form-label"
+              for="editor-tags"
+            >{{ t('标签') }}</label>
             <div class="input-wrapper">
               <input
                 id="editor-tags"
                 v-model="form.tagsInput"
                 type="text"
                 :placeholder="t('用逗号分隔，如 AI,LLM,教程')"
-              />
+              >
             </div>
-            <div v-if="previewTags.length" class="tag-preview">
+            <div
+              v-if="previewTags.length"
+              class="tag-preview"
+            >
               <span
                 v-for="(tag, i) in previewTags"
                 :key="i"
                 class="preview-tag"
               >#{{ tag }}</span>
             </div>
-            <p class="field-hint">{{ t('添加标签让更多人看到你的内容') }}</p>
+            <p class="field-hint">
+              {{ t('添加标签让更多人看到你的内容') }}
+            </p>
           </div>
 
           <!-- 操作按钮 -->
-          <div class="form-actions scroll-reveal" style="--delay: 0.25">
-            <button type="button" class="cancel-btn" @click="handleCancel">
+          <div
+            class="form-actions scroll-reveal"
+            style="--delay: 0.25"
+          >
+            <button
+              type="button"
+              class="cancel-btn"
+              @click="handleCancel"
+            >
               {{ t('取消') }}
             </button>
-            <button type="submit" class="submit-btn" :disabled="submitting">
-              <span v-if="submitting" class="loading-spinner" />
+            <button
+              type="submit"
+              class="submit-btn"
+              :disabled="submitting"
+            >
+              <span
+                v-if="submitting"
+                class="loading-spinner"
+              />
               <span v-else>{{ t('发布') }}</span>
             </button>
           </div>

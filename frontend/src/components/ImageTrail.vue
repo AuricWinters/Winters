@@ -1,7 +1,17 @@
 <template>
-  <div ref="containerRef" class="content">
-    <div v-for="(url, i) in items" :key="i" class="content__img">
-      <div class="content__img-inner" :style="{ backgroundImage: `url(${url})` }" />
+  <div
+    ref="containerRef"
+    class="content"
+  >
+    <div
+      v-for="(url, i) in items"
+      :key="i"
+      class="content__img"
+    >
+      <div
+        class="content__img-inner"
+        :style="{ backgroundImage: `url(${url})` }"
+      />
     </div>
   </div>
 </template>

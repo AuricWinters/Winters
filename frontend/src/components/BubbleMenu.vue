@@ -1,37 +1,76 @@
 <template>
-  <nav :class="containerClassName" :style="style" aria-label="Main navigation">
-    <div class="bubble logo-bubble" aria-label="Logo" :style="{ background: menuBg }">
+  <nav
+    :class="containerClassName"
+    :style="style"
+    aria-label="Main navigation"
+  >
+    <div
+      class="bubble logo-bubble"
+      aria-label="Logo"
+      :style="{ background: menuBg }"
+    >
       <span class="logo-content">
-        <img v-if="typeof logo === 'string'" :src="logo" alt="Logo" class="bubble-logo" />
-        <component :is="logo" v-else />
+        <img
+          v-if="typeof logo === 'string'"
+          :src="logo"
+          alt="Logo"
+          class="bubble-logo"
+        >
+        <component
+          :is="logo"
+          v-else
+        />
       </span>
     </div>
 
     <button
       type="button"
       :class="['bubble toggle-bubble menu-btn', { open: isMenuOpen }]"
-      @click="handleToggle"
       :aria-label="menuAriaLabel"
       :aria-pressed="isMenuOpen"
       :style="{ background: menuBg }"
+      @click="handleToggle"
     >
-      <span class="menu-line" :style="{ background: menuContentColor }" />
-      <span class="menu-line short" :style="{ background: menuContentColor }" />
+      <span
+        class="menu-line"
+        :style="{ background: menuContentColor }"
+      />
+      <span
+        class="menu-line short"
+        :style="{ background: menuContentColor }"
+      />
     </button>
   </nav>
 
-  <div v-if="showOverlay" :class="['bubble-menu-items', useFixedPosition ? 'fixed' : 'absolute']" :aria-hidden="!isMenuOpen" ref="overlayRef">
-    <ul class="pill-list" role="menu" aria-label="Menu links">
-      <li v-for="(item, idx) in menuItems" :key="idx" role="none" class="pill-col">
+  <div
+    v-if="showOverlay"
+    ref="overlayRef"
+    :class="['bubble-menu-items', useFixedPosition ? 'fixed' : 'absolute']"
+    :aria-hidden="!isMenuOpen"
+  >
+    <ul
+      class="pill-list"
+      role="menu"
+      aria-label="Menu links"
+    >
+      <li
+        v-for="(item, idx) in menuItems"
+        :key="idx"
+        role="none"
+        class="pill-col"
+      >
         <a
+          :ref="el => { if (el) bubblesRef[idx] = el }"
           role="menuitem"
           :href="item.href"
           :aria-label="item.ariaLabel || item.label"
           class="pill-link"
           :style="getPillStyle(item)"
-          :ref="el => { if (el) bubblesRef[idx] = el }"
         >
-          <span class="pill-label" :ref="el => { if (el) labelRefs[idx] = el }">
+          <span
+            :ref="el => { if (el) labelRefs[idx] = el }"
+            class="pill-label"
+          >
             {{ item.label }}
           </span>
         </a>

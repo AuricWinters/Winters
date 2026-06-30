@@ -1,7 +1,10 @@
 <template>
-  <div :ref="useWindowScroll ? undefined : scrollerRef" :class="['scroll-stack-scroller', className]">
+  <div
+    :ref="useWindowScroll ? undefined : scrollerRef"
+    :class="['scroll-stack-scroller', className]"
+  >
     <div class="scroll-stack-inner">
-      <slot></slot>
+      <slot />
       <div class="scroll-stack-end" />
     </div>
   </div>

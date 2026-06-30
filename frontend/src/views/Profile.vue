@@ -24,28 +24,71 @@
         <div class="profile-card-inner">
           <!-- 头像 + 信息 -->
           <div class="profile-main">
-            <div class="avatar-upload" @click="triggerAvatarUpload" :title="t('点击更换头像')">
+            <div
+              class="avatar-upload"
+              :title="t('点击更换头像')"
+              @click="triggerAvatarUpload"
+            >
               <div class="avatar-ring">
-                <div v-if="user.avatar" class="avatar-img" :style="{ backgroundImage: `url(${user.avatar})` }" />
-                <svg v-else class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"/>
-                  <circle cx="12" cy="7" r="4" stroke-width="2"/>
+                <div
+                  v-if="user.avatar"
+                  class="avatar-img"
+                  :style="{ backgroundImage: `url(${user.avatar})` }"
+                />
+                <svg
+                  v-else
+                  class="avatar-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="4"
+                    stroke-width="2"
+                  />
                 </svg>
-                <div class="avatar-overlay"><span>📷</span></div>
+                <div class="avatar-overlay">
+                  <span>📷</span>
+                </div>
               </div>
             </div>
-            <input ref="avatarInput" type="file" accept="image/*" hidden @change="handleAvatarChange" />
+            <input
+              ref="avatarInput"
+              type="file"
+              accept="image/*"
+              hidden
+              @change="handleAvatarChange"
+            >
             <div class="profile-info">
-              <h2 class="j-name">{{ user.nickname || user.username || t('用户') }}</h2>
-              <p class="j-bio">{{ user.bio || t('还没有写简介，点击档案标签添加吧 ✍️') }}</p>
-              <p class="j-meta">{{ user.email || user.phone || t('未设置联系方式') }}</p>
+              <h2 class="j-name">
+                {{ user.nickname || user.username || t('用户') }}
+              </h2>
+              <p class="j-bio">
+                {{ user.bio || t('还没有写简介，点击档案标签添加吧 ✍️') }}
+              </p>
+              <p class="j-meta">
+                {{ user.email || user.phone || t('未设置联系方式') }}
+              </p>
             </div>
           </div>
           <!-- 统计 -->
           <div class="profile-stats">
-            <div class="stat-chip"><span class="chip-num">{{ stats.days }}</span><span class="chip-label">{{ t('天') }}</span></div>
-            <div class="stat-chip"><span class="chip-num">{{ stats.projects }}</span><span class="chip-label">{{ t('项目') }}</span></div>
-            <div class="stat-chip"><span class="chip-num">{{ stats.active }}</span><span class="chip-label">{{ t('活跃') }}</span></div>
+            <div class="stat-chip">
+              <span class="chip-num">{{ stats.days }}</span><span class="chip-label">{{ t('天') }}</span>
+            </div>
+            <div class="stat-chip">
+              <span class="chip-num">{{ stats.projects }}</span><span class="chip-label">{{ t('项目') }}</span>
+            </div>
+            <div class="stat-chip">
+              <span class="chip-num">{{ stats.active }}</span><span class="chip-label">{{ t('活跃') }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -57,53 +100,126 @@
           :key="tab.key"
           :class="{ active: activeTab === tab.key }"
           @click="activeTab = tab.key"
-        >{{ t(tab.label) }}</button>
+        >
+          {{ t(tab.label) }}
+        </button>
       </div>
 
       <!-- 内容便利贴 -->
-      <div class="sticky sticky-content" :key="activeTab">
+      <div
+        :key="activeTab"
+        class="sticky sticky-content"
+      >
         <div class="sticky-fold" />
         <div class="sticky-tape tape-2" />
 
         <!-- ===== 📋 档案 ===== -->
-        <div v-if="activeTab === 'profile'" class="tab-profile">
-          <h3 class="sticky-title">{{ t('📋 个人信息') }}</h3>
-          <form @submit.prevent="handleUpdateProfile" class="j-form">
+        <div
+          v-if="activeTab === 'profile'"
+          class="tab-profile"
+        >
+          <h3 class="sticky-title">
+            {{ t('📋 个人信息') }}
+          </h3>
+          <form
+            class="j-form"
+            @submit.prevent="handleUpdateProfile"
+          >
             <div class="field-row">
               <span class="field-emoji">📝</span>
-              <input v-model="form.nickname" :placeholder="t('昵称')" :disabled="saving"
-                @blur="validateField('nickname')" @input="clearError('nickname')" />
+              <input
+                v-model="form.nickname"
+                :placeholder="t('昵称')"
+                :disabled="saving"
+                @blur="validateField('nickname')"
+                @input="clearError('nickname')"
+              >
             </div>
-            <p v-if="errors.nickname" class="field-error">{{ errors.nickname }}</p>
+            <p
+              v-if="errors.nickname"
+              class="field-error"
+            >
+              {{ errors.nickname }}
+            </p>
 
             <div class="field-row">
               <span class="field-emoji">💬</span>
-              <textarea v-model="form.bio" :placeholder="t('写一句自我介绍…')" :disabled="saving"
-                maxlength="200" rows="2"
-                @blur="validateField('bio')" @input="clearError('bio')" />
+              <textarea
+                v-model="form.bio"
+                :placeholder="t('写一句自我介绍…')"
+                :disabled="saving"
+                maxlength="200"
+                rows="2"
+                @blur="validateField('bio')"
+                @input="clearError('bio')"
+              />
             </div>
-            <p v-if="errors.bio" class="field-error">{{ errors.bio }}</p>
-            <div class="bio-count">{{ form.bio.length }}/200</div>
+            <p
+              v-if="errors.bio"
+              class="field-error"
+            >
+              {{ errors.bio }}
+            </p>
+            <div class="bio-count">
+              {{ form.bio.length }}/200
+            </div>
 
             <div class="field-row">
               <span class="field-emoji">📱</span>
-              <input v-model="form.phone" :placeholder="t('手机号')" :disabled="saving"
-                @blur="validateField('phone')" @input="clearError('phone')" />
-              <span v-if="user.phone" class="field-badge ok">{{ t('已绑定') }}</span>
+              <input
+                v-model="form.phone"
+                :placeholder="t('手机号')"
+                :disabled="saving"
+                @blur="validateField('phone')"
+                @input="clearError('phone')"
+              >
+              <span
+                v-if="user.phone"
+                class="field-badge ok"
+              >{{ t('已绑定') }}</span>
             </div>
-            <p v-if="errors.phone" class="field-error">{{ errors.phone }}</p>
+            <p
+              v-if="errors.phone"
+              class="field-error"
+            >
+              {{ errors.phone }}
+            </p>
 
             <div class="field-row">
               <span class="field-emoji">📧</span>
-              <input v-model="form.email" :placeholder="t('邮箱')" :disabled="saving"
-                @blur="validateField('email')" @input="clearError('email')" />
-              <span v-if="user.email" class="field-badge ok">{{ t('已绑定') }}</span>
+              <input
+                v-model="form.email"
+                :placeholder="t('邮箱')"
+                :disabled="saving"
+                @blur="validateField('email')"
+                @input="clearError('email')"
+              >
+              <span
+                v-if="user.email"
+                class="field-badge ok"
+              >{{ t('已绑定') }}</span>
             </div>
-            <p v-if="errors.email" class="field-error">{{ errors.email }}</p>
+            <p
+              v-if="errors.email"
+              class="field-error"
+            >
+              {{ errors.email }}
+            </p>
 
             <div class="form-actions">
-              <button type="button" class="j-btn-cancel" @click="resetForm" :disabled="saving">{{ t('撤销 ✗') }}</button>
-              <button type="submit" class="j-btn" :disabled="saving">
+              <button
+                type="button"
+                class="j-btn-cancel"
+                :disabled="saving"
+                @click="resetForm"
+              >
+                {{ t('撤销 ✗') }}
+              </button>
+              <button
+                type="submit"
+                class="j-btn"
+                :disabled="saving"
+              >
                 {{ saving ? t('保存中…') : t('记下来 ✍️') }}
               </button>
             </div>
@@ -111,27 +227,62 @@
         </div>
 
         <!-- ===== 🔐 安全 ===== -->
-        <div v-if="activeTab === 'security'" class="tab-security">
+        <div
+          v-if="activeTab === 'security'"
+          class="tab-security"
+        >
           <div class="sec-grid-2">
             <!-- 左栏：密码修改 -->
             <div class="sec-column">
               <div class="sec-section">
-                <h3 class="sticky-title">{{ t('🔑 修改密码') }}</h3>
-                <form @submit.prevent="handleChangePassword" class="j-form">
+                <h3 class="sticky-title">
+                  {{ t('🔑 修改密码') }}
+                </h3>
+                <form
+                  class="j-form"
+                  @submit.prevent="handleChangePassword"
+                >
                   <div class="field-row">
                     <span class="field-emoji">🔒</span>
-                    <input v-model="pwdForm.current" type="password" autocomplete="current-password" :placeholder="t('当前密码')" :disabled="saving" />
+                    <input
+                      v-model="pwdForm.current"
+                      type="password"
+                      autocomplete="current-password"
+                      :placeholder="t('当前密码')"
+                      :disabled="saving"
+                    >
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">🆕</span>
-                    <input v-model="pwdForm.newPwd" type="password" autocomplete="new-password" :placeholder="t('新密码（至少6位）')" :disabled="saving" />
+                    <input
+                      v-model="pwdForm.newPwd"
+                      type="password"
+                      autocomplete="new-password"
+                      :placeholder="t('新密码（至少6位）')"
+                      :disabled="saving"
+                    >
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">✅</span>
-                    <input v-model="pwdForm.confirm" type="password" autocomplete="new-password" :placeholder="t('确认新密码')" :disabled="saving" />
+                    <input
+                      v-model="pwdForm.confirm"
+                      type="password"
+                      autocomplete="new-password"
+                      :placeholder="t('确认新密码')"
+                      :disabled="saving"
+                    >
                   </div>
-                  <p v-if="pwdError" class="field-error">{{ pwdError }}</p>
-                  <button type="submit" class="j-btn-sm" :disabled="saving">
+                  <p
+                    v-if="pwdError"
+                    class="field-error"
+                  >
+                    {{ pwdError }}
+                  </p>
+                  <button
+                    type="submit"
+                    class="j-btn-sm"
+                    :disabled="saving"
+                  >
                     {{ saving ? '…' : t('更新密码 🔒') }}
                   </button>
                 </form>
@@ -141,52 +292,106 @@
             <!-- 右栏：手机 + 邮箱绑定 -->
             <div class="sec-column">
               <div class="sec-section">
-                <h3 class="sticky-title">{{ t('📱 手机管理') }}</h3>
+                <h3 class="sticky-title">
+                  {{ t('📱 手机管理') }}
+                </h3>
                 <div class="sec-row-display">
                   <span>{{ user.phone ? maskPhone(user.phone) : t('未绑定手机号') }}</span>
-                  <button class="sec-link" @click="toggleBind('phone')">
+                  <button
+                    class="sec-link"
+                    @click="toggleBind('phone')"
+                  >
                     {{ bindPanel.phoneOpen ? t('收起') : user.phone ? t('换绑') : t('绑定') }}
                   </button>
                 </div>
-                <div v-if="bindPanel.phoneOpen" class="bind-inline">
+                <div
+                  v-if="bindPanel.phoneOpen"
+                  class="bind-inline"
+                >
                   <div class="field-row">
                     <span class="field-emoji">📱</span>
-                    <input v-model="bindPanel.phone" :placeholder="t('输入新手机号')" :disabled="saving" />
+                    <input
+                      v-model="bindPanel.phone"
+                      :placeholder="t('输入新手机号')"
+                      :disabled="saving"
+                    >
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">📨</span>
-                    <input v-model="bindPanel.phoneCode" :placeholder="t('验证码')" :disabled="saving" />
-                    <button type="button" class="code-btn-inline" @click="sendCode('phone')" :disabled="codeSending">
+                    <input
+                      v-model="bindPanel.phoneCode"
+                      :placeholder="t('验证码')"
+                      :disabled="saving"
+                    >
+                    <button
+                      type="button"
+                      class="code-btn-inline"
+                      :disabled="codeSending"
+                      @click="sendCode('phone')"
+                    >
                       {{ codeCountdown > 0 ? codeCountdown + 's' : t('发送') }}
                     </button>
                   </div>
-                  <button class="j-btn-sm" @click="handleBindPhone" :disabled="saving">{{ t('确认绑定') }}</button>
+                  <button
+                    class="j-btn-sm"
+                    :disabled="saving"
+                    @click="handleBindPhone"
+                  >
+                    {{ t('确认绑定') }}
+                  </button>
                 </div>
               </div>
 
               <div class="sec-divider" />
 
               <div class="sec-section">
-                <h3 class="sticky-title">{{ t('📧 邮箱管理') }}</h3>
+                <h3 class="sticky-title">
+                  {{ t('📧 邮箱管理') }}
+                </h3>
                 <div class="sec-row-display">
                   <span>{{ user.email || t('未绑定邮箱') }}</span>
-                  <button class="sec-link" @click="toggleBind('email')">
+                  <button
+                    class="sec-link"
+                    @click="toggleBind('email')"
+                  >
                     {{ bindPanel.emailOpen ? t('收起') : user.email ? t('换绑') : t('绑定') }}
                   </button>
                 </div>
-                <div v-if="bindPanel.emailOpen" class="bind-inline">
+                <div
+                  v-if="bindPanel.emailOpen"
+                  class="bind-inline"
+                >
                   <div class="field-row">
                     <span class="field-emoji">📧</span>
-                    <input v-model="bindPanel.email" :placeholder="t('输入新邮箱')" :disabled="saving" />
+                    <input
+                      v-model="bindPanel.email"
+                      :placeholder="t('输入新邮箱')"
+                      :disabled="saving"
+                    >
                   </div>
                   <div class="field-row">
                     <span class="field-emoji">📨</span>
-                    <input v-model="bindPanel.emailCode" :placeholder="t('验证码')" :disabled="saving" />
-                    <button type="button" class="code-btn-inline" @click="sendCode('email')" :disabled="codeSending">
+                    <input
+                      v-model="bindPanel.emailCode"
+                      :placeholder="t('验证码')"
+                      :disabled="saving"
+                    >
+                    <button
+                      type="button"
+                      class="code-btn-inline"
+                      :disabled="codeSending"
+                      @click="sendCode('email')"
+                    >
                       {{ codeCountdown > 0 ? codeCountdown + 's' : t('发送') }}
                     </button>
                   </div>
-                  <button class="j-btn-sm" @click="handleBindEmail" :disabled="saving">{{ t('确认绑定') }}</button>
+                  <button
+                    class="j-btn-sm"
+                    :disabled="saving"
+                    @click="handleBindEmail"
+                  >
+                    {{ t('确认绑定') }}
+                  </button>
                 </div>
               </div>
             </div>
@@ -194,10 +399,15 @@
         </div>
 
         <!-- ===== 🎨 偏好 ===== -->
-        <div v-if="activeTab === 'preferences'" class="tab-preferences">
+        <div
+          v-if="activeTab === 'preferences'"
+          class="tab-preferences"
+        >
           <div class="pref-grid-2">
             <div class="pref-section">
-              <h3 class="sticky-title">{{ t('🎨 主题色') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('🎨 主题色') }}
+              </h3>
               <div class="theme-grid">
                 <button
                   v-for="t in themeOptions"
@@ -211,59 +421,80 @@
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">{{ t('🌗 深色模式') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('🌗 深色模式') }}
+              </h3>
               <div class="option-row">
                 <button
                   v-for="dm in darkModeOptions"
                   :key="dm.value"
                   :class="['opt-btn', { active: settingsStore.darkMode === dm.value }]"
                   @click="settingsStore.setDarkMode(dm.value)"
-                >{{ t(dm.label) }}</button>
+                >
+                  {{ t(dm.label) }}
+                </button>
               </div>
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">{{ t('🔤 字体大小') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('🔤 字体大小') }}
+              </h3>
               <div class="option-row">
                 <button
                   v-for="fs in fontSizeOptions"
                   :key="fs.value"
                   :class="['opt-btn', { active: settingsStore.fontSize === fs.value }]"
                   @click="settingsStore.setFontSize(fs.value)"
-                >{{ t(fs.label) }}</button>
+                >
+                  {{ t(fs.label) }}
+                </button>
               </div>
             </div>
 
             <div class="pref-section">
-              <h3 class="sticky-title">{{ t('✨ 动画效果') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('✨ 动画效果') }}
+              </h3>
               <div class="toggle-row">
                 <span>{{ settingsStore.animationEnabled ? t('已开启') : t('已关闭') }}</span>
                 <button
                   :class="['toggle-switch', { on: settingsStore.animationEnabled }]"
                   @click="settingsStore.setAnimationEnabled(!settingsStore.animationEnabled)"
-                ><span class="toggle-knob" /></button>
+                >
+                  <span class="toggle-knob" />
+                </button>
               </div>
             </div>
 
             <div class="pref-section pref-full">
-              <h3 class="sticky-title">{{ t('🌐 语言') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('🌐 语言') }}
+              </h3>
               <div class="option-row">
                 <button
                   v-for="lang in languageOptions"
                   :key="lang.value"
                   :class="['opt-btn', { active: settingsStore.language === lang.value }]"
                   @click="settingsStore.setLanguage(lang.value)"
-                >{{ t(lang.label) }}</button>
+                >
+                  {{ t(lang.label) }}
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- ===== 📊 数据 ===== -->
-        <div v-if="activeTab === 'data'" class="tab-data">
+        <div
+          v-if="activeTab === 'data'"
+          class="tab-data"
+        >
           <!-- 活动热力图（全宽） -->
           <div class="data-section data-full">
-            <h3 class="sticky-title">{{ t('🔥 活动热力图') }}</h3>
+            <h3 class="sticky-title">
+              {{ t('🔥 活动热力图') }}
+            </h3>
             <ContributionHeatmap :embedded="true" />
           </div>
 
@@ -272,7 +503,9 @@
           <!-- 桌面双栏：项目 + 存储 -->
           <div class="data-grid-2">
             <div class="data-section">
-              <h3 class="sticky-title">{{ t('📂 我的项目') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('📂 我的项目') }}
+              </h3>
               <div class="project-minilist">
                 <router-link
                   v-for="p in dataStore.projects.slice(0, 3)"
@@ -283,16 +516,35 @@
                   <span class="proj-dot" /> {{ p.title }}
                 </router-link>
               </div>
-              <router-link to="/projects" class="view-all">{{ t('查看全部项目 →') }}</router-link>
+              <router-link
+                to="/projects"
+                class="view-all"
+              >
+                {{ t('查看全部项目 →') }}
+              </router-link>
             </div>
 
             <div class="data-section">
-              <h3 class="sticky-title">{{ t('💾 存储概览') }}</h3>
+              <h3 class="sticky-title">
+                {{ t('💾 存储概览') }}
+              </h3>
               <div class="storage-bar-container">
                 <div class="storage-bar">
-                  <div class="storage-seg seg-avatar" :style="{ width: '15%' }" :title="t('头像')" />
-                  <div class="storage-seg seg-files" :style="{ width: '25%' }" :title="t('文件')" />
-                  <div class="storage-seg seg-cache" :style="{ width: '8%' }" :title="t('缓存')" />
+                  <div
+                    class="storage-seg seg-avatar"
+                    :style="{ width: '15%' }"
+                    :title="t('头像')"
+                  />
+                  <div
+                    class="storage-seg seg-files"
+                    :style="{ width: '25%' }"
+                    :title="t('文件')"
+                  />
+                  <div
+                    class="storage-seg seg-cache"
+                    :style="{ width: '8%' }"
+                    :title="t('缓存')"
+                  />
                 </div>
               </div>
               <div class="storage-legend">
@@ -308,16 +560,41 @@
 
           <!-- 数据操作（全宽） -->
           <div class="data-section data-full">
-            <h3 class="sticky-title">{{ t('⚙️ 数据管理') }}</h3>
+            <h3 class="sticky-title">
+              {{ t('⚙️ 数据管理') }}
+            </h3>
             <div class="data-actions">
-              <button class="j-btn-sm" @click="exportData">{{ t('📥 导出我的数据') }}</button>
-              <button class="j-btn-sm danger" @click="confirmClearCache">{{ t('🗑️ 清除本地缓存') }}</button>
+              <button
+                class="j-btn-sm"
+                @click="exportData"
+              >
+                {{ t('📥 导出我的数据') }}
+              </button>
+              <button
+                class="j-btn-sm danger"
+                @click="confirmClearCache"
+              >
+                {{ t('🗑️ 清除本地缓存') }}
+              </button>
             </div>
-            <div v-if="showClearConfirm" class="confirm-inline">
+            <div
+              v-if="showClearConfirm"
+              class="confirm-inline"
+            >
               <p>{{ t('确定要清除本地缓存吗？主题设置将保留。') }}</p>
               <div class="confirm-buttons">
-                <button class="j-btn-cancel" @click="showClearConfirm = false">{{ t('取消') }}</button>
-                <button class="j-btn-sm danger" @click="clearCache">{{ t('确认清除') }}</button>
+                <button
+                  class="j-btn-cancel"
+                  @click="showClearConfirm = false"
+                >
+                  {{ t('取消') }}
+                </button>
+                <button
+                  class="j-btn-sm danger"
+                  @click="clearCache"
+                >
+                  {{ t('确认清除') }}
+                </button>
               </div>
             </div>
           </div>
@@ -335,7 +612,13 @@
             >
               {{ showLogoutConfirm ? t('再次点击确认退出') : t('🚪 退出登录') }}
             </button>
-            <button v-if="showLogoutConfirm" class="action-cancel" @click="showLogoutConfirm = false">{{ t('取消') }}</button>
+            <button
+              v-if="showLogoutConfirm"
+              class="action-cancel"
+              @click="showLogoutConfirm = false"
+            >
+              {{ t('取消') }}
+            </button>
           </div>
           <div class="action-row">
             <button
@@ -346,14 +629,32 @@
             </button>
           </div>
         </div>
-        <div v-if="showDeleteConfirm" class="delete-verify">
+        <div
+          v-if="showDeleteConfirm"
+          class="delete-verify"
+        >
           <div class="field-row">
             <span class="field-emoji">🔑</span>
-            <input v-model="deletePassword" type="password" :placeholder="t('输入密码确认注销')" />
+            <input
+              v-model="deletePassword"
+              type="password"
+              :placeholder="t('输入密码确认注销')"
+            >
           </div>
           <div class="confirm-buttons">
-            <button class="j-btn-cancel" @click="showDeleteConfirm = false; deletePassword = ''">{{ t('取消') }}</button>
-            <button class="j-btn-sm danger" @click="handleDeleteAccount" :disabled="saving">{{ t('确认注销') }}</button>
+            <button
+              class="j-btn-cancel"
+              @click="showDeleteConfirm = false; deletePassword = ''"
+            >
+              {{ t('取消') }}
+            </button>
+            <button
+              class="j-btn-sm danger"
+              :disabled="saving"
+              @click="handleDeleteAccount"
+            >
+              {{ t('确认注销') }}
+            </button>
           </div>
         </div>
       </div>

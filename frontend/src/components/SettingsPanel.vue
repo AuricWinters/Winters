@@ -1,111 +1,304 @@
 <template>
-  <div class="settings-panel show" @click.stop>
+  <div
+    class="settings-panel show"
+    @click.stop
+  >
     <!-- ═══ 顶部栏 ═══ -->
     <div class="settings-header">
-      <button v-if="currentView !== 'main'" class="back-btn" @click="currentView = 'main'">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round"/></svg>
+      <button
+        v-if="currentView !== 'main'"
+        class="back-btn"
+        @click="currentView = 'main'"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        ><path
+          d="M15 18l-6-6 6-6"
+          stroke-width="2"
+          stroke-linecap="round"
+        /></svg>
       </button>
       <div class="header-content">
-        <h3 class="settings-title">{{ currentView === 'theme' ? t('主题') : t('设置') }}</h3>
-        <p v-if="currentView === 'main'" class="settings-subtitle">自定义您的网页体验</p>
+        <h3 class="settings-title">
+          {{ currentView === 'theme' ? t('主题') : t('设置') }}
+        </h3>
+        <p
+          v-if="currentView === 'main'"
+          class="settings-subtitle"
+        >
+          自定义您的网页体验
+        </p>
       </div>
-      <button class="close-btn" @click="closePanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button
+        class="close-btn"
+        @click="closePanel"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        ><path
+          d="M18 6L6 18M6 6l12 12"
+          stroke-width="2"
+          stroke-linecap="round"
+        /></svg>
+      </button>
     </div>
 
     <!-- ═══ 主页 ═══ -->
-    <div v-if="currentView === 'main'" class="settings-content">
-      <div class="nav-item" @click="currentView = 'theme'">
+    <div
+      v-if="currentView === 'main'"
+      class="settings-content"
+    >
+      <div
+        class="nav-item"
+        @click="currentView = 'theme'"
+      >
         <span class="nav-icon">🎨</span>
         <div class="nav-info">
           <span class="nav-label">{{ t('主题') }}</span>
           <span class="nav-hint">{{ t(themeStyleOptions.find(o=>o.value===themeStyle)?.label) }} · {{ t(themeOptions.find(o=>o.value===theme)?.label) }}</span>
         </div>
-        <svg class="nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg
+          class="nav-arrow"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        ><path
+          d="m9 18 6-6-6-6"
+          stroke-width="2"
+          stroke-linecap="round"
+        /></svg>
       </div>
 
       <div class="settings-card">
-        <div class="card-header"><h4 class="card-title">✨ {{ t('外观') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            ✨ {{ t('外观') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="setting-item">
-            <div class="item-info"><span class="item-label">{{ t('字体大小') }}</span></div>
+            <div class="item-info">
+              <span class="item-label">{{ t('字体大小') }}</span>
+            </div>
             <div class="font-size-options">
-              <button v-for="o in fontSizeOptions" :key="o.value" class="font-size-btn" :class="{ active: fontSize === o.value }" @click="handleFontSizeChange(o.value)">{{ t(o.label) }}</button>
+              <button
+                v-for="o in fontSizeOptions"
+                :key="o.value"
+                class="font-size-btn"
+                :class="{ active: fontSize === o.value }"
+                @click="handleFontSizeChange(o.value)"
+              >
+                {{ t(o.label) }}
+              </button>
             </div>
           </div>
           <div class="setting-item">
-            <div class="item-info"><span class="item-label">{{ t('动画效果') }}</span></div>
-            <button class="switch-btn" :class="{ active: animationEnabled }" @click="toggleAnimation"><span class="switch-slider"></span></button>
+            <div class="item-info">
+              <span class="item-label">{{ t('动画效果') }}</span>
+            </div>
+            <button
+              class="switch-btn"
+              :class="{ active: animationEnabled }"
+              @click="toggleAnimation"
+            >
+              <span class="switch-slider" />
+            </button>
           </div>
         </div>
       </div>
 
       <div class="settings-card">
-        <div class="card-header"><h4 class="card-title">🌐 {{ t('语言') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            🌐 {{ t('语言') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="language-options">
-            <button v-for="o in languageOptions" :key="o.value" class="language-btn" :class="{ active: language === o.value }" @click="handleLanguageChange(o.value)">{{ t(o.label) }}</button>
+            <button
+              v-for="o in languageOptions"
+              :key="o.value"
+              class="language-btn"
+              :class="{ active: language === o.value }"
+              @click="handleLanguageChange(o.value)"
+            >
+              {{ t(o.label) }}
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ═══ 主题子页 ═══ -->
-    <div v-if="currentView === 'theme'" class="settings-content">
+    <div
+      v-if="currentView === 'theme'"
+      class="settings-content"
+    >
       <div class="settings-card sub-card">
-        <div class="card-header"><h4 class="card-title">{{ t('主题样式') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            {{ t('主题样式') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="style-grid">
-            <button v-for="o in themeStyleOptions" :key="o.value" class="style-btn" :class="{ active: themeStyle === o.value }" @click="handleThemeStyleChange(o.value)"><span class="style-label">{{ t(o.label) }}</span></button>
+            <button
+              v-for="o in themeStyleOptions"
+              :key="o.value"
+              class="style-btn"
+              :class="{ active: themeStyle === o.value }"
+              @click="handleThemeStyleChange(o.value)"
+            >
+              <span class="style-label">{{ t(o.label) }}</span>
+            </button>
           </div>
         </div>
       </div>
 
       <div class="settings-card sub-card">
-        <div class="card-header"><h4 class="card-title">{{ t('圆角样式') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            {{ t('圆角样式') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="style-grid">
-            <button v-for="o in cornerStyleOptions" :key="o.value" class="style-btn" :class="{ active: cornerStyle === o.value }" @click="handleCornerStyleChange(o.value)"><span class="style-label">{{ t(o.label) }}</span></button>
+            <button
+              v-for="o in cornerStyleOptions"
+              :key="o.value"
+              class="style-btn"
+              :class="{ active: cornerStyle === o.value }"
+              @click="handleCornerStyleChange(o.value)"
+            >
+              <span class="style-label">{{ t(o.label) }}</span>
+            </button>
           </div>
         </div>
       </div>
 
       <div class="settings-card sub-card">
-        <div class="card-header"><h4 class="card-title">{{ t('主题颜色') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            {{ t('主题颜色') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="theme-grid">
-            <button v-for="o in themeOptions" :key="o.value" class="theme-btn" :class="{ active: theme === o.value }" @click="handleThemeChange(o.value)">
-              <div class="theme-preview" :style="getThemePreview(o.value)"></div>
+            <button
+              v-for="o in themeOptions"
+              :key="o.value"
+              class="theme-btn"
+              :class="{ active: theme === o.value }"
+              @click="handleThemeChange(o.value)"
+            >
+              <div
+                class="theme-preview"
+                :style="getThemePreview(o.value)"
+              />
               <span class="theme-label">{{ t(o.label) }}</span>
             </button>
           </div>
-          <div v-if="theme === 'custom'" class="custom-theme-settings">
+          <div
+            v-if="theme === 'custom'"
+            class="custom-theme-settings"
+          >
             <div class="collapse-header">
-              <h5 class="collapse-title">{{ t('自定义配色') }}</h5>
-              <button class="collapse-btn" :class="{ active: isCustomThemeExpanded }" @click="isCustomThemeExpanded = !isCustomThemeExpanded"><svg class="collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+              <h5 class="collapse-title">
+                {{ t('自定义配色') }}
+              </h5>
+              <button
+                class="collapse-btn"
+                :class="{ active: isCustomThemeExpanded }"
+                @click="isCustomThemeExpanded = !isCustomThemeExpanded"
+              >
+                <svg
+                  class="collapse-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                ><path d="m6 9 6 6 6-6" /></svg>
+              </button>
             </div>
-            <div v-if="isCustomThemeExpanded" class="collapse-content">
+            <div
+              v-if="isCustomThemeExpanded"
+              class="collapse-content"
+            >
               <div class="setting-item">
-                <div class="item-info"><span class="item-label">{{ t('配色模式') }}</span></div>
+                <div class="item-info">
+                  <span class="item-label">{{ t('配色模式') }}</span>
+                </div>
                 <div class="custom-mode-options">
-                  <button v-for="m in customModeOptions" :key="m.value" class="mode-btn" :class="{ active: customTheme.mode === m.value }" @click="handleCustomModeChange(m.value)">{{ m.label }}</button>
+                  <button
+                    v-for="m in customModeOptions"
+                    :key="m.value"
+                    class="mode-btn"
+                    :class="{ active: customTheme.mode === m.value }"
+                    @click="handleCustomModeChange(m.value)"
+                  >
+                    {{ m.label }}
+                  </button>
                 </div>
               </div>
               <div class="setting-item">
                 <div class="color-input-group">
-                  <input type="color" v-model="customColors.primary" @change="handleColorChange('primary', customColors.primary)" class="color-picker">
-                  <input type="text" v-model="customColors.primary" @input="handleColorChange('primary', customColors.primary)" class="color-input" placeholder="#C4737A">
+                  <input
+                    v-model="customColors.primary"
+                    type="color"
+                    class="color-picker"
+                    @change="handleColorChange('primary', customColors.primary)"
+                  >
+                  <input
+                    v-model="customColors.primary"
+                    type="text"
+                    class="color-input"
+                    placeholder="#C4737A"
+                    @input="handleColorChange('primary', customColors.primary)"
+                  >
                 </div>
               </div>
-              <div v-if="customTheme.mode !== 'single'" class="setting-item">
+              <div
+                v-if="customTheme.mode !== 'single'"
+                class="setting-item"
+              >
                 <div class="color-input-group">
-                  <input type="color" v-model="customColors.secondary" @change="handleColorChange('secondary', customColors.secondary)" class="color-picker">
-                  <input type="text" v-model="customColors.secondary" @input="handleColorChange('secondary', customColors.secondary)" class="color-input" placeholder="#B8956A">
+                  <input
+                    v-model="customColors.secondary"
+                    type="color"
+                    class="color-picker"
+                    @change="handleColorChange('secondary', customColors.secondary)"
+                  >
+                  <input
+                    v-model="customColors.secondary"
+                    type="text"
+                    class="color-input"
+                    placeholder="#B8956A"
+                    @input="handleColorChange('secondary', customColors.secondary)"
+                  >
                 </div>
               </div>
-              <div v-if="customTheme.mode === 'triple'" class="setting-item">
+              <div
+                v-if="customTheme.mode === 'triple'"
+                class="setting-item"
+              >
                 <div class="color-input-group">
-                  <input type="color" v-model="customColors.accent" @change="handleColorChange('accent', customColors.accent)" class="color-picker">
-                  <input type="text" v-model="customColors.accent" @input="handleColorChange('accent', customColors.accent)" class="color-input" placeholder="#D4A0A7">
+                  <input
+                    v-model="customColors.accent"
+                    type="color"
+                    class="color-picker"
+                    @change="handleColorChange('accent', customColors.accent)"
+                  >
+                  <input
+                    v-model="customColors.accent"
+                    type="text"
+                    class="color-input"
+                    placeholder="#D4A0A7"
+                    @input="handleColorChange('accent', customColors.accent)"
+                  >
                 </div>
               </div>
             </div>
@@ -114,10 +307,20 @@
       </div>
 
       <div class="settings-card sub-card">
-        <div class="card-header"><h4 class="card-title">{{ t('深浅模式') }}</h4></div>
+        <div class="card-header">
+          <h4 class="card-title">
+            {{ t('深浅模式') }}
+          </h4>
+        </div>
         <div class="card-body">
           <div class="dark-mode-options">
-            <button v-for="o in darkModeOptions" :key="o.value" class="dark-mode-btn" :class="{ active: darkMode === o.value }" @click="handleDarkModeChange(o.value)">
+            <button
+              v-for="o in darkModeOptions"
+              :key="o.value"
+              class="dark-mode-btn"
+              :class="{ active: darkMode === o.value }"
+              @click="handleDarkModeChange(o.value)"
+            >
               <span class="dark-mode-icon">{{ o.icon === 'sun' ? '☀️' : o.icon === 'moon' ? '🌙' : '🔄' }}</span>
               <span class="dark-mode-label">{{ t(o.label) }}</span>
             </button>
@@ -128,7 +331,12 @@
 
     <!-- ═══ 底部 ═══ -->
     <div class="settings-footer">
-      <button class="reset-btn" @click="handleReset">{{ t('重置所有设置') }}</button>
+      <button
+        class="reset-btn"
+        @click="handleReset"
+      >
+        {{ t('重置所有设置') }}
+      </button>
     </div>
   </div>
 </template>

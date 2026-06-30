@@ -1,9 +1,31 @@
 <template>
-  <div ref="containerRef" :class="['orbit-container', className]" :style="containerStyle" aria-hidden="true">
-    <div :class="['orbit-scaling-container', { 'orbit-scaling-container--responsive': responsive }]" :style="scalingStyle">
-      <div class="orbit-rotation-wrapper" :style="{ transform: `rotate(${rotation}deg)` }">
-        <svg v-if="showPath" width="100%" height="100%" :viewBox="`0 0 ${baseWidth} ${baseWidth}`" class="orbit-path-svg">
-          <path :d="path" fill="none" :stroke="pathColor" :stroke-width="pathWidth" />
+  <div
+    ref="containerRef"
+    :class="['orbit-container', className]"
+    :style="containerStyle"
+    aria-hidden="true"
+  >
+    <div
+      :class="['orbit-scaling-container', { 'orbit-scaling-container--responsive': responsive }]"
+      :style="scalingStyle"
+    >
+      <div
+        class="orbit-rotation-wrapper"
+        :style="{ transform: `rotate(${rotation}deg)` }"
+      >
+        <svg
+          v-if="showPath"
+          width="100%"
+          height="100%"
+          :viewBox="`0 0 ${baseWidth} ${baseWidth}`"
+          class="orbit-path-svg"
+        >
+          <path
+            :d="path"
+            fill="none"
+            :stroke="pathColor"
+            :stroke-width="pathWidth"
+          />
         </svg>
         <div
           v-for="(item, index) in images"
@@ -11,12 +33,20 @@
           class="orbit-item"
           :style="getItemStyle(index)"
         >
-          <img :src="item" :alt="`${altPrefix} ${index + 1}`" draggable="false" class="orbit-image" />
+          <img
+            :src="item"
+            :alt="`${altPrefix} ${index + 1}`"
+            draggable="false"
+            class="orbit-image"
+          >
         </div>
       </div>
     </div>
-    <div v-if="centerContent" class="orbit-center-content">
-      <slot name="center"></slot>
+    <div
+      v-if="centerContent"
+      class="orbit-center-content"
+    >
+      <slot name="center" />
     </div>
   </div>
 </template>

@@ -1,9 +1,34 @@
 <template>
-  <div class="stack-container" @mouseenter="pauseOnHover && (isPaused = true)" @mouseleave="pauseOnHover && (isPaused = false)">
-    <div v-for="(card, index) in stack" :key="card.id" class="card-rotate" :style="getCardStyle(card, index)" @pointerdown="e => onPointerDown(e, card.id)" @pointermove="onPointerMove" @pointerup="onPointerUp" @click="sendToBackOnClick && sendToBack(card.id)">
-      <div class="card" :style="getCardInnerStyle(card, index)" @click="shouldEnableClick && sendToBack(card.id)">
-        <img v-if="typeof card.content === 'string'" :src="card.content" alt="card" class="card-image" />
-        <component :is="card.content" v-else-if="card.content" />
+  <div
+    class="stack-container"
+    @mouseenter="pauseOnHover && (isPaused = true)"
+    @mouseleave="pauseOnHover && (isPaused = false)"
+  >
+    <div
+      v-for="(card, index) in stack"
+      :key="card.id"
+      class="card-rotate"
+      :style="getCardStyle(card, index)"
+      @pointerdown="e => onPointerDown(e, card.id)"
+      @pointermove="onPointerMove"
+      @pointerup="onPointerUp"
+      @click="sendToBackOnClick && sendToBack(card.id)"
+    >
+      <div
+        class="card"
+        :style="getCardInnerStyle(card, index)"
+        @click="shouldEnableClick && sendToBack(card.id)"
+      >
+        <img
+          v-if="typeof card.content === 'string'"
+          :src="card.content"
+          alt="card"
+          class="card-image"
+        >
+        <component
+          :is="card.content"
+          v-else-if="card.content"
+        />
       </div>
     </div>
   </div>

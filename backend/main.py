@@ -3,6 +3,7 @@ FastAPI 后端主应用入口
 提供 API 服务、CORS 跨域支持和路由挂载
 """
 
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

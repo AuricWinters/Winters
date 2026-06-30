@@ -14,5 +14,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- useClickSpark 在 onMounted 中创建全局 Canvas，无需模板内容 -->
+  <slot />
 </template>

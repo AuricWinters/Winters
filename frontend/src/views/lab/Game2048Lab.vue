@@ -1,42 +1,94 @@
 <template>
   <canvas class="particles-background" />
   <div class="game2048-page">
-    <div class="game-wrapper" id="gameWrapper">
+    <div
+      id="gameWrapper"
+      class="game-wrapper"
+    >
       <div class="header">
         <div class="title-block">
           <span class="game-title">2048</span>
           <span class="title-badge">PRO</span>
         </div>
         <div class="scores-row">
-          <div class="score-box" id="scoreBox">
-            <div class="score-label">{{ t('分数') }}</div>
-            <div class="score-value" id="scoreDisplay">0</div>
+          <div
+            id="scoreBox"
+            class="score-box"
+          >
+            <div class="score-label">
+              {{ t('分数') }}
+            </div>
+            <div
+              id="scoreDisplay"
+              class="score-value"
+            >
+              0
+            </div>
           </div>
-          <div class="score-box best-score" id="bestScoreBox">
-            <div class="score-label">{{ t('最佳') }}</div>
-            <div class="score-value" id="bestScoreDisplay">0</div>
+          <div
+            id="bestScoreBox"
+            class="score-box best-score"
+          >
+            <div class="score-label">
+              {{ t('最佳') }}
+            </div>
+            <div
+              id="bestScoreDisplay"
+              class="score-value"
+            >
+              0
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="board-container" id="boardContainer">
-        <div class="game-grid" id="gameGrid"></div>
-        <div class="tiles-layer" id="tilesLayer"></div>
-        <canvas id="particleCanvas"></canvas>
+      <div
+        id="boardContainer"
+        class="board-container"
+      >
+        <div
+          id="gameGrid"
+          class="game-grid"
+        />
+        <div
+          id="tilesLayer"
+          class="tiles-layer"
+        />
+        <canvas id="particleCanvas" />
       </div>
 
       <div class="stats-row">
-        <span class="stat-item">{{ t('移动') }} <span class="stat-value" id="moveCount">0</span></span>
-        <span class="stat-item">{{ t('合并') }} <span class="stat-value" id="mergeCount">0</span></span>
-        <span class="stat-item">{{ t('最大') }} <span class="stat-value" id="maxTile">0</span></span>
-        <span class="stat-item">{{ t('连击') }} <span class="stat-value" id="comboCount">0</span></span>
+        <span class="stat-item">{{ t('移动') }} <span
+          id="moveCount"
+          class="stat-value"
+        >0</span></span>
+        <span class="stat-item">{{ t('合并') }} <span
+          id="mergeCount"
+          class="stat-value"
+        >0</span></span>
+        <span class="stat-item">{{ t('最大') }} <span
+          id="maxTile"
+          class="stat-value"
+        >0</span></span>
+        <span class="stat-item">{{ t('连击') }} <span
+          id="comboCount"
+          class="stat-value"
+        >0</span></span>
       </div>
 
       <div class="controls-row">
-        <button class="btn" id="btnUndo" disabled :title="t('撤销上一步')">
+        <button
+          id="btnUndo"
+          class="btn"
+          disabled
+          :title="t('撤销上一步')"
+        >
           <span class="icon">&#x21A9;</span> {{ t('撤销') }}
         </button>
-        <button class="btn accent" id="btnRestart">
+        <button
+          id="btnRestart"
+          class="btn accent"
+        >
           <span class="icon">&#x21BB;</span> {{ t('新游戏') }}
         </button>
       </div>
@@ -47,7 +99,12 @@
         </span>
       </div>
     </div>
-    <button class="back-btn" @click="$router.push('/lab')">&#x2190; {{ t('返回实验室') }}</button>
+    <button
+      class="back-btn"
+      @click="$router.push('/lab')"
+    >
+      &#x2190; {{ t('返回实验室') }}
+    </button>
   </div>
 </template>
 

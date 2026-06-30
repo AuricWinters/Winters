@@ -121,7 +121,6 @@ async function fetchPosts() {
   } catch (err) {
     state.posts = dataStore.blogs;
   } finally {
-  } finally {
     state.loading = false;
   }
 }

@@ -1,5 +1,8 @@
 <template>
-  <span class="glitch-text" :data-text="text">{{ text }}<slot /></span>
+  <span
+    class="glitch-text"
+    :data-text="text"
+  >{{ text }}<slot /></span>
 </template>
 
 <script setup>

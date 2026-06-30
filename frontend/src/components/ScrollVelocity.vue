@@ -1,8 +1,20 @@
 <template>
   <section>
-    <div v-for="(text, index) in texts" :key="index" :class="parallaxClassName" :style="parallaxStyle">
-      <div :class="scrollerClassName" :style="{ transform: `translateX(${xValues[index]}px)`, ...scrollerStyle }">
-        <span v-for="n in numCopies" :key="n" :class="className">{{ text }}&nbsp;</span>
+    <div
+      v-for="(text, index) in texts"
+      :key="index"
+      :class="parallaxClassName"
+      :style="parallaxStyle"
+    >
+      <div
+        :class="scrollerClassName"
+        :style="{ transform: `translateX(${xValues[index]}px)`, ...scrollerStyle }"
+      >
+        <span
+          v-for="n in numCopies"
+          :key="n"
+          :class="className"
+        >{{ text }}&nbsp;</span>
       </div>
     </div>
   </section>

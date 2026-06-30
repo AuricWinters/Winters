@@ -1,13 +1,21 @@
 <template>
-  <div class="bounce-cards" ref="wrapRef">
+  <div
+    ref="wrapRef"
+    class="bounce-cards"
+  >
     <div
       v-for="(item, i) in items"
       :key="i"
-      class="bounce-card-item"
       ref="cardRefs"
+      class="bounce-card-item"
       :style="{ transitionDelay: i * staggerMs + 'ms' }"
     >
-      <slot name="card" :item="item" :index="i" :active="activeIndex === i" />
+      <slot
+        name="card"
+        :item="item"
+        :index="i"
+        :active="activeIndex === i"
+      />
     </div>
   </div>
 </template>

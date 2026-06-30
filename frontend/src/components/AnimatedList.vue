@@ -6,7 +6,11 @@
       class="al-item"
       :style="{ transitionDelay: i * staggerMs + 'ms' }"
     >
-      <slot name="item" :item="item" :index="i" />
+      <slot
+        name="item"
+        :item="item"
+        :index="i"
+      />
     </div>
   </div>
 </template>

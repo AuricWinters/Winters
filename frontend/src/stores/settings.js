@@ -18,7 +18,7 @@ export const useSettingsStore = defineStore('settings', () => {
     language: 'zh-CN',
     theme: 'journal',
     themeStyle: 'journal',
-    cornerStyle: 'rounded',
+    cornerStyle: 'sharp',
     darkMode: 'auto',
     animationEnabled: true,
     fontSize: 'medium',

@@ -1,12 +1,20 @@
 <template>
-  <div class="masonry-grid" ref="gridRef" :style="{ columns: cols }">
+  <div
+    ref="gridRef"
+    class="masonry-grid"
+    :style="{ columns: cols }"
+  >
     <div
       v-for="(item, i) in items"
       :key="i"
       class="masonry-item"
       :style="itemStyle(i)"
     >
-      <slot name="item" :item="item" :index="i" />
+      <slot
+        name="item"
+        :item="item"
+        :index="i"
+      />
     </div>
   </div>
 </template>

@@ -1,14 +1,37 @@
 <template>
-  <div class="decay-card" ref="cardRef">
-    <div class="decay-bg" :style="bgStyle" />
+  <div
+    ref="cardRef"
+    class="decay-card"
+  >
+    <div
+      class="decay-bg"
+      :style="bgStyle"
+    />
     <svg class="decay-svg">
       <defs>
         <filter :id="filterId">
-          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" :scale="displacement" xChannelSelector="R" yChannelSelector="G" result="disp" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.03"
+            numOctaves="3"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            :scale="displacement"
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="disp"
+          />
         </filter>
       </defs>
-      <rect width="100%" height="100%" :filter="`url(#${filterId})`" fill="none" />
+      <rect
+        width="100%"
+        height="100%"
+        :filter="`url(#${filterId})`"
+        fill="none"
+      />
     </svg>
     <div class="decay-content">
       <slot />

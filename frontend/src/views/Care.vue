@@ -1,12 +1,16 @@
 <template>
   <div class="care-page">
-    <canvas class="particles-background"></canvas>
+    <canvas class="particles-background" />
 
     <div class="care-content">
       <!-- 标题区 -->
       <div class="care-hero">
-        <h1 class="care-title">{{ t('care.title') }}</h1>
-        <p class="care-subtitle">{{ t('care.subtitle') }}</p>
+        <h1 class="care-title">
+          {{ t('care.title') }}
+        </h1>
+        <p class="care-subtitle">
+          {{ t('care.subtitle') }}
+        </p>
       </div>
 
       <!-- 按钮区 -->
@@ -17,10 +21,15 @@
       >
         {{ t('care.start') }}
       </button>
-      <p v-else class="care-hint">{{ t('care.hint') }}</p>
+      <p
+        v-else
+        class="care-hint"
+      >
+        {{ t('care.hint') }}
+      </p>
 
       <!-- 弹窗容器 -->
-      <div id="care-popup-container"></div>
+      <div id="care-popup-container" />
     </div>
   </div>
 </template>

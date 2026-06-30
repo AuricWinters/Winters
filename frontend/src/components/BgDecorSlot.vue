@@ -27,7 +27,10 @@ const currentComponent = computed(() => {
 </script>
 
 <template>
-  <div v-if="currentComponent" class="bg-decor-slot">
+  <div
+    v-if="currentComponent"
+    class="bg-decor-slot"
+  >
     <component :is="currentComponent" />
   </div>
 </template>

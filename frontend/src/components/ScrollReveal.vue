@@ -1,7 +1,15 @@
 <template>
-  <h2 ref="containerRef" :class="['scroll-reveal', containerClassName]">
+  <h2
+    ref="containerRef"
+    :class="['scroll-reveal', containerClassName]"
+  >
     <p :class="['scroll-reveal-text', textClassName]">
-      <span v-for="(part, idx) in splitWords" :key="idx" :class="{ word: !part.isSpace }" :style="part.isSpace ? {} : { opacity: baseOpacity, filter: enableBlur ? `blur(${blurStrength}px)` : 'none' }">
+      <span
+        v-for="(part, idx) in splitWords"
+        :key="idx"
+        :class="{ word: !part.isSpace }"
+        :style="part.isSpace ? {} : { opacity: baseOpacity, filter: enableBlur ? `blur(${blurStrength}px)` : 'none' }"
+      >
         {{ part.text }}<template v-if="part.isSpace && idx < splitWords.length - 1">&nbsp;</template>
       </span>
     </p>

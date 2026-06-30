@@ -40,7 +40,12 @@
       "Bash(rmdir /d/project/Winters)",
       "Read(//c/Users/y2412/.claude/projects/**)",
       "Read(//c/Users/y2412/.claude/**)",
-      "Read(//c/Users/y2412/.claude/projects/D--project-Winters//**)"
+      "Read(//c/Users/y2412/.claude/projects/D--project-Winters//**)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl *)",
+      "Bash(python main.py)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:3000/)"
     ]
   },
   "enabledMcpjsonServers": [

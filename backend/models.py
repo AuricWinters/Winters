@@ -31,13 +31,13 @@ class UserBase(BaseModel):
     )
     phone: Optional[str] = Field(
         default=None,
-        pattern="^1[3-9]\d{9}$",
+        pattern=r"^1[3-9]\d{9}$",
         description="手机号码",
         example="13800138000"
     )
     email: Optional[str] = Field(
         default=None,
-        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        pattern=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
         description="电子邮箱",
         example="zhangsan@example.com"
     )
@@ -69,9 +69,6 @@ class UserCreate(UserBase):
         description="确认密码（必须与密码一致）",
         example="123456"
     )
-    nickname: str = Field(None, max_length=50, description="用户昵称")
-    phone: str = Field(None, max_length=20, description="手机号")
-    email: str = Field(None, max_length=100, description="邮箱")
 
 
 class UserLogin(UserBase):
@@ -163,13 +160,13 @@ class UserProfileUpdate(BaseModel):
     )
     phone: Optional[str] = Field(
         default=None,
-        pattern="^1[3-9]\d{9}$",
+        pattern=r"^1[3-9]\d{9}$",
         description="手机号码",
         example="13800138000"
     )
     email: Optional[str] = Field(
         default=None,
-        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        pattern=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
         description="电子邮箱",
         example="zhangsan@example.com"
     )
@@ -266,7 +263,7 @@ class SendCodeRequest(BaseModel):
     """
     phone: str = Field(
         ...,
-        pattern="^1[3-9]\d{9}$",
+        pattern=r"^1[3-9]\d{9}$",
         description="手机号码",
         example="13800138000"
     )
@@ -285,7 +282,7 @@ class CodeLoginRequest(BaseModel):
     """
     phone: str = Field(
         ...,
-        pattern="^1[3-9]\d{9}$",
+        pattern=r"^1[3-9]\d{9}$",
         description="手机号码",
         example="13800138000"
     )
@@ -293,7 +290,7 @@ class CodeLoginRequest(BaseModel):
         ...,
         min_length=6,
         max_length=6,
-        pattern="^\d{6}$",
+        pattern=r"^\d{6}$",
         description="6位数字验证码",
         example="123456"
     )
@@ -314,7 +311,7 @@ class ResetPasswordRequest(BaseModel):
     """
     phone: str = Field(
         ...,
-        pattern="^1[3-9]\d{9}$",
+        pattern=r"^1[3-9]\d{9}$",
         description="手机号码",
         example="13800138000"
     )
@@ -322,7 +319,7 @@ class ResetPasswordRequest(BaseModel):
         ...,
         min_length=6,
         max_length=6,
-        pattern="^\d{6}$",
+        pattern=r"^\d{6}$",
         description="6位数字验证码",
         example="123456"
     )

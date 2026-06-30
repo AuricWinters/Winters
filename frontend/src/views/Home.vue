@@ -198,8 +198,12 @@
               :to="'/projects/' + project.id"
               class="project-item"
             >
-              <div class="project-name">{{ project.title }}</div>
-              <div class="project-desc">{{ project.desc }}</div>
+              <div class="project-name">
+                {{ project.title }}
+              </div>
+              <div class="project-desc">
+                {{ project.desc }}
+              </div>
             </router-link>
           </div>
         </div>

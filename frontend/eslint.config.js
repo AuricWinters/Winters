@@ -1,5 +1,6 @@
 import pluginVue from 'eslint-plugin-vue'
 import vueParser from 'vue-eslint-parser'
+import tsParser from '@typescript-eslint/parser'
 
 export default [
   // 忽略文件
@@ -16,6 +17,7 @@ export default [
     languageOptions: {
       parser: vueParser,
       parserOptions: {
+        parser: { ts: tsParser },
         ecmaFeatures: { jsx: false },
         ecmaVersion: 'latest',
         sourceType: 'module',
