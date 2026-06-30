@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Winters Backend API",
     description="Winters 项目后端服务",
-    version="1.0.0",
+    version="0.5.3",
     lifespan=lifespan  # 注册生命周期管理器
 )
 

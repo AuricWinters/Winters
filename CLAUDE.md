@@ -142,7 +142,7 @@ useParticles('.particles-background');
 - FastAPI 运行在 `localhost:8000`
 - Vite dev server 代理：`/api` → `http://localhost:8000`，`/ws` → `ws://localhost:8000`
 - SQLite 数据库：`backend/data/winters.db`（6 表：users/posts/comments/likes/tags/verification_codes）
-- 当前版本：v1.0.0
+- 当前版本：v0.5.3
 - 认证：JWT + bcrypt 真实现，`/api/auth/*` 9 端点（status/register/login/code/reset-password/change-password/social/login/social/callback）
 
 ## 开发命令
