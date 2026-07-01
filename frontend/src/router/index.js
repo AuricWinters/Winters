@@ -71,14 +71,6 @@ const router = createRouter({
       },
     },
     {
-      path: '/projects/:id',
-      name: 'ProjectDetail',
-      component: () => import('../views/ProjectDetail.vue'),
-      meta: {
-        title: '项目详情 - Winters',
-      },
-    },
-    {
       path: '/contact',
       name: 'Contact',
       component: () => import('../views/Contact.vue'),
