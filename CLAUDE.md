@@ -43,7 +43,8 @@ Winters/
 | `/` | 首页 | 否 |
 | `/blog` | 动态（社区帖子流） | 否 |
 | `/community` `/community/new` `/community/:id` | AI 社区 / 发帖 / 详情 | 部分（发帖需登录） |
-| `/projects` `/projects/:id` | 项目列表 / 详情 | 否 |
+| `/projects` | 项目列表 | 否 |
+| `/docs` | 官方文档（README + CHANGELOG） | 否 |
 | `/care` | 暖心关怀 | 否 |
 | `/learning` | AI 学习路线 | 否 |
 | `/system` | 自驱工作站文档 | 否 |

@@ -30,7 +30,8 @@
 
 | 技术 | 说明 |
 |------|------|
-| Vue 3 | Composition API (`<script setup>`) |
+| Vue 3 | Composition API (`<script setup lang="ts">`) |
+| TypeScript | 全站 154 文件，vue-tsc 0 错误 |
 | Vite 5 | 构建工具，HMR 热更新 |
 | Vue Router 4 | 30 条路由，懒加载，路由守卫 |
 | Pinia 3 | 状态管理（6 个 store） |
@@ -137,9 +138,9 @@ WS   /ws/code/execute               # WebSocket 交互式终端
 │
 ├── frontend/                       # Vue 3 前端
 │   └── src/
-│       ├── main.js                 # 应用入口
+│       ├── main.ts                 # 应用入口
 │       ├── App.vue                 # 根组件
-│       ├── router/index.js         # 路由配置 (30 条)
+│       ├── router/index.ts         # 路由配置 (30 条)
 │       ├── stores/                 # Pinia 状态管理 (6 个)
 │       ├── components/             # 全局组件 (91 个)
 │       ├── views/                  # 页面视图 (30 个)
