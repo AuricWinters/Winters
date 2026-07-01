@@ -160,10 +160,14 @@ python main.py       # FastAPI（localhost:8000）
 ## 当前状态
 
 ### 已完成
-- 8 套设计师主题（手账/墨韵/极光/樱吹雪/森语/午夜/暮光/极简 + 自定义），每套亮暗双模式，默认樱吹雪(sakura)
-- 手账/普通两种视觉风格，默认普通(standard)；圆角/直角独立切换，默认直角(sharp)
+- **TypeScript 全量迁移** — 154 文件（122 `.vue` + 32 `.ts`），vue-tsc 0 错误
+- 8 套设计师主题（手账/墨韵/极光/樱吹雪/森语/午夜/暮光/极简 + 自定义），每套亮暗双模式
+- **访客/登录主题区分**：未登录默认手账风格(journal)，登录默认樱吹雪(sakura)+普通风格(standard)，登出保留设置
+- 手账/普通两种视觉风格；圆角/直角独立切换，默认直角(sharp)
 - SettingsPanel 三层导航（主页 → 主题子页 / 动效子页）
 - 9 个动效槽位实时配置（标题/卡片/按钮/背景/文字/点击/页面/导航），Pinia + localStorage 持久化
+- **`/docs` 官方文档页面** — README + CHANGELOG 双标签渲染，后端 API 驱动
+- **`CHANGELOG.md`** — v0.1.0 ~ v0.5.3 完整版本记录
 - 全站 i18n（zh-CN/zh-TW/en-US），24 个文件接入，locale 在 `src/locales/`
 - 主题持久化：刷新不丢设置（App.vue 初始化 store），旧主题名自动迁移
 

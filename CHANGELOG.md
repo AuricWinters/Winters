@@ -10,6 +10,7 @@ Winters 项目更新日志。
 - `tsconfig.json`、`vue-tsc` 类型检查
 - Stop hook（会话结束自动检查 git + 文档）
 - 新增 `CHANGELOG.md`
+- **访客/登录主题区分** — 未登录默认手账风格(journal)，登录默认樱吹雪(sakura)+普通(standard)，登出保留设置
 
 ### Changed
 - 默认外观偏好：颜色 `sakura`（樱吹雪）+ 风格 `standard`（普通）+ 圆角 `sharp`（直角）
@@ -27,6 +28,10 @@ Winters 项目更新日志。
 - `CodeLab.vue` — `(t as any)` 导致 i18n 模板变量不替换
 - `ContributionHeatmap.vue` — 模板字符串导致英文翻译失效
 - `useCountUp.ts` — 缺少 `target` 时显示 NaN
+- `settings.ts` — 会话内登录/登出主题不切换（新增 `userStore.isLoggedIn` watcher）；`resetToDefaults` 浅拷贝 bug（改用 `deepClone`）
+
+### Refactored
+- `settings.ts` — 提取 `baseDefaults` + spread 消除 75% 重复；`saveSettings` 加 300ms 防抖；`loadSettings` 复用 `useUserStore().isLoggedIn`
 
 ### Removed
 - 5 个遗留 `test_ws*.py` 临时调试脚本
