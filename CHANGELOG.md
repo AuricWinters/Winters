@@ -29,9 +29,14 @@ Winters 项目更新日志。
 - `ContributionHeatmap.vue` — 模板字符串导致英文翻译失效
 - `useCountUp.ts` — 缺少 `target` 时显示 NaN
 - `settings.ts` — 会话内登录/登出主题不切换（新增 `userStore.isLoggedIn` watcher）；`resetToDefaults` 浅拷贝 bug（改用 `deepClone`）
+- `Docs.vue` — changelog 标签读错变量（`readmeRes` → `changelogRes`）；markdown 渲染从前端正则改为后端 Python 库
+- `vite.config.js` — 代理端口回正 8001→8000（旧 zombie 进程已清除）
+- `package.json` — 版本号 `0.0.0`→`0.5.3`，lint 脚本补 `.ts` 扩展名
 
 ### Refactored
 - `settings.ts` — 提取 `baseDefaults` + spread 消除 75% 重复；`saveSettings` 加 300ms 防抖；`loadSettings` 复用 `useUserStore().isLoggedIn`
+- `/docs` 渲染架构 — 前端 `marked`→后端 Python `markdown` 库，去掉浏览器端依赖
+- `backend/main.py` — `/docs` API 加容错，`markdown` 库未安装时降级返回纯文本
 
 ### Removed
 - 5 个遗留 `test_ws*.py` 临时调试脚本
