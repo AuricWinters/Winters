@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
+import { useUserStore } from './user';
 
 type ThemeMigration = Record<string, string>;
 
@@ -23,10 +24,11 @@ interface Settings {
   customTheme: CustomTheme;
 }
 
+const deepClone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj));
+
 export const useSettingsStore = defineStore('settings', () => {
   const STORAGE_KEY = 'winters_settings';
 
-  // 旧主题名 → 新主题名迁移映射
   const themeMigration: ThemeMigration = {
     'default': 'journal',
     'pink-gold': 'sakura',
@@ -36,17 +38,15 @@ export const useSettingsStore = defineStore('settings', () => {
     'purple-pink': 'sakura'
   };
 
-  // 访客默认（未登录时展示）
-  const guestDefaults: Settings = {
+  // 公共基础默认值
+  const baseDefaults = {
     language: 'zh-CN',
-    theme: 'journal',
-    themeStyle: 'journal',
-    cornerStyle: 'sharp',
-    darkMode: 'auto',
+    cornerStyle: 'sharp' as const,
+    darkMode: 'auto' as const,
     animationEnabled: true,
-    fontSize: 'medium',
+    fontSize: 'medium' as const,
     customTheme: {
-      mode: 'single',
+      mode: 'single' as const,
       colors: {
         primary: '#C4737A',
         secondary: '#B8956A',
@@ -54,38 +54,24 @@ export const useSettingsStore = defineStore('settings', () => {
       }
     }
   };
+
+  // 访客默认（未登录时展示）
+  const guestDefaults: Settings = { ...baseDefaults, theme: 'journal', themeStyle: 'journal' };
 
   // 用户默认（已登录时展示）
-  const userDefaults: Settings = {
-    language: 'zh-CN',
-    theme: 'sakura',
-    themeStyle: 'standard',
-    cornerStyle: 'sharp',
-    darkMode: 'auto',
-    animationEnabled: true,
-    fontSize: 'medium',
-    customTheme: {
-      mode: 'single',
-      colors: {
-        primary: '#C4737A',
-        secondary: '#B8956A',
-        accent: '#D4A0A7'
-      }
-    }
-  };
+  const userDefaults: Settings = { ...baseDefaults, theme: 'sakura', themeStyle: 'standard' };
 
-  const isLoggedIn = (): boolean => {
-    const token = localStorage.getItem('winters_token');
-    const user = localStorage.getItem('winters_user');
-    return !!(token && user && user !== 'null');
+  const resolveDefaults = (): Settings => {
+    const userStore = useUserStore();
+    return userStore.isLoggedIn ? userDefaults : guestDefaults;
   };
 
   const loadSettings = (): Settings => {
-    const loggedIn = isLoggedIn();
+    const userStore = useUserStore();
 
     // 未登录 → 永远使用访客默认
-    if (!loggedIn) {
-      return JSON.parse(JSON.stringify(guestDefaults));
+    if (!userStore.isLoggedIn) {
+      return deepClone(guestDefaults);
     }
 
     // 已登录 → 读取保存的设置，没有则用用户默认
@@ -93,14 +79,12 @@ export const useSettingsStore = defineStore('settings', () => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as Settings;
-        // 迁移旧主题名到新主题名
         if (parsed.theme && themeMigration[parsed.theme]) {
           parsed.theme = themeMigration[parsed.theme];
         }
-        // 补全缺失字段（旧版本数据兼容）
         for (const key of Object.keys(userDefaults)) {
           if (!(key in parsed)) {
-            (parsed as any)[key] = JSON.parse(JSON.stringify((userDefaults as any)[key]));
+            (parsed as any)[key] = deepClone((userDefaults as any)[key]);
           }
         }
         return parsed;
@@ -108,64 +92,61 @@ export const useSettingsStore = defineStore('settings', () => {
     } catch (error) {
       console.warn('Failed to load settings:', error);
     }
-    return JSON.parse(JSON.stringify(userDefaults));
+    return deepClone(userDefaults);
   };
 
   const settings = loadSettings();
   const language = ref<string>(settings.language);
   const theme = ref<string>(settings.theme);
-  const themeStyle = ref<string>(settings.themeStyle || userDefaults.themeStyle);
-  const cornerStyle = ref<string>(settings.cornerStyle || userDefaults.cornerStyle);
-  const darkMode = ref<string>(settings.darkMode || userDefaults.darkMode);
+  const themeStyle = ref<string>(settings.themeStyle);
+  const cornerStyle = ref<string>(settings.cornerStyle);
+  const darkMode = ref<string>(settings.darkMode);
   const animationEnabled = ref<boolean>(settings.animationEnabled);
   const fontSize = ref<string>(settings.fontSize);
-  const customTheme = ref<CustomTheme>(settings.customTheme || userDefaults.customTheme);
+  const customTheme = ref<CustomTheme>(settings.customTheme);
 
+  let saveTimer: ReturnType<typeof setTimeout> | null = null;
   const saveSettings = (): void => {
-    try {
-      const settings = {
-        language: language.value,
-        theme: theme.value,
-        themeStyle: themeStyle.value,
-        cornerStyle: cornerStyle.value,
-        darkMode: darkMode.value,
-        animationEnabled: animationEnabled.value,
-        fontSize: fontSize.value,
-        customTheme: customTheme.value
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    } catch (error) {
-      console.warn('Failed to save settings:', error);
-    }
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          language: language.value,
+          theme: theme.value,
+          themeStyle: themeStyle.value,
+          cornerStyle: cornerStyle.value,
+          darkMode: darkMode.value,
+          animationEnabled: animationEnabled.value,
+          fontSize: fontSize.value,
+          customTheme: customTheme.value
+        }));
+      } catch (error) {
+        console.warn('Failed to save settings:', error);
+      }
+    }, 300);
   };
 
   const applyTheme = (): void => {
-    // 确定深浅色模式
     let effectiveDarkMode: string = darkMode.value;
     if (darkMode.value === 'auto') {
       effectiveDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-
-    // 确定主题颜色
-    let effectiveTheme: string = theme.value;
+    const effectiveTheme: string = theme.value;
 
     document.documentElement.setAttribute('data-theme', effectiveDarkMode);
     document.documentElement.setAttribute('data-color-theme', effectiveTheme);
 
-    // 移除所有主题类
     document.documentElement.classList.remove(
       'light', 'dark',
       'journal', 'ink', 'aurora', 'sakura', 'forest', 'midnight', 'twilight', 'minimal', 'custom-theme'
     );
 
-    // 添加深浅色模式类
     if (effectiveDarkMode === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.add('light');
     }
 
-    // 添加主题颜色类
     if (effectiveTheme !== 'journal') {
       const cls = effectiveTheme === 'custom' ? 'custom-theme' : effectiveTheme;
       document.documentElement.classList.add(cls);
@@ -196,59 +177,56 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const applyFontSize = (): void => {
     document.documentElement.setAttribute('data-font-size', fontSize.value);
-
     document.documentElement.classList.remove('font-small', 'font-medium', 'font-large');
     document.documentElement.classList.add(`font-${fontSize.value}`);
   };
 
-  watch([language, theme, themeStyle, cornerStyle, darkMode, animationEnabled, fontSize, customTheme], () => {
-    saveSettings();
+  const applyAll = (): void => {
     applyTheme();
     applyThemeStyle();
     applyAnimation();
     applyFontSize();
+  };
+
+  watch([language, theme, themeStyle, cornerStyle, darkMode, animationEnabled, fontSize, customTheme], () => {
+    saveSettings();
+    applyAll();
   }, { immediate: true, deep: true });
 
-  const setLanguage = (newLanguage: string): void => {
-    language.value = newLanguage;
-  };
+  // 监听登录状态变化，自动切换访客/用户主题
+  const userStore = useUserStore();
+  watch(() => userStore.isLoggedIn, (loggedIn) => {
+    const defaults = loggedIn ? userDefaults : guestDefaults;
+    language.value = defaults.language;
+    theme.value = defaults.theme;
+    themeStyle.value = defaults.themeStyle;
+    cornerStyle.value = defaults.cornerStyle;
+    darkMode.value = defaults.darkMode;
+    animationEnabled.value = defaults.animationEnabled;
+    fontSize.value = defaults.fontSize;
+    customTheme.value = deepClone(defaults.customTheme);
+  });
 
-  const setTheme = (newTheme: string): void => {
-    theme.value = newTheme;
-  };
+  const setLanguage = (newLanguage: string): void => { language.value = newLanguage; };
+  const setTheme = (newTheme: string): void => { theme.value = newTheme; };
 
   const setThemeStyle = (newStyle: string): void => {
     themeStyle.value = newStyle;
-    // 手账默认直角，普通默认圆角
     cornerStyle.value = newStyle === 'journal' ? 'sharp' : 'rounded';
   };
 
-  const setCornerStyle = (newStyle: string): void => {
-    cornerStyle.value = newStyle;
-  };
-
-  const setDarkMode = (newDarkMode: string): void => {
-    darkMode.value = newDarkMode;
-  };
-
-  const setAnimationEnabled = (enabled: boolean): void => {
-    animationEnabled.value = enabled;
-  };
-
-  const setFontSize = (size: string): void => {
-    fontSize.value = size;
-  };
-
-  const setCustomThemeMode = (mode: string): void => {
-    customTheme.value.mode = mode;
-  };
+  const setCornerStyle = (newStyle: string): void => { cornerStyle.value = newStyle; };
+  const setDarkMode = (newDarkMode: string): void => { darkMode.value = newDarkMode; };
+  const setAnimationEnabled = (enabled: boolean): void => { animationEnabled.value = enabled; };
+  const setFontSize = (size: string): void => { fontSize.value = size; };
+  const setCustomThemeMode = (mode: string): void => { customTheme.value.mode = mode; };
 
   const setCustomThemeColor = (colorType: string, colorValue: string): void => {
     customTheme.value.colors[colorType] = colorValue;
   };
 
   const resetToDefaults = (): void => {
-    const fallback = isLoggedIn() ? userDefaults : guestDefaults;
+    const fallback = resolveDefaults();
     language.value = fallback.language;
     theme.value = fallback.theme;
     themeStyle.value = fallback.themeStyle;
@@ -256,46 +234,23 @@ export const useSettingsStore = defineStore('settings', () => {
     darkMode.value = fallback.darkMode;
     animationEnabled.value = fallback.animationEnabled;
     fontSize.value = fallback.fontSize;
-    customTheme.value = { ...fallback.customTheme };
+    customTheme.value = deepClone(fallback.customTheme);
   };
 
   const initThemeListener = (): (() => void) => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (): void => {
-      if (darkMode.value === 'auto') {
-        applyTheme();
-      }
+      if (darkMode.value === 'auto') applyTheme();
     };
     mediaQuery.addEventListener('change', handleChange);
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
+    return () => mediaQuery.removeEventListener('change', handleChange);
   };
 
   return {
-    language,
-    theme,
-    themeStyle,
-    cornerStyle,
-    darkMode,
-    animationEnabled,
-    fontSize,
-    customTheme,
-    setLanguage,
-    setTheme,
-    setThemeStyle,
-    setCornerStyle,
-    setDarkMode,
-    setAnimationEnabled,
-    setFontSize,
-    setCustomThemeMode,
-    setCustomThemeColor,
-    resetToDefaults,
-    applyTheme,
-    applyThemeStyle,
-    applyAnimation,
-    applyFontSize,
-    applyCustomTheme,
+    language, theme, themeStyle, cornerStyle, darkMode, animationEnabled, fontSize, customTheme,
+    setLanguage, setTheme, setThemeStyle, setCornerStyle, setDarkMode,
+    setAnimationEnabled, setFontSize, setCustomThemeMode, setCustomThemeColor,
+    resetToDefaults, applyTheme, applyThemeStyle, applyAnimation, applyFontSize, applyCustomTheme,
     initThemeListener
   };
 });
