@@ -36,7 +36,27 @@ export const useSettingsStore = defineStore('settings', () => {
     'purple-pink': 'sakura'
   };
 
-  const defaultSettings: Settings = {
+  // 访客默认（未登录时展示）
+  const guestDefaults: Settings = {
+    language: 'zh-CN',
+    theme: 'journal',
+    themeStyle: 'journal',
+    cornerStyle: 'sharp',
+    darkMode: 'auto',
+    animationEnabled: true,
+    fontSize: 'medium',
+    customTheme: {
+      mode: 'single',
+      colors: {
+        primary: '#C4737A',
+        secondary: '#B8956A',
+        accent: '#D4A0A7'
+      }
+    }
+  };
+
+  // 用户默认（已登录时展示）
+  const userDefaults: Settings = {
     language: 'zh-CN',
     theme: 'sakura',
     themeStyle: 'standard',
@@ -54,6 +74,12 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   };
 
+  const isLoggedIn = (): boolean => {
+    const token = localStorage.getItem('winters_token');
+    const user = localStorage.getItem('winters_user');
+    return !!(token && user && user !== 'null');
+  };
+
   const loadSettings = (): Settings => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -64,9 +90,10 @@ export const useSettingsStore = defineStore('settings', () => {
           parsed.theme = themeMigration[parsed.theme];
         }
         // 补全缺失字段（旧版本数据兼容）
-        for (const key of Object.keys(defaultSettings)) {
+        const fallback = JSON.parse(JSON.stringify(isLoggedIn() ? userDefaults : guestDefaults));
+        for (const key of Object.keys(fallback)) {
           if (!(key in parsed)) {
-            (parsed as any)[key] = JSON.parse(JSON.stringify((defaultSettings as any)[key]));
+            (parsed as any)[key] = JSON.parse(JSON.stringify((fallback as any)[key]));
           }
         }
         return parsed;
@@ -74,19 +101,19 @@ export const useSettingsStore = defineStore('settings', () => {
     } catch (error) {
       console.warn('Failed to load settings:', error);
     }
-    // 深拷贝默认值，避免引用污染
-    return JSON.parse(JSON.stringify(defaultSettings));
+    // 无保存记录 → 根据登录状态选默认
+    return JSON.parse(JSON.stringify(isLoggedIn() ? userDefaults : guestDefaults));
   };
 
   const settings = loadSettings();
   const language = ref<string>(settings.language);
   const theme = ref<string>(settings.theme);
-  const themeStyle = ref<string>(settings.themeStyle || defaultSettings.themeStyle);
-  const cornerStyle = ref<string>(settings.cornerStyle || defaultSettings.cornerStyle);
-  const darkMode = ref<string>(settings.darkMode || defaultSettings.darkMode);
+  const themeStyle = ref<string>(settings.themeStyle || userDefaults.themeStyle);
+  const cornerStyle = ref<string>(settings.cornerStyle || userDefaults.cornerStyle);
+  const darkMode = ref<string>(settings.darkMode || userDefaults.darkMode);
   const animationEnabled = ref<boolean>(settings.animationEnabled);
   const fontSize = ref<string>(settings.fontSize);
-  const customTheme = ref<CustomTheme>(settings.customTheme || defaultSettings.customTheme);
+  const customTheme = ref<CustomTheme>(settings.customTheme || userDefaults.customTheme);
 
   const saveSettings = (): void => {
     try {
@@ -215,14 +242,15 @@ export const useSettingsStore = defineStore('settings', () => {
   };
 
   const resetToDefaults = (): void => {
-    language.value = defaultSettings.language;
-    theme.value = defaultSettings.theme;
-    themeStyle.value = defaultSettings.themeStyle;
-    cornerStyle.value = defaultSettings.cornerStyle;
-    darkMode.value = defaultSettings.darkMode;
-    animationEnabled.value = defaultSettings.animationEnabled;
-    fontSize.value = defaultSettings.fontSize;
-    customTheme.value = { ...defaultSettings.customTheme };
+    const fallback = isLoggedIn() ? userDefaults : guestDefaults;
+    language.value = fallback.language;
+    theme.value = fallback.theme;
+    themeStyle.value = fallback.themeStyle;
+    cornerStyle.value = fallback.cornerStyle;
+    darkMode.value = fallback.darkMode;
+    animationEnabled.value = fallback.animationEnabled;
+    fontSize.value = fallback.fontSize;
+    customTheme.value = { ...fallback.customTheme };
   };
 
   const initThemeListener = (): (() => void) => {
