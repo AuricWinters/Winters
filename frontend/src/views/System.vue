@@ -42,10 +42,9 @@
 │                   │  │  GitHub API       │
 │  CLAUDE.md        │  │  ├─ 查 PR/文件     │
 │  README.md        │  │  └─ 搜代码         │
-│  .mcp.json        │  │                   │
+│  CHANGELOG.md     │  │                   │
 │  .claude/         │  │  SQLite           │
-│  .trae/specs/     │  │  └─ 数据库直连      │
-│  frontend/        │  │                   │
+│  frontend/        │  │  └─ 数据库直连      │
 │  backend/         │  │                   │
 └───────────────────┘  └───────────────────┘</code></pre>
         </div>
@@ -230,8 +229,8 @@
             <div class="chain-icon">
               🤖
             </div>
-            <h4>TRAE IDE Agent</h4>
-            <p>{{ t('读 CLAUDE.md → 了解技术栈和路由 → 生成精准的 spec.md') }}</p>
+            <h4>Claude Code（AI Agent）</h4>
+            <p>{{ t('读 CLAUDE.md → 了解技术栈和约定 → 写出符合项目规范的代码') }}</p>
           </div>
           <div class="chain-arrow">
             →
@@ -267,22 +266,22 @@
 
         <div class="mem-grid">
           <div class="mem-card global-mem">
-            <h4>{{ t('🌐 全局记忆') }}</h4>
+            <h4>{{ t('🌐 全局规则') }}</h4>
             <code>~/.claude/CLAUDE.md</code>
             <ul>
               <li>{{ t('永远用中文对话') }}</li>
-              <li>{{ t('7 步开发工作流') }}</li>
-              <li>{{ t('指令优先提醒规则') }}</li>
-              <li>{{ t('文档同步规则') }}</li>
+              <li>{{ t('6 步开发闭环 + 文档同步') }}</li>
+              <li>{{ t('4 项自动化（Agent/commit/文档/指令推荐）') }}</li>
+              <li>{{ t('双模型调度（pro 主控 + flash 子Agent）') }}</li>
             </ul>
           </div>
           <div class="mem-card local-mem">
-            <h4>{{ t('📁 项目记忆') }}</h4>
-            <code>~/.claude/projects/D--project/memory/</code>
+            <h4>{{ t('📁 项目记忆 + 备份') }}</h4>
+            <code>~/.claude/memory/about-auricwinters.md</code>
             <ul>
-              <li>{{ t('CSS 变量必须用，禁止硬编码') }}</li>
-              <li>{{ t('桌面优先响应式策略') }}</li>
-              <li>{{ t('Winters 项目当前状态') }}</li>
+              <li>{{ t('用户身份、个性、编程习惯') }}</li>
+              <li>{{ t('默认外观偏好：sakura + standard + sharp') }}</li>
+              <li>{{ t('定期备份到 D:\\.claude') }}</li>
             </ul>
           </div>
         </div>
@@ -358,31 +357,32 @@ useParticles('.particles-background');
 useScrollReveal();
 
 const bootSteps = [
-  { icon: '📂', title: '加载全局 CLAUDE.md', desc: '读到你的语言偏好、工作流、指令规则', code: '~/.claude/CLAUDE.md' },
-  { icon: '⚙️', title: '加载全局 settings.json', desc: '连哪个模型、用什么密钥、开什么插件', code: 'ANTHROPIC_MODEL=deepseek-v4-pro' },
+  { icon: '📂', title: '加载全局 CLAUDE.md', desc: '读到你的语言偏好、工作流、自动化规则', code: '~/.claude/CLAUDE.md' },
+  { icon: '⚙️', title: '加载全局 settings.json', desc: '连哪个模型、用什么密钥、开什么插件、Stop hook 自动检查', code: 'ANTHROPIC_MODEL=deepseek-v4-pro' },
   { icon: '🔍', title: 'SessionStart Hook 触发', desc: '后台 Agent 扫描 Claudest + Antigravity 两个市场，有新插件自动装', code: '扫描社区 Skills…' },
-  { icon: '📖', title: '加载项目 CLAUDE.md', desc: '知道你是 Vue 3 项目、14 条路由、CSS 变量约定', code: 'Winters/CLAUDE.md' },
+  { icon: '📖', title: '加载项目 CLAUDE.md', desc: '知道你是 Vue 3 项目、30 条路由、6 个 Store、CSS 变量约定', code: 'Winters/CLAUDE.md' },
   { icon: '🔐', title: '加载权限白名单', desc: 'Auto 模式下哪些命令可以直接跑，不用问你', code: '.claude/settings.local.json' },
   { icon: '🔗', title: '连接 MCP 服务', desc: '接上 GitHub API 和 SQLite 数据库', code: '.mcp.json' },
+  { icon: '🛑', title: 'Stop Hook 待命', desc: '会话结束自动检查未提交改动 + 文档同步状态', code: 'git status --short + 文档检查' },
 ];
 
 const layers = [
   { level: 1, name: '全局规则', file: '~/.claude/CLAUDE.md', what: '怎么说话、什么流程、何时用哪个指令' },
   { level: 2, name: '全局配置', file: '~/.claude/settings.json', what: '模型/api密钥/市场/Hook/插件' },
-  { level: 3, name: '项目文档', file: 'Winters/CLAUDE.md', what: '技术栈、14条路由、4个Store、CSS变量体系' },
+  { level: 3, name: '项目文档', file: 'Winters/CLAUDE.md', what: '技术栈、30条路由、6个Store、CSS变量体系、v0.5.3' },
   { level: 4, name: '项目权限', file: 'Winters/.claude/settings.local.json', what: '哪些命令 Auto 模式直接跑' },
   { level: 5, name: '项目记忆', file: 'memory/projects/D--project/', what: '编码约定、项目状态、经验教训' },
   { level: 6, name: '外部工具', file: '.mcp.json', what: 'GitHub API 操作、SQLite 数据库读写' },
 ];
 
 const pipeline = [
-  { step: '①', who: 'TRAE Agent', what: '/spec → spec.md + tasks.md + checklist.md' },
-  { step: '②', who: 'Claude (Plan)', what: '读 3 文件 → 出方案 → 用户审批' },
-  { step: '③', who: 'Claude (Auto)', what: '自动写代码，复杂任务 Workflow 并行' },
-  { step: '④', who: '用户 /code-review', what: '多角度审查 → 出报告' },
-  { step: '⑤', who: 'Claude (Auto)', what: '有问题才修，没问题跳过' },
-  { step: '⑥', who: '用户 /simplify', what: '去冗余、抽重复、优化结构' },
-  { step: '⑦', who: '用户 /verify', what: '启动应用验证 → 收工' },
+  { step: '①', who: 'Claude (Plan)', what: '理解需求 → 出方案 → 用户审批' },
+  { step: '②', who: 'Claude (Auto)', what: '写代码，重活/重复活自动 Workflow 多 Agent 并行' },
+  { step: '③', who: '用户 /code-review', what: '多角度审查 → 出报告' },
+  { step: '④', who: 'Claude (Auto)', what: '有问题才修，没问题跳过' },
+  { step: '⑤', who: '用户 /simplify', what: '去冗余、抽重复、优化结构' },
+  { step: '⑥', who: '用户 /verify', what: '启动应用验证功能 → 收工' },
+  { step: '⑦', who: 'Claude (Auto)', what: '同步更新 CLAUDE.md + README.md + commit + push' },
 ];
 </script>
 
