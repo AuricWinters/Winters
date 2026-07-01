@@ -136,6 +136,12 @@ const router = createRouter({
       },
     },
     {
+      path: '/docs',
+      name: 'Docs',
+      component: () => import('../views/Docs.vue'),
+      meta: { title: '官方文档 - Winters' },
+    },
+    {
       path: '/learning',
       name: 'Learning',
       component: () => import('../views/Learning.vue'),

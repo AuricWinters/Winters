@@ -6,13 +6,13 @@
       <!-- ===== Hero ===== -->
       <header class="sys-hero scroll-reveal">
         <div class="hero-badge">
-          📖 官方文档
+          🧠 {{ t('内部文档') }}
         </div>
         <h1 class="hero-title">
-          Winters<br><span class="hero-accent">官方文档</span>
+          Claude Code<br><span class="hero-accent">{{ t('自驱工作站') }}</span>
         </h1>
         <p class="hero-sub">
-          {{ t('Winters 项目的完整说明书——开发闭环、自动化体系、模型调度、记忆系统，像产品手册一样清晰。') }}
+          {{ t('一套让 AI 理解项目、自动干活、记住偏好的完整体系。从开机扫描市场到写完代码推送 GitHub，每一步背后都有配置在驱动。') }}
         </p>
       </header>
 

@@ -2,16 +2,16 @@
   {
     "id": 1,
     "title": "Winters 官方文档",
-    "desc": "Vue 3 + FastAPI 全栈个人网站的完整说明书——开发闭环、自动化体系、模型调度、记忆系统全在这里。",
-    "fullDesc": "Winters 项目的官方文档站。用 10 个可视化区块完整展示 Claude Code 自驱工作站的全貌：全景架构图、7 步启动流程、6 层上下文加载、双模型调度、权限白名单、MCP 外部手臂、文档链、记忆系统和完整开发闭环。像产品说明书一样清晰。",
-    "tech": ["Vue 3", "FastAPI", "SQLite", "CSS3"],
+    "desc": "项目的完整说明书——README 功能介绍 + CHANGELOG 版本记录，像产品手册一样查阅。",
+    "fullDesc": "Winters 项目的官方文档页。双标签切换查看 README（功能亮点/技术栈/API 端点/快速启动/项目结构/主题系统）和 CHANGELOG（从 v0.1.0 到最新的完整版本记录）。所有内容从项目根目录的 markdown 文件实时读取。",
+    "tech": ["Vue 3", "FastAPI", "Markdown", "CSS3"],
     "features": [
-      "完整架构可视化文档",
-      "开发闭环每一步拆解",
-      "双模型调度策略详解",
-      "记忆系统 + 备份方案"
+      "README 项目说明书",
+      "CHANGELOG 版本记录",
+      "Markdown 实时渲染",
+      "双标签切换查阅"
     ],
-    "link": "/system",
+    "link": "/docs",
     "github": "https://github.com/AuricWinters/Winters"
   },
   {

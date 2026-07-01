@@ -75,6 +75,26 @@ async def health_check():
     }
 
 
+@app.get("/api/docs/readme")
+async def get_readme():
+    """返回项目 README.md 内容"""
+    import pathlib
+    readme_path = pathlib.Path(__file__).parent.parent / "README.md"
+    if readme_path.exists():
+        return {"content": readme_path.read_text(encoding="utf-8")}
+    return {"content": "# README\n\n文档未找到。"}
+
+
+@app.get("/api/docs/changelog")
+async def get_changelog():
+    """返回项目 CHANGELOG.md 内容"""
+    import pathlib
+    changelog_path = pathlib.Path(__file__).parent.parent / "CHANGELOG.md"
+    if changelog_path.exists():
+        return {"content": changelog_path.read_text(encoding="utf-8")}
+    return {"content": "# CHANGELOG\n\n文档未找到。"}
+
+
 # 启动命令：uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 if __name__ == "__main__":
     import uvicorn
