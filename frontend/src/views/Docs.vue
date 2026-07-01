@@ -4,11 +4,6 @@
 
     <div class="docs-container">
       <header class="docs-hero scroll-reveal">
-        <div class="hero-badge">📖 Winters</div>
-        <h1 class="hero-title">官方文档</h1>
-        <p class="hero-sub">
-          项目说明书——功能列表、启动方式、API 端点、版本记录。像产品手册一样清晰。
-        </p>
         <div class="doc-tabs">
           <button
             class="tab-btn"
