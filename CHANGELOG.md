@@ -1,135 +1,179 @@
 # Changelog
 
-Winters 项目更新日志，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 格式。
+Winters 项目更新日志。
 
 ## [v0.5.3] — 2026-07-01
 
 ### Changed
-- 默认外观偏好：颜色樱吹雪(sakura) + 普通风格(standard) + 直角
-- 版本号修正（TRAE 误标 v1.0.0 → 回退 v0.5.3）
+- 默认外观偏好：颜色 `sakura`（樱吹雪）+ 风格 `standard`（普通）+ 圆角 `sharp`（直角）
+- 版本号回退 `v1.0.0` → `v0.5.3`（TRAE 误升）
 
 ### Fixed
-- 后端 executor.py 3 处 dict key 缺引号（`error:` → `"error":`）
-- 后端 models.py 正则改为 raw string（修复 Python 3.12+ SyntaxWarning）
-- 后端 UserCreate 删除与 UserBase 重复的 nickname/phone/email 字段
-- 后端 JWT secret 改为环境变量 `WINTERS_JWT_SECRET`
+- `backend/executor.py` — 3 处 dict key 缺引号（`error:` → `"error":`），直接影响 C/Python/PHP 异常返回
+- `backend/models.py` — 所有正则 pattern 改为 raw string `r"..."`，消除 Python 3.12+ SyntaxWarning；删除 `UserCreate` 中与 `UserBase` 重复的 nickname/phone/email 字段
+- `backend/routes/auth.py` — JWT secret 从硬编码改为 `os.environ.get("WINTERS_JWT_SECRET", ...)`
+- `backend/main.py` — 补充 `import os`
 
 ### Removed
-- 30+ 过期 spec 文档归档到 archive/
-- 5 个遗留 test_ws*.py 临时调试脚本
+- `backend/test_ws.py` ~ `test_ws5.py` — 5 个无断言临时调试脚本
+- `.trae/specs/` + `frontend/.trae/specs/` — 30+ 过期 spec 归档到 `archive/`
+
+### Docs
+- `README.md` 补全动效槽位、i18n、主题风格/圆角
+- 新建 `CHANGELOG.md`
 
 ## [v0.5.2] — 2026-06-28
 
 ### Fixed
-- 路由守卫改为直接查 `winters_token`（不再依赖 `isLoggedIn` flag）
-- 清除 ResetPassword 模拟文案
-- 清除 Profile setTimeout + Login 模拟文案
+- `frontend/src/router/index.js` — 路由守卫由查 `isLoggedIn` flag 改为直接查 `winters_token`
+- `frontend/src/views/ResetPassword.vue` — 清除模拟文案，重置密码表单走真实接口
+- `frontend/src/views/Profile.vue` — 清除 setTimeout mock 数据加载
+- `frontend/src/views/Login.vue` — 清除模拟 token 逻辑，登录走真实 JWT
 
 ### Added
-- 导航栏加社区入口
+- `frontend/src/components/Header.vue` — 导航栏新增「社区」入口（动态旁边）
 
 ## [v0.5.1] — 2026-06-27
 
 ### Added
-- 头像真存储到数据库（user 表 avatar 字段）
-- 社交登录自动创建 DB 用户
-- Login/Register 接真 API
-- 验证码登录返回 JWT token
+- `backend/crud.py` — 头像写入 user 表 avatar 字段
+- `backend/routes/auth.py` — 社交登录自动创建 DB 用户
+- `frontend/src/views/Login.vue` — 密码登录 / 验证码登录均接真 API
+- `frontend/src/views/Register.vue` — 注册接真 API
+- 验证码登录返回 JWT token（与密码登录统一）
 
 ### Fixed
-- Blog 接真 API（posts/comments/tags）
-- Profile 表单输入框 caret-color 光标显示
-- 改密码表单 autocomplete 防浏览器自动填充
-- login 返回完整用户信息（nickname/phone/email）不含密码
-- Register.vue 参数匹配 store.register(account, password, confirmPassword)
-- login 返回 db_user → dict(db_user) 修复 JSON 序列化
-- GET posts/comments/tags 无需认证，POST/PUT/DELETE 需登录
+- `frontend/src/views/Blog.vue` — posts/comments/tags 全部接真 API
+- `frontend/src/views/Profile.vue` — 表单输入框加 `caret-color` 显示光标
+- `frontend/src/views/Profile.vue` — 改密码表单加 `autocomplete` 属性防浏览器自动填充
+- `backend/routes/auth.py` — login 返回完整用户信息（nickname/phone/email），不含密码
+- `frontend/src/views/Register.vue` — 参数匹配 `store.register(account, password, confirmPassword)`
+- `backend/routes/auth.py` — login 返回 `dict(db_user)` 修复 Row 对象 JSON 序列化
+- `backend/routes/community.py` — GET posts/comments/tags 无需认证，POST/PUT/DELETE 需登录
 
 ## [v0.5.0] — 2026-06-26
 
 ### Added
-- 用户系统全真 API（profile 查询/更新/绑定/注销/验证码）
-- 改密码功能 + 后端 change-password 端点
-- 注册支持 nickname/phone/email 可选字段
-- 社区 API 真用户认证（JWT + bcrypt）
+- `backend/routes/user.py` — profile 查询/更新/绑定/注销 全真 API
+- `backend/routes/auth.py` — change-password 端点
+- `backend/models.py` — UserCreate 新增 nickname/phone/email 可选字段
+- `backend/routes/community.py` — bcrypt 密码加密 + JWT token + 社区 API 真用户认证
 
 ### Fixed
-- PostDetail scroll-reveal 闪烁 — watch 数据加载后手动 reveal
+- `frontend/src/views/PostDetail.vue` — scroll-reveal 闪烁：watch 数据加载后手动调用 reveal()
+- `frontend/src/views/Profile.vue` — 改密码表单接真 API（change-password 端点）
 
 ## [v0.4.0] — 2026-06-25
 
 ### Added
-- AI 社区完整实现（帖子流/发帖/详情/点赞/评论/标签）
-- useCommunityStore（Pinia，后端 API 驱动，含分页/点赞/标签）
-- 发帖后自动刷新 + 空态引导
+- `frontend/src/views/Community.vue` — AI 社区帖子流（分页/筛选/排序）
+- `frontend/src/views/PostEditor.vue` — 发帖编辑器（Markdown + 标签）
+- `frontend/src/views/PostDetail.vue` — 帖子详情（评论/点赞）
+- `frontend/src/stores/community.js` — useCommunityStore（Pinia，后端 API 驱动）
+- `backend/routes/community.py` — posts/comments/likes/tags 全 CRUD API
+- 发帖后自动刷新帖子流 + 空态引导
 
-### Fixed
-- 页面动效回退 — 10 文件恢复改前状态
+### Reverted
+- 页面动效回退 — 10 文件恢复改前状态（Home/Blog/Community 等页面布局回退）
 
 ## [v0.3.0] — 2026-06-24
 
 ### Added
-- 组件实验室 `/lab/showcase` — 84 组件画廊，7 个子页面
-  - 文字特效 / 悬停交互 / 入场动画 / 背景装饰 / UI 组件 / 3D 工具
+- **组件实验室** `/lab/showcase` — 84 组件画廊
+  - `ShowcaseText.vue` — 文字特效（ShinyText/GlitchText/GradientText/DecryptedText/SplitText/TextPressure/TextType/RotatingText）
+  - `ShowcaseHover.vue` — 悬停交互（GlareHover/StarBorder/useTilt/useMagnet/useSpotlight）
+  - `ShowcaseEntry.vue` — 入场动画（ScrollReveal/ScrollVelocity/DecayCard/useBounceEntry/useBlurReveal/useCountUp/ScrollStack/Stepper/StaggeredMenu）
+  - `ShowcaseBg.vue` — 背景装饰（DotField/Antigravity/ColorBends/Crosshair/MagicRings/Strands/CurvedLoop/Lanyard）
+  - `ShowcaseUi.vue` — UI 组件（BounceCards/MasonryGrid/AnimatedList/CircularGallery/OrbitImages/DomeGallery/ImageTrail/CardSwap/InfiniteMenu/FlowingMenu/BubbleMenu/PillNav/VariableProximity/Shuffle/Stack）
+  - `Showcase3d.vue` — 3D / 工具（CircularText/ContributionHeatmap）
 - Showcase 分页版 — 7 页面 77 组件正常渲染
-- 全局动效槽位系统 — 9 个槽位（标题/卡片/按钮/背景/文字/点击/页面/导航）
-  - Pinia + localStorage 持久化
-  - 设置面板可实时切换
-- useEffectStore — 动效槽位管理
-- SafeDemo 组件隔离 — 单组件崩溃不影响全页
-- 2048 游戏 + 扫雷游戏
+- **动效槽位系统**
+  - `frontend/src/stores/effects.js` — useEffectStore（9 槽位，localStorage 持久化）
+  - `frontend/src/components/EffectSlot.vue` — 槽位组件容器
+  - `frontend/src/components/BgDecorSlot.vue` / `CardHoverSlot.vue` / `ClickFeedbackSlot.vue` — 背景/卡片/点击 3 类槽位实现
+  - 4 个动效槽位接通 — 设置面板可实时切换
+  - 9 个槽位：标题/卡片/按钮/背景/文字/点击/页面/导航/入场
+- `frontend/src/components/SafeDemo.vue` — 组件隔离包裹器，单组件崩溃不影响全页
+- `frontend/src/views/lab/Game2048Lab.vue` — 2048 小游戏
+- `frontend/src/views/lab/MinesweeperLab.vue` — 扫雷小游戏
 - Lab 布局优化
 
 ### Fixed
-- RotatingText props texts→array 防止 showcase 白屏
-- TextPressure.vue 去除模板内 `<style v-html>`
-- slot 内容传入组件修复（61/76 正常渲染）
-- 恢复原始 Carousel.vue（被 Workflow 覆盖）
-- setSlot 用对象替换触发响应式 — 设置实时生效
-- HeadingEffect import 路径全修 + 2 卡片接 CardHoverSlot
-- 全站标题接入 effectStore — HeadingEffect 组件
-- 4 个动效槽位接通 — 设置面板可实时切换
-- 全 Home 侧栏 3 卡接 CardHoverSlot + bgDecor 默认点阵
+- `frontend/src/components/RotatingText.vue` — props `texts` 类型由 string 改为 array，防止 showcase 白屏
+- `frontend/src/components/TextPressure.vue` — 去除模板内 `<style v-html>` 错误嵌套
+- slot 内容传入组件修复 — 61/76 组件正常渲染
+- 恢复原始 `Carousel.vue`（被 Workflow 错误覆盖）
+- `frontend/src/stores/effects.js` — setSlot 用对象替换触发响应式，设置实时生效
+- `frontend/src/components/HeadingEffect.vue` — import 路径全修 + 2 卡片接 CardHoverSlot
+- 全站标题接入 effectStore
 
 ## [v0.2.0] — 2026-06-23
 
 ### Added
-- 全站 i18n（zh-CN / zh-TW / en-US），24+ 文件接入
-- 8 套设计师主题（手账/墨韵/极光/樱吹雪/森语/午夜/暮光/极简）+ 自定义配色
-- SettingsPanel 三层导航（主页 → 主题子页 / 动效子页）
-- 手账风格纸质感 + 圆角/直角独立切换
-- `/system` 自驱工作站架构文档页面 + 加入项目列表
-- 全站标题接入 HeadingEffect 组件
-- 全量 React Bits 搬迁 — 84 组件 + 动效槽位系统
-- 14 组件全部接线 — 全站动效覆盖完成
+- **全站 i18n** — zh-CN / zh-TW / en-US 三语，`frontend/src/locales/` 下 24+ 文件接入
+- **8 套设计师主题** — journal/ink/aurora/sakura/forest/midnight/twilight/minimal + custom
+  - `frontend/src/stores/settings.js` — 主题/字体/动画偏好，localStorage 持久化
+  - `frontend/src/components/SettingsPanel.vue` — 三层导航（主页/主题子页/动效子页）
+  - 主题通过 `data-color-theme` + `data-theme` 属性控制，CSS Variables 全量覆盖
+- 手账风格纸质感 (`themeStyle: journal`) + 圆角/直角独立切换
+- `frontend/src/views/System.vue` — 自驱工作站架构文档页面，加入项目列表
+- **全量 React Bits 搬迁** — 84 组件 + 动效槽位系统
+  - 14 组件全部接线 — 全站动效覆盖完成
+  - 标题动效实际应用 — `GradientText` / `ShinyText` 上线
+  - `v-spotlight` / `v-tilt` / `v-magnet` 三个自定义指令注册
+  - 所有卡片接入 `v-spotlight` + 聚光灯增强
+  - Login auth-card 加 `v-spotlight`
 
 ### Fixed
-- 全站颜色清零 — 所有硬编码色值迁移 CSS 变量
-- 标题动效实际应用 — GradientText/ShinyText 上线
-- Login auth-card 加 v-spotlight
-- v-spotlight/v-tilt/v-magnet 指令注册 + 全站接线
-- 动效全面铺开 — 所有卡片接入 v-spotlight + 聚光灯增强
+- 全站颜色清零 — 所有硬编码 hex/rgb 迁移为 CSS 变量
+- HeadingEffect 组件接入全站标题
 
 ## [v0.1.0] — 2026-06-20 ~ 06-22
 
 ### Added
-- 项目初始化 — Vue 3 + FastAPI + SQLite 全栈骨架
-- 基础页面：首页/动态/项目/实验室/联系/登录/注册
-- 粒子特效系统（useParticles composable，Canvas 粒子，主题自适应）
-- 代码执行引擎（6 语言：C/Java/JS/TS/Python/PHP）
-- 认证系统骨架（密码登录/注册/验证码/第三方登录入口）
-- 暖心关怀页面 — 200+ 条暖心话语弹窗
-- AI 学习路线 — 6 阶段 21 周完整学习计划
-- **React Bits 风格 UI 重设计方案书**（24 交互 demo + 135 组件分类）
-- **AI 自执行施工计划**（4 阶段 40+ 任务清单）
-- Phase 0 — CSS 基础设施统一（补变量/建 card 基类/动画提升/颜色清零）
-- Phase 1 — Easy 动效 9 件套（Vue Composables 7+ Components 2）
-- Phase 2 — Medium 组件 10 件（Canvas/IO/SVG 动效）
-- Phase 3 — card-spotlight 全局覆盖（App/Header/Home → Community/Lab → Blog/Settings/Login）
-- Phase 4 — 全局收尾（滚动条/选中文本/文档同步）
+- **项目初始化** — Vue 3 + FastAPI + SQLite 全栈骨架
+  - `frontend/` — Vite 5, Pinia, Vue Router 4
+  - `backend/` — FastAPI, Pydantic v2, 原生 sqlite3
+- **基础页面** — 首页/动态/项目/实验室/联系/登录/注册 全上线
+- **粒子特效系统** — `frontend/src/composables/useParticles.js`
+  - Canvas 粒子，鼠标交互，主题自适应（MutationObserver 监听 `data-color-theme`）
+  - 雪花飘落（普通页）+ 鼠标吸引/爆炸（登录页）
+- **代码执行引擎** — `backend/executor.py`
+  - 6 语言：C (gcc) / Java (javac+java) / JS (Node.js) / TS (tsx) / Python (subprocess) / PHP
+  - xterm.js WebSocket 终端
+- **认证系统骨架** — 密码登录/注册/验证码/第三方登录入口
+- **暖心关怀** — `frontend/src/views/Care.vue`，200+ 条暖心话语，玻璃拟态弹窗
+- **AI 学习路线** — `frontend/src/views/Learning.vue`，6 阶段 21 周计划，进度本地持久化
+- **/system 页面** — `frontend/src/views/System.vue`，Claude Code 完整架构文档
+- `README.md` 重写 — 项目总结 + GitHub 首页
 
-### Changed
-- 项目结构重构 — 清理垃圾、整合功能
-- README 重写并补充暖心关怀 + AI 学习路线
+### Design
+- **React Bits 风格 UI 重设计方案书** — 24 交互 demo + 135 组件分类
+- **AI 自执行施工计划** — 4 阶段 40+ 任务清单
+
+### Phase 0 — CSS 基础设施统一
+- 补全 CSS 变量（`--primary`/`--primary-rgb`/`--bg-glass`/`--border-color` 等）
+- 建立 card 基类（`.glass-card` 玻璃拟态）
+- 动画性能提升（`transform` 替代 `top/left`）
+- 全站颜色清零 — 所有硬编码值迁移变量
+
+### Phase 1 — Easy 动效 9 件套
+- **Composables**: useSpotlight, useTilt, useMagnet, useClickSpark, useBlurReveal, useCountUp, useBounceEntry, useBorderGlow
+- **Components**: ShinyText, GlitchText
+
+### Phase 2 — Medium 组件 10 件
+- **Canvas 动效**: DotField, Antigravity, ColorBends, Crosshair, MagicRings, Strands, CurvedLoop, Lanyard
+- **IO 动效**: ImageTrail
+- **SVG 动效**: CircularText
+
+### Phase 3 — card-spotlight 全局覆盖
+- Pt1: App.vue / Header.vue / Home.vue 初步改造 + Spotlight CSS
+- Pt2: Community.vue / Lab.vue card-spotlight 改造
+- Pt3: Blog.vue / SettingsPanel.vue / Login.vue card-spotlight 全覆盖
+
+### Phase 4 — 全局收尾
+- 滚动条样式统一（`--primary` 变量驱动）
+- 选中文本颜色统一（`::selection`）
+- 文档同步（CLAUDE.md / README.md）
 
 [keepachangelog]: https://keepachangelog.com/zh-CN/1.0.0/
