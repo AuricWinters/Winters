@@ -42,49 +42,6 @@ const activeTab = ref<string>('readme');
 const readmeHtml = ref<string>('');
 const changelogHtml = ref<string>('');
 
-function simpleMdToHtml(md: string): string {
-  return md
-    // 代码块 (```)
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="code-block"><code>$2</code></pre>')
-    // 内联代码
-    .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
-    // 标题
-    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    // 粗体 + 斜体
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // 链接
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-    // 水平线
-    .replace(/^---$/gm, '<hr>')
-    // 无序列表
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-    // 有序列表
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    // 表格 (简化：检测 | 开头的行)
-    .replace(/^\|(.+)\|$/gm, (match: string) => {
-      const cells = match.split('|').filter(c => c.trim());
-      if (match.includes('---')) return '';
-      return '<tr>' + cells.map(c => {
-        const trimmed = c.trim();
-        return trimmed.startsWith('**') && trimmed.endsWith('**')
-          ? `<th>${trimmed.slice(2, -2)}</th>`
-          : `<td>${trimmed}</td>`;
-      }).join('') + '</tr>';
-    })
-    // 包裹表格行
-    .replace(/(<tr>.*<\/tr>\n?)+/g, '<table>$&</table>')
-    // 段落
-    .replace(/^(?!<[a-z]|$)(.+)$/gm, '<p>$1</p>')
-    // 清理多余空行
-    .replace(/\n{3,}/g, '\n\n');
-}
-
 onMounted(async () => {
   try {
     const [readmeRes, changelogRes] = await Promise.all([
@@ -93,11 +50,11 @@ onMounted(async () => {
     ]);
     if (readmeRes.ok) {
       const data = await readmeRes.json();
-      readmeHtml.value = simpleMdToHtml(data.content || '');
+      readmeHtml.value = data.content || '';
     }
     if (changelogRes.ok) {
       const data = await changelogRes.json();
-      changelogHtml.value = simpleMdToHtml(data.content || '');
+      changelogHtml.value = data.content || '';
     }
   } catch {
     readmeHtml.value = '<p>文档加载失败，请查看项目根目录的 README.md 和 CHANGELOG.md</p>';
@@ -159,13 +116,14 @@ onMounted(async () => {
 .md-body :deep(strong) { color: var(--text-main); font-weight: 700; }
 .md-body :deep(a) { color: var(--primary); text-decoration: none; }
 .md-body :deep(a:hover) { text-decoration: underline; }
-.md-body :deep(.code-block) {
+.md-body :deep(pre) {
   background: rgba(var(--primary-rgb), 0.06); border-radius: 10px;
   padding: 18px 22px; overflow-x: auto; margin: 16px 0;
   font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px;
   line-height: 1.6; border-left: 3px solid var(--primary);
 }
-.md-body :deep(.inline-code) {
+.md-body :deep(pre code) { background: none; padding: 0; border-radius: 0; font-size: inherit; }
+.md-body :deep(code) {
   background: rgba(var(--primary-rgb), 0.06); padding: 2px 8px;
   border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 13px;
   color: var(--primary);
@@ -175,11 +133,19 @@ onMounted(async () => {
   width: 100%; border-collapse: collapse; margin: 16px 0;
   font-size: 14px;
 }
+.md-body :deep(thead) { border-bottom: 2px solid var(--border-color); }
 .md-body :deep(th) {
   text-align: left; padding: 10px 14px;
   background: rgba(var(--primary-rgb), 0.06); font-weight: 700;
 }
 .md-body :deep(td) { padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
+.md-body :deep(blockquote) {
+  border-left: 4px solid var(--primary); margin: 16px 0; padding: 8px 18px;
+  background: rgba(var(--primary-rgb), 0.04); border-radius: 0 8px 8px 0;
+  color: var(--text-secondary);
+}
+.md-body :deep(ol) { margin: 0 0 14px; padding-left: 24px; }
+.md-body :deep(ol li) { margin-bottom: 4px; }
 
 @media (max-width: 768px) {
   .hero-title { font-size: 34px; }

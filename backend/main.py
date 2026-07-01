@@ -77,22 +77,28 @@ async def health_check():
 
 @app.get("/api/docs/readme")
 async def get_readme():
-    """返回项目 README.md 内容"""
+    """返回项目 README.md 内容（已渲染为 HTML）"""
     import pathlib
+    import markdown
     readme_path = pathlib.Path(__file__).parent.parent / "README.md"
     if readme_path.exists():
-        return {"content": readme_path.read_text(encoding="utf-8")}
-    return {"content": "# README\n\n文档未找到。"}
+        md = readme_path.read_text(encoding="utf-8")
+        html = markdown.markdown(md, extensions=['tables', 'fenced_code'])
+        return {"content": html}
+    return {"content": "<h1>README</h1><p>文档未找到。</p>"}
 
 
 @app.get("/api/docs/changelog")
 async def get_changelog():
-    """返回项目 CHANGELOG.md 内容"""
+    """返回项目 CHANGELOG.md 内容（已渲染为 HTML）"""
     import pathlib
+    import markdown
     changelog_path = pathlib.Path(__file__).parent.parent / "CHANGELOG.md"
     if changelog_path.exists():
-        return {"content": changelog_path.read_text(encoding="utf-8")}
-    return {"content": "# CHANGELOG\n\n文档未找到。"}
+        md = changelog_path.read_text(encoding="utf-8")
+        html = markdown.markdown(md, extensions=['tables', 'fenced_code'])
+        return {"content": html}
+    return {"content": "<h1>CHANGELOG</h1><p>文档未找到。"}
 
 
 # 启动命令：uvicorn main:app --host 0.0.0.0 --port 8000 --reload
