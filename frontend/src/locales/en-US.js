@@ -1,7 +1,7 @@
 export default {
   '首页':'Home','动态':'Blog','项目':'Projects','实验室':'Lab','AI 聊天':'AI Chat','云盘':'Drive',
   '个人中心':'Profile','登录':'Login','注册':'Register','重置密码':'Reset Password','联系我':'Contact',
-  '暖心关怀':'Warm Words','AI 学习路线':'AI Learning Plan','官方文档':'Official Docs','自驱工作站':'Official Docs',
+  '暖心关怀':'Warm Words','AI 学习路线':'AI Learning Plan','自驱工作站':'Workstation Docs',
   '设置':'Settings','主题':'Theme','主题样式':'Theme Style','手账风格':'Journal','普通风格':'Standard',
   '圆角样式':'Corner Style','圆角':'Rounded','直角':'Sharp','主题颜色':'Theme Color','深浅模式':'Dark Mode',
   '浅色模式':'Light','深色模式':'Dark','跟随系统':'Auto','外观':'Appearance',
