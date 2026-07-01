@@ -1,18 +1,18 @@
 [
   {
     "id": 1,
-    "title": "个人主页 (当前项目)",
-    "desc": "基于 Vue 3 + Vite 构建的个人网站，包含博客、项目展示及实验性功能。",
-    "fullDesc": "这是一个高度定制化的个人展示平台。采用 Vue 3 组合式 API 开发，结合 Vite 构建工具实现了极速的热更新体验。界面设计遵循 Glassmorphism（玻璃拟物化）风格，通过 Canvas 粒子系统营造出独特的视觉氛围。",
-    "tech": ["Vue 3", "Vite", "Pinia", "CSS3"],
+    "title": "Winters 官方文档",
+    "desc": "Vue 3 + FastAPI 全栈个人网站的完整说明书——开发闭环、自动化体系、模型调度、记忆系统全在这里。",
+    "fullDesc": "Winters 项目的官方文档站。用 10 个可视化区块完整展示 Claude Code 自驱工作站的全貌：全景架构图、7 步启动流程、6 层上下文加载、双模型调度、权限白名单、MCP 外部手臂、文档链、记忆系统和完整开发闭环。像产品说明书一样清晰。",
+    "tech": ["Vue 3", "FastAPI", "SQLite", "CSS3"],
     "features": [
-      "基于 Pinia 的响应式数据管理",
-      "Canvas 高性能背景粒子交互系统",
-      "完全自适应的响应式布局设计",
-      "基于 Vue Router 的平滑页面切换动画"
+      "完整架构可视化文档",
+      "开发闭环每一步拆解",
+      "双模型调度策略详解",
+      "记忆系统 + 备份方案"
     ],
-    "link": "/",
-    "github": "https://github.com"
+    "link": "/system",
+    "github": "https://github.com/AuricWinters/Winters"
   },
   {
     "id": 2,
