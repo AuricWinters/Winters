@@ -155,11 +155,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../composables/useI18n.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useToast } from '../composables/useToast.js';
-import { useCommunityStore } from '../stores/community.js';
+import { useI18n } from '../composables/useI18n.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useToast } from '../composables/useToast.ts';
+import { useCommunityStore } from '../stores/community.ts';
 
 const { t } = useI18n();
 const { showToast } = useToast();

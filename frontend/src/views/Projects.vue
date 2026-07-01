@@ -81,10 +81,10 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useDataStore } from '../stores/data.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useDataStore } from '../stores/data.ts';
+import { useI18n } from '../composables/useI18n.ts';
 
 const { t } = useI18n();
 

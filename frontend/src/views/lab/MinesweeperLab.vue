@@ -270,8 +270,8 @@
 
 <script setup>
 import { ref, getCurrentInstance, onMounted, onUnmounted } from 'vue';
-import { useI18n } from '../../composables/useI18n.js';
-import { useParticles } from '../../composables/useParticles.js';
+import { useI18n } from '../../composables/useI18n.ts';
+import { useParticles } from '../../composables/useParticles.ts';
 
 const { t } = useI18n();
 useParticles('.particles-background');

@@ -1,17 +1,11 @@
 import { onMounted, onUnmounted } from 'vue';
 import Particles from '../utils/particles.js';
 
-/**
- * 粒子背景 composable
- * 提取各页面中重复的粒子初始化逻辑
- * @param {string} selector - canvas 选择器
- * @param {boolean} isLoginPage - 是否登录页面（登录页使用特殊效果）
- */
-export function useParticles(selector = '.particles-background', isLoginPage = false) {
-  let particlesInstance = null;
-  let themeObserver = null;
+export function useParticles(selector: string = '.particles-background', isLoginPage: boolean = false): void {
+  let particlesInstance: any = null;
+  let themeObserver: MutationObserver | null = null;
 
-  const getThemeColors = () => {
+  const getThemeColors = (): string[] => {
     const styles = getComputedStyle(document.documentElement);
     return [
       styles.getPropertyValue('--primary').trim() || '#EC4899',
@@ -21,7 +15,7 @@ export function useParticles(selector = '.particles-background', isLoginPage = f
     ];
   };
 
-  const buildConfig = () => ({
+  const buildConfig = (): Record<string, any> => ({
     selector,
     maxParticles: 250,
     sizeVariations: 5,
@@ -36,42 +30,38 @@ export function useParticles(selector = '.particles-background', isLoginPage = f
     isLoginPage,
   });
 
-  const initParticles = () => {
+  const initParticles = (): void => {
     particlesInstance = Particles.init(buildConfig());
   };
 
-  // 点击爆炸效果处理函数
-  const handleClick = (e) => {
+  const handleClick = (e: MouseEvent): void => {
     if (!particlesInstance) return;
 
     const particlesCanvas = document.querySelector(selector);
     if (particlesCanvas) {
       const rect = particlesCanvas.getBoundingClientRect();
-      const canvasWidth = particlesCanvas.width / window.devicePixelRatio;
-      const canvasHeight = particlesCanvas.height / window.devicePixelRatio;
+      const canvasEl = particlesCanvas as HTMLCanvasElement;
+      const canvasWidth = canvasEl.width / window.devicePixelRatio;
+      const canvasHeight = canvasEl.height / window.devicePixelRatio;
       const x = (e.clientX - rect.left) * (canvasWidth / rect.width);
       const y = (e.clientY - rect.top) * (canvasHeight / rect.height);
       particlesInstance.explode(x, y);
     }
   };
 
-  onMounted(() => {
+  onMounted((): void => {
     initParticles();
 
-    // 登录页面绑定点击爆炸效果
     if (isLoginPage) {
       document.addEventListener('click', handleClick);
     }
 
-    // 监听主题变化，重建粒子
-    themeObserver = new MutationObserver((mutations) => {
+    themeObserver = new MutationObserver((mutations: MutationRecord[]) => {
       for (const m of mutations) {
         if (m.type === 'attributes' && m.attributeName === 'data-color-theme') {
-          // 保存父元素引用后销毁（destroy 会移除 canvas）
           const oldCanvas = document.querySelector(selector);
           const parent = oldCanvas?.parentElement;
           Particles.destroy();
-          // 重新创建 canvas 元素
           if (parent) {
             const newCanvas = document.createElement('canvas');
             newCanvas.className = selector.replace(/\./g, '');
@@ -85,7 +75,7 @@ export function useParticles(selector = '.particles-background', isLoginPage = f
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-color-theme'] });
   });
 
-  onUnmounted(() => {
+  onUnmounted((): void => {
     if (isLoginPage) {
       document.removeEventListener('click', handleClick);
     }

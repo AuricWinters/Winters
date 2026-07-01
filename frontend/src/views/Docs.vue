@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
 
 useParticles('.particles-background');
 useScrollReveal();

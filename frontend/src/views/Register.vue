@@ -401,11 +401,11 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
-import { useUserStore } from '../stores/user.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useToast } from '../composables/useToast.js';
+import { useUserStore } from '../stores/user.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useToast } from '../composables/useToast.ts';
 
 const { t } = useI18n();
 const router = useRouter();

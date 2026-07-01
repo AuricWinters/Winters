@@ -46,4 +46,19 @@ export default [
       'no-unused-vars': 'warn',
     },
   },
+
+  // TS 文件配置
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    },
+    rules: {
+      'no-console': 'warn',
+      'no-debugger': 'warn',
+      'no-unused-vars': 'warn',
+    },
+  },
 ]

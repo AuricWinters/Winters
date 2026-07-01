@@ -347,9 +347,9 @@
 </template>
 
 <script setup>
-import { useI18n } from '../composables/useI18n.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
+import { useI18n } from '../composables/useI18n.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
 
 const { t } = useI18n();
 

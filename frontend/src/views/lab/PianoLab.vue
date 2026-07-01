@@ -112,8 +112,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useI18n } from '../../composables/useI18n.js';
-import { useParticles } from '../../composables/useParticles.js';
+import { useI18n } from '../../composables/useI18n.ts';
+import { useParticles } from '../../composables/useParticles.ts';
 
 const { t } = useI18n();
 

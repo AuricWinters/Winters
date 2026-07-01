@@ -360,9 +360,9 @@
 <script setup>
 import { ref, reactive, onMounted, watch, onUnmounted, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useUserStore } from '../stores/user.js';
-import { useToast } from '../composables/useToast.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useUserStore } from '../stores/user.ts';
+import { useToast } from '../composables/useToast.ts';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
 const router = useRouter();

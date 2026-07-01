@@ -1,27 +1,42 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-function authHeaders() {
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  liked?: boolean;
+  likes_count?: number;
+  [key: string]: any;
+}
+
+interface Tag {
+  id: number;
+  name: string;
+  [key: string]: any;
+}
+
+function authHeaders(): Record<string, string> {
   const token = localStorage.getItem('winters_token') || '';
   return token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
 }
 
 export const useCommunityStore = defineStore('community', () => {
-  const posts = ref([]);
-  const loading = ref(false);
-  const page = ref(1);
-  const total = ref(0);
-  const hasMore = ref(true);
-  const category = ref('all');
-  const tag = ref('');
-  const tags = ref([]);
+  const posts = ref<Post[]>([]);
+  const loading = ref<boolean>(false);
+  const page = ref<number>(1);
+  const total = ref<number>(0);
+  const hasMore = ref<boolean>(true);
+  const category = ref<string>('all');
+  const tag = ref<string>('');
+  const tags = ref<Tag[]>([]);
 
-  async function fetchPosts(reset = false) {
+  async function fetchPosts(reset: boolean = false): Promise<void> {
     if (reset) { page.value = 1; posts.value = []; hasMore.value = true; }
     if (loading.value) return;
     loading.value = true;
     try {
-      const params = new URLSearchParams({ page: page.value, category: category.value, tag: tag.value });
+      const params = new URLSearchParams({ page: String(page.value), category: category.value, tag: tag.value });
       const res = await fetch(`/api/posts?${params}`, { headers: authHeaders() });
       const data = await res.json();
       if (reset) posts.value = data.posts;
@@ -33,14 +48,14 @@ export const useCommunityStore = defineStore('community', () => {
     finally { loading.value = false; }
   }
 
-  async function fetchTags() {
+  async function fetchTags(): Promise<void> {
     try {
       const res = await fetch('/api/tags');
       tags.value = await res.json();
     } catch (e) { /* ignore */ }
   }
 
-  async function toggleLike(post) {
+  async function toggleLike(post: Post): Promise<void> {
     try {
       const res = await fetch(`/api/posts/${post.id}/like`, { method: 'POST', headers: authHeaders() });
       const data = await res.json();
@@ -49,8 +64,8 @@ export const useCommunityStore = defineStore('community', () => {
     } catch (e) { /* ignore */ }
   }
 
-  function setCategory(c) { category.value = c; }
-  function setTag(t) { tag.value = t; }
+  function setCategory(c: string): void { category.value = c; }
+  function setTag(t: string): void { tag.value = t; }
 
   return { posts, loading, page, total, hasMore, category, tag, tags, fetchPosts, fetchTags, toggleLike, setCategory, setTag };
 });

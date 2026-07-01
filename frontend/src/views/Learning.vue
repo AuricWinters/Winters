@@ -153,8 +153,8 @@
 
 <script setup>
 import { ref, reactive, computed, watch } from 'vue';
-import { useParticles } from '../composables/useParticles.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useI18n } from '../composables/useI18n.ts';
 import { plan } from '../data/learning-plan.js';
 
 const { t } = useI18n();

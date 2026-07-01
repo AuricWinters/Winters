@@ -16,7 +16,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useEffectStore } from '../stores/effects.js'
+import { useEffectStore } from '../stores/effects.ts'
 import ShinyText from './ShinyText.vue'
 import GradientText from './GradientText.vue'
 import GlitchText from './GlitchText.vue'

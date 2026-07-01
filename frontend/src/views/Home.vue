@@ -259,14 +259,14 @@
 </template>
 
 <script setup>
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 import Carousel from '../components/Carousel.vue';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useToast } from '../composables/useToast.js';
-import { useDataStore } from '../stores/data.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useToast } from '../composables/useToast.ts';
+import { useDataStore } from '../stores/data.ts';
 
 useParticles();
 useScrollReveal();

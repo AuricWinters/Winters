@@ -84,7 +84,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
 const props = defineProps({

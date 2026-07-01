@@ -36,8 +36,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useParticles } from '../composables/useParticles.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
 const started = ref(false);

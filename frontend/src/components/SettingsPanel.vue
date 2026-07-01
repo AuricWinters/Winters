@@ -343,8 +343,8 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import { useSettings } from '../composables/useSettings.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useSettings } from '../composables/useSettings.ts';
+import { useI18n } from '../composables/useI18n.ts';
 
 const { t } = useI18n();
 const emit = defineEmits(['close']);

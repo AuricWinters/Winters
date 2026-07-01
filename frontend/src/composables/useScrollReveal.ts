@@ -1,16 +1,12 @@
 import { onMounted } from 'vue';
 
-/**
- * 滚动显示动画 composable
- * 提取各页面中重复的 IntersectionObserver 逻辑
- */
-export function useScrollReveal() {
+export function useScrollReveal(): void {
   onMounted(() => {
-    const elements = document.querySelectorAll('.scroll-reveal');
+    const elements: NodeListOf<Element> = document.querySelectorAll('.scroll-reveal');
     if (!elements.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
+    const observer: IntersectionObserver = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('revealed');
@@ -24,7 +20,7 @@ export function useScrollReveal() {
       }
     );
 
-    elements.forEach((el) => {
+    elements.forEach((el: Element) => {
       observer.observe(el);
     });
   });

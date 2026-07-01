@@ -1,11 +1,33 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 
+type ThemeMigration = Record<string, string>;
+
+interface CustomTheme {
+  mode: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+}
+
+interface Settings {
+  language: string;
+  theme: string;
+  themeStyle: string;
+  cornerStyle: string;
+  darkMode: string;
+  animationEnabled: boolean;
+  fontSize: string;
+  customTheme: CustomTheme;
+}
+
 export const useSettingsStore = defineStore('settings', () => {
   const STORAGE_KEY = 'winters_settings';
 
   // 旧主题名 → 新主题名迁移映射
-  const themeMigration = {
+  const themeMigration: ThemeMigration = {
     'default': 'journal',
     'pink-gold': 'sakura',
     'blue-purple': 'aurora',
@@ -14,7 +36,7 @@ export const useSettingsStore = defineStore('settings', () => {
     'purple-pink': 'sakura'
   };
 
-  const defaultSettings = {
+  const defaultSettings: Settings = {
     language: 'zh-CN',
     theme: 'sakura',
     themeStyle: 'standard',
@@ -32,11 +54,11 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   };
 
-  const loadSettings = () => {
+  const loadSettings = (): Settings => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        const parsed = JSON.parse(saved);
+        const parsed = JSON.parse(saved) as Settings;
         // 迁移旧主题名到新主题名
         if (parsed.theme && themeMigration[parsed.theme]) {
           parsed.theme = themeMigration[parsed.theme];
@@ -44,7 +66,7 @@ export const useSettingsStore = defineStore('settings', () => {
         // 补全缺失字段（旧版本数据兼容）
         for (const key of Object.keys(defaultSettings)) {
           if (!(key in parsed)) {
-            parsed[key] = JSON.parse(JSON.stringify(defaultSettings[key]));
+            (parsed as any)[key] = JSON.parse(JSON.stringify((defaultSettings as any)[key]));
           }
         }
         return parsed;
@@ -57,16 +79,16 @@ export const useSettingsStore = defineStore('settings', () => {
   };
 
   const settings = loadSettings();
-  const language = ref(settings.language);
-  const theme = ref(settings.theme);
-  const themeStyle = ref(settings.themeStyle || defaultSettings.themeStyle);
-  const cornerStyle = ref(settings.cornerStyle || defaultSettings.cornerStyle);
-  const darkMode = ref(settings.darkMode || defaultSettings.darkMode);
-  const animationEnabled = ref(settings.animationEnabled);
-  const fontSize = ref(settings.fontSize);
-  const customTheme = ref(settings.customTheme || defaultSettings.customTheme);
+  const language = ref<string>(settings.language);
+  const theme = ref<string>(settings.theme);
+  const themeStyle = ref<string>(settings.themeStyle || defaultSettings.themeStyle);
+  const cornerStyle = ref<string>(settings.cornerStyle || defaultSettings.cornerStyle);
+  const darkMode = ref<string>(settings.darkMode || defaultSettings.darkMode);
+  const animationEnabled = ref<boolean>(settings.animationEnabled);
+  const fontSize = ref<string>(settings.fontSize);
+  const customTheme = ref<CustomTheme>(settings.customTheme || defaultSettings.customTheme);
 
-  const saveSettings = () => {
+  const saveSettings = (): void => {
     try {
       const settings = {
         language: language.value,
@@ -84,15 +106,15 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   };
 
-  const applyTheme = () => {
+  const applyTheme = (): void => {
     // 确定深浅色模式
-    let effectiveDarkMode = darkMode.value;
+    let effectiveDarkMode: string = darkMode.value;
     if (darkMode.value === 'auto') {
       effectiveDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
     // 确定主题颜色
-    let effectiveTheme = theme.value;
+    let effectiveTheme: string = theme.value;
 
     document.documentElement.setAttribute('data-theme', effectiveDarkMode);
     document.documentElement.setAttribute('data-color-theme', effectiveTheme);
@@ -118,7 +140,7 @@ export const useSettingsStore = defineStore('settings', () => {
     if (effectiveTheme === 'custom') applyCustomTheme();
   };
 
-  const applyCustomTheme = () => {
+  const applyCustomTheme = (): void => {
     const colors = customTheme.value.colors;
     document.documentElement.style.setProperty('--primary', colors.primary);
     document.documentElement.style.setProperty('--secondary', colors.secondary);
@@ -126,12 +148,12 @@ export const useSettingsStore = defineStore('settings', () => {
     document.documentElement.style.setProperty('--gold', colors.secondary);
   };
 
-  const applyThemeStyle = () => {
+  const applyThemeStyle = (): void => {
     document.documentElement.setAttribute('data-theme-style', themeStyle.value);
     document.documentElement.setAttribute('data-corner-style', cornerStyle.value);
   };
 
-  const applyAnimation = () => {
+  const applyAnimation = (): void => {
     if (animationEnabled.value) {
       document.documentElement.classList.remove('no-animation');
     } else {
@@ -139,9 +161,9 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   };
 
-  const applyFontSize = () => {
+  const applyFontSize = (): void => {
     document.documentElement.setAttribute('data-font-size', fontSize.value);
-    
+
     document.documentElement.classList.remove('font-small', 'font-medium', 'font-large');
     document.documentElement.classList.add(`font-${fontSize.value}`);
   };
@@ -154,45 +176,45 @@ export const useSettingsStore = defineStore('settings', () => {
     applyFontSize();
   }, { immediate: true, deep: true });
 
-  const setLanguage = (newLanguage) => {
+  const setLanguage = (newLanguage: string): void => {
     language.value = newLanguage;
   };
 
-  const setTheme = (newTheme) => {
+  const setTheme = (newTheme: string): void => {
     theme.value = newTheme;
   };
 
-  const setThemeStyle = (newStyle) => {
+  const setThemeStyle = (newStyle: string): void => {
     themeStyle.value = newStyle;
     // 手账默认直角，普通默认圆角
     cornerStyle.value = newStyle === 'journal' ? 'sharp' : 'rounded';
   };
 
-  const setCornerStyle = (newStyle) => {
+  const setCornerStyle = (newStyle: string): void => {
     cornerStyle.value = newStyle;
   };
 
-  const setDarkMode = (newDarkMode) => {
+  const setDarkMode = (newDarkMode: string): void => {
     darkMode.value = newDarkMode;
   };
 
-  const setAnimationEnabled = (enabled) => {
+  const setAnimationEnabled = (enabled: boolean): void => {
     animationEnabled.value = enabled;
   };
 
-  const setFontSize = (size) => {
+  const setFontSize = (size: string): void => {
     fontSize.value = size;
   };
 
-  const setCustomThemeMode = (mode) => {
+  const setCustomThemeMode = (mode: string): void => {
     customTheme.value.mode = mode;
   };
 
-  const setCustomThemeColor = (colorType, colorValue) => {
+  const setCustomThemeColor = (colorType: string, colorValue: string): void => {
     customTheme.value.colors[colorType] = colorValue;
   };
 
-  const resetToDefaults = () => {
+  const resetToDefaults = (): void => {
     language.value = defaultSettings.language;
     theme.value = defaultSettings.theme;
     themeStyle.value = defaultSettings.themeStyle;
@@ -203,9 +225,9 @@ export const useSettingsStore = defineStore('settings', () => {
     customTheme.value = { ...defaultSettings.customTheme };
   };
 
-  const initThemeListener = () => {
+  const initThemeListener = (): (() => void) => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
+    const handleChange = (): void => {
       if (darkMode.value === 'auto') {
         applyTheme();
       }

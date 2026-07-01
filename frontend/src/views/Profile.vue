@@ -665,13 +665,13 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
-import { useUserStore } from '../stores/user.js';
-import { useSettingsStore } from '../stores/settings.js';
-import { useDataStore } from '../stores/data.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useToast } from '../composables/useToast.js';
+import { useUserStore } from '../stores/user.ts';
+import { useSettingsStore } from '../stores/settings.ts';
+import { useDataStore } from '../stores/data.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useToast } from '../composables/useToast.ts';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
 
 const router = useRouter();

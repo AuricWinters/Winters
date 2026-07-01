@@ -239,12 +239,12 @@
 </template>
 
 <script setup>
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 import { useRouter } from 'vue-router';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useToast } from '../composables/useToast.js';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useToast } from '../composables/useToast.ts';
 
 const router = useRouter();
 const { showToast } = useToast();

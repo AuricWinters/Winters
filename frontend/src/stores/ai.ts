@@ -1,9 +1,29 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface AISettings {
+  provider: string;
+  ollamaBaseUrl: string;
+  openaiBaseUrl: string;
+  openaiApiKey: string;
+  model: string;
+  [key: string]: any;
+}
+
+interface AIResponse {
+  success: boolean;
+  response?: string;
+  error?: string;
+}
+
 export const useAIStore = defineStore('ai', () => {
   // AI 设置
-  const settings = ref(
+  const settings = ref<AISettings>(
     JSON.parse(
       localStorage.getItem('winters_ai_settings') ||
         JSON.stringify({
@@ -17,48 +37,48 @@ export const useAIStore = defineStore('ai', () => {
   );
 
   // 连接状态
-  const isConnected = ref(false);
+  const isConnected = ref<boolean>(false);
 
   // 聊天历史
-  const messages = ref(
+  const messages = ref<Message[]>(
     JSON.parse(localStorage.getItem('winters_chat_history') || '[]')
   );
 
-  const isLoading = ref(false);
+  const isLoading = ref<boolean>(false);
 
   // 保存设置
-  function saveSettings(newSettings) {
+  function saveSettings(newSettings: Partial<AISettings>): void {
     settings.value = { ...settings.value, ...newSettings };
     localStorage.setItem('winters_ai_settings', JSON.stringify(settings.value));
     checkConnection();
   }
 
   // 检查连接
-  function checkConnection() {
+  function checkConnection(): void {
     const saved = localStorage.getItem('winters_ai_settings');
     isConnected.value = !!saved;
   }
 
   // 保存聊天历史
-  function saveChatHistory() {
+  function saveChatHistory(): void {
     const history = messages.value.slice(-50);
     localStorage.setItem('winters_chat_history', JSON.stringify(history));
   }
 
   // 添加消息
-  function addMessage(role, content) {
+  function addMessage(role: string, content: string): void {
     messages.value.push({ role, content });
     saveChatHistory();
   }
 
   // 清空聊天
-  function clearChat() {
+  function clearChat(): void {
     messages.value = [];
     localStorage.removeItem('winters_chat_history');
   }
 
   // 发送消息到后端（使用 proxy 接口连接真实 AI）
-  async function sendMessage(userMessage) {
+  async function sendMessage(userMessage: string): Promise<AIResponse> {
     addMessage('user', userMessage);
     isLoading.value = true;
 
@@ -92,7 +112,7 @@ export const useAIStore = defineStore('ai', () => {
       }
 
       // 处理错误
-      let errorMessage = data.error || '未知错误';
+      let errorMessage: string = data.error || '未知错误';
       if (errorMessage.includes('ConnectError') || errorMessage.includes('无法连接')) {
         errorMessage = '无法连接到 AI 服务，请检查服务是否启动';
       } else if (errorMessage.includes('Timeout') || errorMessage.includes('超时')) {
@@ -100,8 +120,8 @@ export const useAIStore = defineStore('ai', () => {
       }
 
       return { success: false, error: errorMessage };
-    } catch (error) {
-      let errorMessage = error.message;
+    } catch (error: any) {
+      let errorMessage: string = error.message;
       if (errorMessage.includes('fetch') || errorMessage.includes('Network')) {
         errorMessage = '无法连接到 AI 服务，请检查网络或后端服务';
       }

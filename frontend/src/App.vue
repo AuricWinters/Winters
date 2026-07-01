@@ -39,7 +39,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useSettingsStore } from './stores/settings.js';
+import { useSettingsStore } from './stores/settings.ts';
 import Header from './components/Header.vue';
 
 // 确保 store 在应用启动时立即初始化，刷新页面不会丢设置

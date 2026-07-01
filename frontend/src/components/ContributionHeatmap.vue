@@ -61,7 +61,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
-import { useI18n } from '../composables/useI18n.js';
+import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
 const props = defineProps({

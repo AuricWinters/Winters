@@ -237,10 +237,10 @@
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue';
-import { useAIStore } from '../stores/ai.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useI18n } from '../composables/useI18n.js';
+import { useAIStore } from '../stores/ai.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useI18n } from '../composables/useI18n.ts';
 import { storeToRefs } from 'pinia';
 
 const { t } = useI18n();

@@ -150,10 +150,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useI18n } from '../composables/useI18n.js';
-import { useParticles } from '../composables/useParticles.js';
-import { useScrollReveal } from '../composables/useScrollReveal.js';
-import { useToast } from '../composables/useToast.js';
+import { useI18n } from '../composables/useI18n.ts';
+import { useParticles } from '../composables/useParticles.ts';
+import { useScrollReveal } from '../composables/useScrollReveal.ts';
+import { useToast } from '../composables/useToast.ts';
 
 useParticles();
 useScrollReveal();

@@ -1,21 +1,38 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 
+interface User {
+  id: number;
+  username: string;
+  nickname: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  token: string;
+  [key: string]: any;
+}
+
+interface AuthResult {
+  success: boolean;
+  user?: User;
+  error?: string;
+}
+
 export const useUserStore = defineStore('user', () => {
   // 状态
-  const token = ref(localStorage.getItem('winters_token') || '');
-  const refreshToken = ref(localStorage.getItem('winters_refresh_token') || '');
-  let parsedUser = null;
+  const token = ref<string>(localStorage.getItem('winters_token') || '');
+  const refreshToken = ref<string>(localStorage.getItem('winters_refresh_token') || '');
+  let parsedUser: User | null = null;
   try { parsedUser = JSON.parse(localStorage.getItem('winters_user') || 'null'); } catch { parsedUser = null; }
-  const user = ref(parsedUser);
+  const user = ref<User | null>(parsedUser);
 
   // 计算属性
-  const isLoggedIn = computed(() => !!token.value && !!user.value);
-  const username = computed(() => user.value?.nickname || user.value?.username || 'User');
-  const userId = computed(() => user.value?.id || null);
+  const isLoggedIn = computed<boolean>(() => !!token.value && !!user.value);
+  const username = computed<string>(() => user.value?.nickname || user.value?.username || 'User');
+  const userId = computed<number | null>(() => user.value?.id || null);
 
   // 登录（密码登录）
-  async function login(account, password) {
+  async function login(account: string, password: string): Promise<AuthResult> {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -33,13 +50,13 @@ export const useUserStore = defineStore('user', () => {
       localStorage.setItem('isLoggedIn', 'true');
 
       return { success: true, user: data.user };
-    } catch (error) {
+    } catch (error: any) {
       return { success: false, error: error.message };
     }
   }
 
   // 注册
-  async function register(account, password, confirmPassword, extra = {}) {
+  async function register(account: string, password: string, confirmPassword: string, extra: Record<string, any> = {}): Promise<AuthResult> {
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -51,13 +68,13 @@ export const useUserStore = defineStore('user', () => {
 
       // 注册成功自动登录
       return await login(account, password);
-    } catch (error) {
+    } catch (error: any) {
       return { success: false, error: error.message };
     }
   }
 
   // 登出
-  function logout() {
+  function logout(): void {
     token.value = '';
     refreshToken.value = '';
     user.value = null;
@@ -70,7 +87,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 获取认证请求头
-  function getAuthHeaders() {
+  function getAuthHeaders(): Record<string, string> {
     return {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token.value}`,
@@ -78,7 +95,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 更新用户信息（真API）
-  async function updateUserInfo(updates) {
+  async function updateUserInfo(updates: Partial<User>): Promise<AuthResult> {
     try {
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
@@ -90,13 +107,13 @@ export const useUserStore = defineStore('user', () => {
       user.value = data.user;
       localStorage.setItem('winters_user', JSON.stringify(data.user));
       return { success: true, user: data.user };
-    } catch (error) {
+    } catch (error: any) {
       return { success: false, error: error.message };
     }
   }
 
   // 获取用户详情（从服务器）
-  async function getUserInfo() {
+  async function getUserInfo(): Promise<AuthResult> {
     try {
       const res = await fetch('/api/user/me', { headers: getAuthHeaders() });
       const data = await res.json();
@@ -104,20 +121,20 @@ export const useUserStore = defineStore('user', () => {
       user.value = data;
       localStorage.setItem('winters_user', JSON.stringify(data));
       return { success: true, user: data };
-    } catch (error) {
+    } catch (error: any) {
       return { success: false, error: error.message };
     }
   }
 
   // 注销账户
-  async function deleteAccount() {
+  async function deleteAccount(): Promise<{ success: boolean; error?: string }> {
     try {
       const res = await fetch('/api/user/account', { method: 'DELETE', headers: getAuthHeaders() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || '注销失败');
       logout();
       return { success: true };
-    } catch (error) {
+    } catch (error: any) {
       return { success: false, error: error.message };
     }
   }

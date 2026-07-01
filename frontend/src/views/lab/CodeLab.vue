@@ -322,7 +322,7 @@ class="hljs"
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n.js';
+import { useI18n } from '../../composables/useI18n.ts';
 const { t } = useI18n();
 import { languages as languagesData } from './tutorials/index.js';
 import hljs from 'highlight.js/lib/core'

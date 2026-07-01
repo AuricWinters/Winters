@@ -5,7 +5,28 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 
-const defaultSlots = {
+type SlotKey = 'heading' | 'cardHover' | 'cardEntry' | 'buttonHover' | 'bgDecor' | 'textDecor' | 'clickFeedback' | 'pageTransition' | 'navStyle'
+
+interface EffectSlots {
+  heading: string
+  cardHover: string
+  cardEntry: string
+  buttonHover: string
+  bgDecor: string
+  textDecor: string
+  clickFeedback: string
+  pageTransition: string
+  navStyle: string
+}
+
+interface SlotOption {
+  value: string
+  label: string
+}
+
+type SlotOptionsMap = Record<SlotKey, SlotOption[]>
+
+const defaultSlots: EffectSlots = {
   heading: 'shinyText',         // ShinyText | GradientText | GlitchText | RotatingText
   cardHover: 'spotlight',       // Spotlight | Tilt | BorderGlow | GlareHover | None
   cardEntry: 'fadeUp',          // BounceCards | BlurReveal | AnimatedList | fadeUp | None
@@ -17,7 +38,7 @@ const defaultSlots = {
   navStyle: 'glass',            // glass | GooeyNav | FloatingNav | default
 }
 
-const slotOptions = {
+const slotOptions: SlotOptionsMap = {
   heading: [
     { value: 'shinyText', label: '金属光泽' },
     { value: 'gradientText', label: '渐变流动' },
@@ -78,28 +99,28 @@ const slotOptions = {
 
 export const useEffectStore = defineStore('effects', () => {
   // 从 localStorage 读取，否则用默认值
-  let saved
-  try { saved = JSON.parse(localStorage.getItem('winters_effects')) } catch { saved = null }
-  const slots = ref({ ...defaultSlots, ...saved })
+  let saved: EffectSlots | null = null
+  try { saved = JSON.parse(localStorage.getItem('winters_effects') || 'null') } catch { saved = null }
+  const slots = ref<EffectSlots>({ ...defaultSlots, ...saved })
 
   // 持久化
-  watch(slots, (v) => {
+  watch(slots, (v: EffectSlots) => {
     localStorage.setItem('winters_effects', JSON.stringify(v))
   }, { deep: true })
 
-  function setSlot(key, value) {
+  function setSlot(key: string, value: string): void {
     if (key in slots.value) {
       slots.value = { ...slots.value, [key]: value }
     }
   }
 
-  function resetSlot(key) {
+  function resetSlot(key: string): void {
     if (key in defaultSlots) {
-      slots.value[key] = defaultSlots[key]
+      (slots.value as any)[key] = (defaultSlots as any)[key]
     }
   }
 
-  function resetAll() {
+  function resetAll(): void {
     slots.value = { ...defaultSlots }
   }
 

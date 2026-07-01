@@ -9,7 +9,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useEffectStore } from '../stores/effects.js'
+import { useEffectStore } from '../stores/effects.ts'
 
 // -- 已经存在的组件 imports --
 import ShinyText from './ShinyText.vue'

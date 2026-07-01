@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
-import { useEffectStore } from '../stores/effects.js'
+import { useEffectStore } from '../stores/effects.ts'
 import GlareHover from './GlareHover.vue'
 
 const store = useEffectStore()
