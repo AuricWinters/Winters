@@ -81,6 +81,14 @@ export const useSettingsStore = defineStore('settings', () => {
   };
 
   const loadSettings = (): Settings => {
+    const loggedIn = isLoggedIn();
+
+    // 未登录 → 永远使用访客默认
+    if (!loggedIn) {
+      return JSON.parse(JSON.stringify(guestDefaults));
+    }
+
+    // 已登录 → 读取保存的设置，没有则用用户默认
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -90,10 +98,9 @@ export const useSettingsStore = defineStore('settings', () => {
           parsed.theme = themeMigration[parsed.theme];
         }
         // 补全缺失字段（旧版本数据兼容）
-        const fallback = JSON.parse(JSON.stringify(isLoggedIn() ? userDefaults : guestDefaults));
-        for (const key of Object.keys(fallback)) {
+        for (const key of Object.keys(userDefaults)) {
           if (!(key in parsed)) {
-            (parsed as any)[key] = JSON.parse(JSON.stringify((fallback as any)[key]));
+            (parsed as any)[key] = JSON.parse(JSON.stringify((userDefaults as any)[key]));
           }
         }
         return parsed;
@@ -101,8 +108,7 @@ export const useSettingsStore = defineStore('settings', () => {
     } catch (error) {
       console.warn('Failed to load settings:', error);
     }
-    // 无保存记录 → 根据登录状态选默认
-    return JSON.parse(JSON.stringify(isLoggedIn() ? userDefaults : guestDefaults));
+    return JSON.parse(JSON.stringify(userDefaults));
   };
 
   const settings = loadSettings();

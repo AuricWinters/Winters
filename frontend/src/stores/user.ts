@@ -84,7 +84,6 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('winters_user');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
-    localStorage.removeItem('winters_settings');
   }
 
   // 获取认证请求头
