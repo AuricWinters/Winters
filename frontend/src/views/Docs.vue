@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useParticles } from '../composables/useParticles.js';
 import { useScrollReveal } from '../composables/useScrollReveal.js';
@@ -38,12 +38,11 @@ import { useScrollReveal } from '../composables/useScrollReveal.js';
 useParticles('.particles-background');
 useScrollReveal();
 
-const activeTab = ref('readme');
-const readmeHtml = ref('');
-const changelogHtml = ref('');
+const activeTab = ref<string>('readme');
+const readmeHtml = ref<string>('');
+const changelogHtml = ref<string>('');
 
-// 简单的 Markdown → HTML 转换
-function simpleMdToHtml(md) {
+function simpleMdToHtml(md: string): string {
   return md
     // 代码块 (```)
     .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="code-block"><code>$2</code></pre>')
@@ -68,7 +67,7 @@ function simpleMdToHtml(md) {
     // 有序列表
     .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
     // 表格 (简化：检测 | 开头的行)
-    .replace(/^\|(.+)\|$/gm, (match) => {
+    .replace(/^\|(.+)\|$/gm, (match: string) => {
       const cells = match.split('|').filter(c => c.trim());
       if (match.includes('---')) return '';
       return '<tr>' + cells.map(c => {
