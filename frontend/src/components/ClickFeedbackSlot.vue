@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useEffectStore } from '../stores/effects.ts'
 import { useClickSpark } from '../composables/useClickSpark.ts'

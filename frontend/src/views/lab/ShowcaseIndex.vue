@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const categories = [
   { key: 'text', icon: '🔤', label: '文字特效', count: 17, link: '/lab/showcase/text' },
   { key: 'hover', icon: '🖱️', label: '悬停交互', count: 9, link: '/lab/showcase/hover' },

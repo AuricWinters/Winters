@@ -110,7 +110,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n.ts';
 import { useParticles } from '../../composables/useParticles.ts';
@@ -195,7 +195,7 @@ const blackKeys = [
 
 function initAudio() {
   if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
     masterGain = audioContext.createGain();
     masterGain.gain.value = volume.value;
     masterGain.connect(audioContext.destination);

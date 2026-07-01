@@ -9,7 +9,7 @@
   </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 
 const props = defineProps({
@@ -37,13 +37,13 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['shuffleComplete'])
-const elRef = ref(null)
+const elRef = ref<HTMLElement | null>(null)
 const ready = ref(false)
 
 let observer = null
 let hasPlayed = false
 let currentTimeline = null
-let wrappers = []
+let wrappers: any[] = []
 let animFrame = null
 
 const scrollTriggerStart = computed(() => {
@@ -60,11 +60,13 @@ function buildShuffle() {
   if (!el) return
   wrappers = []
 
-  const chars = Array.from(el.childNodes).filter(n => n.nodeType === 3).reduce((acc, node) => {
-    const text = node.textContent
-    node.textContent = ''
-    return acc.concat(text.split(''))
-  }, [])
+  const chars = Array.from(el.childNodes)
+    .filter(n => n.nodeType === 3)
+    .reduce((acc, node) => {
+      const text = node.textContent || ''
+      node.textContent = ''
+      return acc.concat(text.split(''))
+    }, [] as string[])
 
   if (!chars.length) return
 

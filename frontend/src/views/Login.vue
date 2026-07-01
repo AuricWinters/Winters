@@ -365,7 +365,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
@@ -373,7 +373,7 @@ import { useRouter } from 'vue-router';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
 import LoginPasswordForm from '../components/LoginPasswordForm.vue';
 import LoginCodeForm from '../components/LoginCodeForm.vue';
-import { API_BASE } from '../config.js';
+import { API_BASE } from '../config.ts';
 import { useUserStore } from '../stores/user.ts';
 import { useParticles } from '../composables/useParticles.ts';
 import { useToast } from '../composables/useToast.ts';

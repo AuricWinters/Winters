@@ -13,12 +13,12 @@
       >
         <a
           class="menu__item-link"
-          :href="item.link"
+          :href="(item as any).link"
           :style="{ color: textColor }"
           @mouseenter="e => handleEnter(e, idx)"
           @mouseleave="e => handleLeave(e, idx)"
         >
-          {{ item.text }}
+          {{ (item as any).text }}
         </a>
         <div
           ref="marqueeRefs"
@@ -36,10 +36,10 @@
                 class="marquee__part"
                 :style="{ color: marqueeTextColor }"
               >
-                <span>{{ item.text }}</span>
+                <span>{{ (item as any).text }}</span>
                 <div
                   class="marquee__img"
-                  :style="{ backgroundImage: `url(${item.image})` }"
+                  :style="{ backgroundImage: `url(${(item as any).image})` }"
                 />
               </div>
             </div>
@@ -50,7 +50,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -134,7 +134,7 @@ function handleLeave(ev, idx) {
 function setupMarquees() {
   marqueeInnerRefs.forEach((inner, idx) => {
     if (!inner) return
-    const content = inner.querySelector('.marquee__part')
+    const content = inner.querySelector('.marquee__part') as HTMLElement | null
     if (!content) return
     const contentWidth = content.offsetWidth
     if (contentWidth === 0) return
@@ -157,7 +157,7 @@ onMounted(async () => {
 
   // Calculate repetitions needed
   const viewportWidth = window.innerWidth
-  const content = document.querySelector('.marquee__part')
+  const content = document.querySelector('.marquee__part') as HTMLElement | null
   if (content) {
     const contentWidth = content.offsetWidth
     repetitions.value = Math.max(4, Math.ceil(viewportWidth / contentWidth) + 2)
@@ -166,7 +166,7 @@ onMounted(async () => {
   setTimeout(setupMarquees, 100)
 
   function handleResize() {
-    const content = document.querySelector('.marquee__part')
+    const content = document.querySelector('.marquee__part') as HTMLElement | null
     if (content) {
       const contentWidth = content.offsetWidth
       repetitions.value = Math.max(4, Math.ceil(window.innerWidth / contentWidth) + 2)

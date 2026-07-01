@@ -410,12 +410,12 @@
               </h3>
               <div class="theme-grid">
                 <button
-                  v-for="t in themeOptions"
-                  :key="t.value"
-                  :class="['theme-dot', { active: settingsStore.theme === t.value }]"
-                  :style="{ background: t.color }"
-                  :title="t(t.label)"
-                  @click="settingsStore.setTheme(t.value)"
+                  v-for="th in themeOptions"
+                  :key="th.value"
+                  :class="['theme-dot', { active: settingsStore.theme === th.value }]"
+                  :style="{ background: th.color }"
+                  :title="t(th.label)"
+                  @click="settingsStore.setTheme(th.value)"
                 />
               </div>
             </div>
@@ -662,7 +662,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../composables/useI18n.ts';
@@ -752,8 +752,8 @@ const handleAvatarChange = async (e) => {
   if (file.size > 1 * 1024 * 1024) { showToast(t('图片不能超过 1MB'), 'warning'); return; }
   const reader = new FileReader();
   reader.onload = async (ev) => {
-    user.avatar = ev.target.result;
-    await userStore.updateUserInfo({ avatar: ev.target.result });
+    user.avatar = String(ev.target.result);
+    await userStore.updateUserInfo({ avatar: String(ev.target.result) });
     showToast(t('头像已更新 ✨'), 'success');
   };
   reader.readAsDataURL(file);

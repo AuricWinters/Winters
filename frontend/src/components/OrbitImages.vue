@@ -31,10 +31,10 @@
           v-for="(item, index) in images"
           :key="index"
           class="orbit-item"
-          :style="getItemStyle(index)"
+          :style="getItemStyle(index) as any"
         >
           <img
-            :src="item"
+            :src="item as string"
             :alt="`${altPrefix} ${index + 1}`"
             draggable="false"
             class="orbit-image"
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div
-      v-if="centerContent"
+      v-if="$slots.center"
       class="orbit-center-content"
     >
       <slot name="center" />
@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({

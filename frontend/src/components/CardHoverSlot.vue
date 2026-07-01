@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
 import { useEffectStore } from '../stores/effects.ts'
 import GlareHover from './GlareHover.vue'

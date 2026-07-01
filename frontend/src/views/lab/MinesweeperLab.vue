@@ -268,7 +268,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, getCurrentInstance, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n.ts';
 import { useParticles } from '../../composables/useParticles.ts';
@@ -277,7 +277,7 @@ const { t } = useI18n();
 useParticles('.particles-background');
 
 // 获取 scopeId 用于动态创建的元素
-const scopeId = getCurrentInstance()?.type.__scopeId;
+const scopeId = (getCurrentInstance()?.type as any)?.__scopeId;
 
 // ==================== 响应式状态 ====================
 const themeName = ref('dark');
@@ -320,7 +320,7 @@ let soundEnabled = true;
 function initAudio() {
   if (!audioCtx) {
     try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
     } catch (e) {
       audioCtx = null;
     }
@@ -439,8 +439,8 @@ function loadDifficulty() {
 
 function applySpeed(pct) {
   gameSpeed = 0.5 + (pct / 100) * 2.5;
-  document.documentElement.style.setProperty('--speed', gameSpeed);
-  valSpeed.textContent = pct + '%';
+  document.documentElement.style.setProperty('--speed', String(gameSpeed));
+  valSpeed.textContent = String(pct) + '%';
   saveSettings();
 }
 
@@ -674,8 +674,8 @@ function renderAllCells() {
       const cell = document.createElement('div');
       if (scopeId) cell.setAttribute(scopeId, '');
       cell.className = 'cell';
-      cell.dataset.r = r;
-      cell.dataset.c = c;
+      cell.dataset.r = String(r);
+      cell.dataset.c = String(c);
       cell.addEventListener('click', (e) => onCellClick(r, c, e));
       cell.addEventListener('mousedown', (e) => {
         if (e.button === 2) {
@@ -1103,7 +1103,7 @@ function spawnVictoryFireworks() {
   });
 }
 
-function animateParticles(timestamp) {
+function animateParticles(timestamp?: number) {
   const containerRect = gridContainer.getBoundingClientRect();
   const w = containerRect.width;
   const h = containerRect.height;

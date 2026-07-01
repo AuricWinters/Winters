@@ -126,9 +126,9 @@ let enterTimer: ReturnType<typeof setTimeout> | null = null
 
 /** Split string into grapheme clusters (characters visible to the user). */
 function splitGraphemes(text: string): string[] {
-  if (typeof Intl !== 'undefined' && Intl.Segmenter) {
-    const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' })
-    return Array.from(segmenter.segment(text), (s) => s.segment)
+  if (typeof Intl !== 'undefined' && (Intl as any).Segmenter) {
+    const segmenter = new (Intl as any).Segmenter('en', { granularity: 'grapheme' })
+    return Array.from(segmenter.segment(text), (s: any) => s.segment)
   }
   return Array.from(text)
 }
@@ -228,7 +228,7 @@ function goTo(newIdx: number): void {
 
   const maxExitDelay = calcDelay(
     oldWords.value.length - 1,
-    (oldWords.value.at(-1)?.chars.length ?? 1) - 1,
+    (oldWords.value[oldWords.value.length - 1]?.chars.length ?? 1) - 1,
     oldWords.value
   )
   const exitMs = props.duration + maxExitDelay
@@ -239,7 +239,7 @@ function goTo(newIdx: number): void {
 
     const maxEnterDelay = calcDelay(
       currentWords.value.length - 1,
-      (currentWords.value.at(-1)?.chars.length ?? 1) - 1,
+      (currentWords.value[currentWords.value.length - 1]?.chars.length ?? 1) - 1,
       currentWords.value
     )
     const enterMs = props.duration + maxEnterDelay

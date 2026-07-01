@@ -8,7 +8,7 @@
   <slot v-else />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onErrorCaptured } from 'vue'
 const error = ref('')
 onErrorCaptured((err) => {

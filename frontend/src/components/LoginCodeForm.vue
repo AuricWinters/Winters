@@ -41,7 +41,7 @@
           :placeholder="t('请输入手机号')"
           :disabled="isLoading"
           @blur="$emit('blur', 'phone')"
-          @input="$emit('update:phone', $event.target.value)"
+          @input="onPhoneInput"
           @focus="$emit('focus')"
         >
       </div>
@@ -86,7 +86,7 @@
           maxlength="6"
           :disabled="isLoading"
           @blur="$emit('blur', 'code')"
-          @input="$emit('update:code', $event.target.value)"
+          @input="onCodeInput"
           @focus="$emit('focus')"
         >
         <button
@@ -118,7 +118,7 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
@@ -130,5 +130,13 @@ defineProps({
   codeCountdown: { type: Number, default: 0 },
 });
 
-defineEmits(['submit', 'update:phone', 'update:code', 'blur', 'focus', 'sendCode']);
+const emit = defineEmits(['submit', 'update:phone', 'update:code', 'blur', 'focus', 'sendCode']);
+
+const onPhoneInput = (e: Event) => {
+  emit('update:phone', (e.target as HTMLInputElement).value);
+};
+
+const onCodeInput = (e: Event) => {
+  emit('update:code', (e.target as HTMLInputElement).value);
+};
 </script>

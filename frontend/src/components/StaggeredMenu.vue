@@ -14,7 +14,7 @@
         v-for="(c, i) in preLayerColors"
         :key="i"
         class="sm-prelayer"
-        :style="{ background: c }"
+        :style="{ background: c as string }"
       />
     </div>
 
@@ -94,19 +94,19 @@
         >
           <li
             v-for="(it, idx) in displayItems"
-            :key="it.label + idx"
+            :key="(it as any).label + idx"
             class="sm-panel-itemWrap"
           >
             <a
               class="sm-panel-item"
-              :href="it.link"
-              :aria-label="it.ariaLabel"
+              :href="(it as any).link"
+              :aria-label="(it as any).ariaLabel"
               :data-index="idx + 1"
             >
               <span
                 class="sm-panel-itemLabel"
                 :style="getItemLabelStyle(idx)"
-              >{{ it.label }}</span>
+              >{{ (it as any).label }}</span>
             </a>
           </li>
         </ul>
@@ -128,17 +128,17 @@
           >
             <li
               v-for="(s, i) in socialItems"
-              :key="s.label + i"
+              :key="(s as any).label + i"
               class="sm-socials-item"
             >
               <a
-                :href="s.link"
+                :href="(s as any).link"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="sm-socials-link"
                 :style="{ transform: `translateY(${socialLinkOffsets[i]}px)`, opacity: socialOpacities[i] }"
               >
-                {{ s.label }}
+                {{ (s as any).label }}
               </a>
             </li>
           </ul>
@@ -148,7 +148,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({

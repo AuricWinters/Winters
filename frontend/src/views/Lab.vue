@@ -238,7 +238,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 import { useRouter } from 'vue-router';

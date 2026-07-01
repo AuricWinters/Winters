@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SafeDemo from './SafeDemo.vue'
 defineProps({ comp: Object })
 </script>

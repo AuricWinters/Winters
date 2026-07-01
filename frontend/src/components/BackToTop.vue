@@ -18,7 +18,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useBackToTop } from '../composables/useBackToTop.ts';
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();

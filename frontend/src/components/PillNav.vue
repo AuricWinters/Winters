@@ -28,14 +28,14 @@
         >
           <li
             v-for="(item, i) in items"
-            :key="item.href"
+            :key="(item as any).href"
             role="none"
           >
             <a
               role="menuitem"
-              :href="item.href"
-              :class="['pill', { 'is-active': activeHref === item.href }]"
-              :aria-label="item.ariaLabel || item.label"
+              :href="(item as any).href"
+              :class="['pill', { 'is-active': activeHref === (item as any).href }]"
+              :aria-label="(item as any).ariaLabel || (item as any).label"
               @mouseenter="handleEnter(i)"
               @mouseleave="handleLeave(i)"
             >
@@ -45,11 +45,11 @@
                 aria-hidden="true"
               />
               <span class="label-stack">
-                <span class="pill-label">{{ item.label }}</span>
+                <span class="pill-label">{{ (item as any).label }}</span>
                 <span
                   class="pill-label-hover"
                   aria-hidden="true"
-                >{{ item.label }}</span>
+                >{{ (item as any).label }}</span>
               </span>
             </a>
           </li>
@@ -76,14 +76,14 @@
       <ul class="mobile-menu-list">
         <li
           v-for="item in items"
-          :key="item.href"
+          :key="(item as any).href"
         >
           <a
-            :href="item.href"
-            :class="['mobile-menu-link', { 'is-active': activeHref === item.href }]"
+            :href="(item as any).href"
+            :class="['mobile-menu-link', { 'is-active': activeHref === (item as any).href }]"
             @click="isMobileMenuOpen = false"
           >
-            {{ item.label }}
+            {{ (item as any).label }}
           </a>
         </li>
       </ul>
@@ -91,7 +91,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({

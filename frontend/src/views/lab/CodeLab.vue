@@ -319,12 +319,12 @@ class="hljs"
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../../composables/useI18n.ts';
 const { t } = useI18n();
-import { languages as languagesData } from './tutorials/index.js';
+import { languages as languagesData } from './tutorials/index.ts';
 import hljs from 'highlight.js/lib/core'
 import c from 'highlight.js/lib/languages/c'
 import cpp from 'highlight.js/lib/languages/cpp'
@@ -338,7 +338,7 @@ import MonacoEditor from '@guolao/vue-monaco-editor'
 import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
-import { API_BASE, WS_BASE } from '../../config.js';
+import { API_BASE, WS_BASE } from '../../config.ts';
 
 // 注册语言
 hljs.registerLanguage('c', c)
@@ -647,7 +647,7 @@ const runCode = async () => {
 
   // 清空终端并显示启动信息
   terminal.clear();
-  terminal.writeln(`\x1b[1;33m${t('>>> 执行 {lang} 代码...', { lang: lang.toUpperCase() })}\x1b[0m`);
+  terminal.writeln(`\x1b[1;33m${(t as any)('>>> 执行 {lang} 代码...', { lang: lang.toUpperCase() })}\x1b[0m`);
   terminal.writeln('');
 
   try {
@@ -682,7 +682,7 @@ const runCode = async () => {
 
     wsConnection.onerror = () => {
       terminal.write('\x1b[31m[' + t('错误') + '] ' + t('无法连接到后端服务') + '\x1b[0m\r\n');
-      terminal.write(`\x1b[90m` + t('请确保后端已在 {host} 启动', { host: API_BASE || window.location.origin }) + `\x1b[0m\r\n`);
+      terminal.write(`\x1b[90m` + (t as any)('请确保后端已在 {host} 启动', { host: API_BASE || window.location.origin }) + `\x1b[0m\r\n`);
       terminalStatus.value = 'disconnected';
       isRunning.value = false;
     };

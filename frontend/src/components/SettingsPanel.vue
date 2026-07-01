@@ -341,7 +341,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useSettings } from '../composables/useSettings.ts';
 import { useI18n } from '../composables/useI18n.ts';

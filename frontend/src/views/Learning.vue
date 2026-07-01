@@ -151,11 +151,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
 import { useParticles } from '../composables/useParticles.ts';
 import { useI18n } from '../composables/useI18n.ts';
-import { plan } from '../data/learning-plan.js';
+import { plan } from '../data/learning-plan.ts';
 
 const { t } = useI18n();
 
@@ -243,7 +243,7 @@ const completedSteps = computed(() => {
     const pi = plan.indexOf(p);
     const wi = p.weeks.indexOf(w);
     const ti = w.tasks.indexOf(t);
-    return [pi, wi, ti, si];
+    return [pi, wi, ti, si] as const;
   }
 });
 

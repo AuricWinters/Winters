@@ -108,7 +108,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 import { useI18n } from '../../composables/useI18n.ts';
 import { useParticles } from '../../composables/useParticles.ts';
@@ -122,7 +122,7 @@ let audioCtx = null;
 function initAudio() {
   if (!audioCtx) {
     try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
     } catch (e) {
       audioCtx = null;
     }
@@ -221,14 +221,14 @@ function createGridCells() {
   for (let i = 0; i < SIZE * SIZE; i++) {
     const cell = document.createElement('div');
     cell.className = 'grid-cell';
-    cell.dataset.index = i;
+    cell.dataset.index = String(i);
     gameGrid.appendChild(cell);
 
     const slot = document.createElement('div');
     slot.className = 'tile-slot';
-    slot.dataset.index = i;
-    slot.dataset.row = Math.floor(i / SIZE);
-    slot.dataset.col = i % SIZE;
+    slot.dataset.index = String(i);
+    slot.dataset.row = String(Math.floor(i / SIZE));
+    slot.dataset.col = String(i % SIZE);
     tilesLayer.appendChild(slot);
   }
 }

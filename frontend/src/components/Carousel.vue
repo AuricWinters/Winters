@@ -9,7 +9,7 @@
         :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
       >
         <div
-          v-for="(slide, index) in slides"
+          v-for="(slide, index) in slidesData"
           :key="index"
           class="carousel-slide"
         >
@@ -71,7 +71,7 @@
     <!-- 指示器 -->
     <div class="carousel-indicators">
       <button
-        v-for="(slide, index) in slides"
+        v-for="(slide, index) in slidesData"
         :key="index"
         class="carousel-indicator"
         :class="{ active: currentSlide === index }"
@@ -82,8 +82,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 
@@ -133,6 +133,7 @@ const props = defineProps({
 
 const currentSlide = ref(0);
 const carouselWrapper = ref(null);
+const slidesData = computed(() => props.slides as any[]);
 let autoplayTimer = null;
 
 const nextSlide = () => {

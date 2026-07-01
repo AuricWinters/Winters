@@ -17,7 +17,7 @@
       <div
         class="card"
         :style="getCardInnerStyle(card, index)"
-        @click="shouldEnableClick && sendToBack(card.id)"
+        @click="sendToBackOnClick && sendToBack(card.id)"
       >
         <img
           v-if="typeof card.content === 'string'"
@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({

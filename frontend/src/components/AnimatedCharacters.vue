@@ -142,7 +142,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue';
 
 // Props

@@ -129,7 +129,7 @@ const seqRef = ref<HTMLElement | null>(null)
 
 const seqWidth = ref(0)
 const seqHeight = ref(0)
-const copyCount = ref(ANIMATION_CONFIG.MIN_COPIES)
+const copyCount = ref<number>(ANIMATION_CONFIG.MIN_COPIES)
 const isHovered = ref(false)
 
 // ---- Computed ----

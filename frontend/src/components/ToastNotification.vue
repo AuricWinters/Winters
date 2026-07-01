@@ -111,7 +111,7 @@
   </TransitionGroup>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useToast } from '../composables/useToast.ts';
 
 const { toasts, removeToast } = useToast();

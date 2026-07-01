@@ -279,7 +279,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from '../composables/useI18n.ts';
@@ -322,7 +322,7 @@ function formatDate(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return dateStr;
     const now = new Date();
-    const diff = now - d;
+    const diff = Number(now) - Number(d);
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
@@ -394,7 +394,7 @@ function nestComments(flatComments) {
 
   // 先排序：按 created_at 升序
   const sorted = [...flatComments].sort((a, b) => {
-    return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+    return Number(new Date(a.created_at || 0)) - Number(new Date(b.created_at || 0));
   });
 
   sorted.forEach(c => {
@@ -439,7 +439,7 @@ async function submitComment() {
 
   commentLoading.value = true;
   try {
-    const body = { content };
+    const body: Record<string, any> = { content };
     if (replyTo.value) {
       body.parent_id = replyTo.value.id;
       body.parent_author = replyTo.value.author_name;
@@ -494,7 +494,7 @@ function findComment(commentList, id) {
 // 设置回复目标
 function setReplyTo(comment) {
   replyTo.value = comment;
-  document.querySelector('.comment-textarea')?.focus();
+  (document.querySelector('.comment-textarea') as HTMLElement)?.focus();
 }
 
 // 取消回复

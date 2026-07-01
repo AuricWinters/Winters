@@ -258,7 +258,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 import { ref, onMounted, computed } from 'vue';
 import ContributionHeatmap from '../components/ContributionHeatmap.vue';
@@ -317,11 +317,11 @@ const loadTimeline = async () => {
 const handleStats = () => {
   const startDate = new Date('2026-01-01');
   const today = new Date();
-  safeDays.value = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  safeDays.value = Math.floor((Number(today) - Number(startDate)) / (1000 * 60 * 60 * 24));
 
   // 使用 localStorage 作为临时方案
-  views.value = parseInt(localStorage.getItem('websiteViews') || 0) + 1;
-  localStorage.setItem('websiteViews', views.value);
+  views.value = Number(localStorage.getItem('websiteViews') || 0) + 1;
+  localStorage.setItem('websiteViews', String(views.value));
 
   formattedViews.value =
     views.value >= 1000 ? (views.value / 1000).toFixed(1) + 'k' : views.value.toString();

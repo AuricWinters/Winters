@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="floating-lines-container" :style="{ mixBlendMode: mixBlendMode }" />
+  <div ref="containerRef" class="floating-lines-container" :style="{ mixBlendMode: mixBlendMode } as any" />
 </template>
 
 <script setup lang="ts">

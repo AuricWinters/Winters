@@ -293,12 +293,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../composables/useI18n.ts';
 import AnimatedCharacters from '../components/AnimatedCharacters.vue';
-import { API_BASE } from '../config.js';
+import { API_BASE } from '../config.ts';
 import { useParticles } from '../composables/useParticles.ts';
 import { useToast } from '../composables/useToast.ts';
 

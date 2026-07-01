@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -68,7 +68,7 @@ onMounted(async () => {
       if (seg.fixed) continue
 
       // Gravity
-      seg.vy += props.gravity[1] * dt * 10
+      seg.vy += +(props.gravity[1]) * dt * 10
 
       // Spring toward original position
       const dx = seg.ox - seg.x

@@ -2,7 +2,7 @@
   <span class="gradient-text">{{ text }}<slot /></span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   text: { type: String, default: '' },
 })

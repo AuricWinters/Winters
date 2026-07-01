@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -24,7 +24,7 @@ const props = defineProps({
   variant: { type: Number, default: 1 },
 })
 
-const containerRef = ref(null)
+const containerRef = ref<HTMLDivElement | null>(null)
 let rafId = null
 let images = []
 let imgPosition = 0

@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, reactive } from 'vue'
 
 const props = defineProps({
@@ -81,7 +81,7 @@ const DEFAULT_IMAGES = [
 ]
 
 const images = computed(() => {
-  const pool = props.images.length ? props.images : DEFAULT_IMAGES
+  const pool = (props.images.length ? props.images : DEFAULT_IMAGES) as any[]
   return pool.map(img => typeof img === 'string' ? { src: img, alt: '' } : img)
 })
 
@@ -114,6 +114,14 @@ function getItemStyle(it) {
     '--item-size-x': it.sizeX,
     '--item-size-y': it.sizeY,
   }
+}
+
+function onTileClick() {
+  // placeholder: tile click handler
+}
+
+function onTilePointerUp() {
+  // placeholder: tile pointer-up handler
 }
 
 function applyTransform(xDeg, yDeg) {

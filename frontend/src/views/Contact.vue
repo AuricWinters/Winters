@@ -121,7 +121,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useParticles } from '../composables/useParticles.ts';
 import { useScrollReveal } from '../composables/useScrollReveal.ts';

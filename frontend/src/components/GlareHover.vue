@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // Pure CSS — no JS needed
 </script>
 

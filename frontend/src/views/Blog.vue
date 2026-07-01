@@ -75,7 +75,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 import { reactive, computed, onMounted } from 'vue';
@@ -104,11 +104,17 @@ const state = reactive({
   activeCategory: 'all',
 });
 
+const loading = computed(() => state.loading);
+const activeCategory = computed({
+  get: () => state.activeCategory,
+  set: (val: string) => { state.activeCategory = val; }
+});
+
 const filteredPosts = computed(() => {
   if (state.activeCategory === 'all') {
     return state.posts;
   }
-  return state.posts.filter((post) => post.category === state.activeCategory);
+  return state.posts.filter((post: any) => post.category === state.activeCategory);
 });
 
 async function fetchPosts() {

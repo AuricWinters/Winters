@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useParticles } from '../composables/useParticles.ts';
 import { useI18n } from '../composables/useI18n.ts';

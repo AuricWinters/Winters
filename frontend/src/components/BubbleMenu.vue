@@ -79,7 +79,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 
 const props = defineProps({
@@ -112,7 +112,7 @@ const defaultItems = [
   { label: 'contact', href: '#', rotation: -8, hoverStyles: { bgColor: '#8b5cf6', textColor: '#ffffff' } },
 ]
 
-const menuItems = computed(() => (props.items && props.items.length) ? props.items : defaultItems)
+const menuItems = computed(() => ((props.items && props.items.length) ? props.items : defaultItems) as any[])
 
 const containerClassName = computed(() => {
   return ['bubble-menu', props.useFixedPosition ? 'fixed' : 'absolute', props.className].filter(Boolean).join(' ')

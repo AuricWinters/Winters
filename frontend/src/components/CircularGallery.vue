@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -54,7 +54,7 @@ onMounted(async () => {
     { image: 'https://picsum.photos/seed/17/800/600?grayscale', text: 'Santorini' },
     { image: 'https://picsum.photos/seed/8/800/600?grayscale', text: 'Blurry Lights' },
   ]
-  const galleryItems = (props.items && props.items.length) ? props.items : defaultItems
+  const galleryItems = ((props.items && props.items.length) ? props.items : defaultItems) as any[]
   const allItems = [...galleryItems, ...galleryItems]
   const loadedImages = []
 

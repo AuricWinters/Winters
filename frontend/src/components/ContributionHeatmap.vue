@@ -52,14 +52,14 @@
         />
       </div>
       <div class="progress-stats">
-        <span>{{ t('活跃 {count} 个工作日 / 目标 {goal} 个', { count: activeWorkdays, goal: workdayGoal }) }}</span>
-        <span>{{ t('共 {count} 个工作日', { count: totalWorkdays }) }}</span>
+        <span>{{ t(`活跃 ${activeWorkdays} 个工作日 / 目标 ${workdayGoal} 个`) }}</span>
+        <span>{{ t(`共 ${totalWorkdays} 个工作日`) }}</span>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();

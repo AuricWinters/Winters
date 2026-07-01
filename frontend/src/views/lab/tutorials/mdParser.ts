@@ -10,12 +10,54 @@
  * - 引用块(>): 存储解释文本
  */
 
+/** 语言元信息 */
+export interface LanguageMeta {
+  id: string
+  name: string
+  icon: string
+  version: string
+  description: string
+}
+
+/** 单个代码示例 */
+export interface TutorialExample {
+  title: string
+  code: string
+  explanation: string
+}
+
+/** 单个教程 */
+export interface Tutorial {
+  id: string
+  title: string
+  icon: string
+  description: string
+  difficulty: string
+  examples: TutorialExample[]
+}
+
+/** 解析完成的语言对象 */
+export interface ParsedLanguage {
+  id: string
+  name: string
+  icon: string
+  version: string
+  description: string
+  tutorials: Tutorial[]
+}
+
+/** Front matter 分离结果 */
+interface FrontMatterResult {
+  frontMatter: string
+  content: string
+}
+
 /**
  * 解析完整的MD教程文件
- * @param {string} mdContent - MD文件的原始内容
- * @returns {Object} 与原JS格式完全兼容的语言对象
+ * @param mdContent - MD文件的原始内容
+ * @returns 与原JS格式完全兼容的语言对象
  */
-export function parseTutorialMd(mdContent) {
+export function parseTutorialMd(mdContent: string): ParsedLanguage {
   if (!mdContent || typeof mdContent !== 'string') {
     throw new Error('Invalid markdown content: content is empty or not a string')
   }
@@ -40,16 +82,16 @@ export function parseTutorialMd(mdContent) {
     }
   } catch (error) {
     console.error('Failed to parse tutorial MD:', error)
-    throw new Error(`MD parsing error: ${error.message}`)
+    throw new Error(`MD parsing error: ${(error as Error).message}`)
   }
 }
 
 /**
  * 分离YAML front matter和正文内容
- * @param {string} content - 完整的MD内容
- * @returns {{ frontMatter: string, content: string }}
+ * @param content - 完整的MD内容
+ * @returns front matter和正文分离结果
  */
-function separateFrontMatter(content) {
+function separateFrontMatter(content: string): FrontMatterResult {
   // 检查是否以 --- 开头（YAML front matter标记）
   if (!content.startsWith('---')) {
     // 没有front matter，整个内容都是正文
@@ -70,11 +112,11 @@ function separateFrontMatter(content) {
 
 /**
  * 解析YAML front matter提取语言信息
- * @param {string} yamlContent - YAML格式的front matter内容
- * @returns {{ id: string, name: string, icon: string, version: string, description: string }}
+ * @param yamlContent - YAML格式的front matter内容
+ * @returns 语言元信息
  */
-function parseFrontMatter(yamlContent) {
-  const info = {
+function parseFrontMatter(yamlContent: string): LanguageMeta {
+  const info: LanguageMeta = {
     id: '',
     name: '',
     icon: '',
@@ -101,7 +143,7 @@ function parseFrontMatter(yamlContent) {
       const cleanValue = value.replace(/^["']|["']$/g, '').trim()
 
       if (key in info) {
-        info[key] = cleanValue
+        (info as unknown as Record<string, string>)[key] = cleanValue
       }
     }
   }
@@ -111,17 +153,17 @@ function parseFrontMatter(yamlContent) {
 
 /**
  * 解析教程列表
- * @param {string} content - MD正文内容（不含front matter）
- * @returns {Array} 教程数组
+ * @param content - MD正文内容（不含front matter）
+ * @returns 教程数组
  */
-function parseTutorials(content) {
-  const tutorials = []
+function parseTutorials(content: string): Tutorial[] {
+  const tutorials: Tutorial[] = []
 
   // 使用正则匹配所有二级标题及其后续内容
   // 二级标题格式： ## Title <!-- tutorial-id: xxx | icon: xxx | difficulty: xxx -->
   const tutorialRegex = /##\s+(.+?)\s*<!--\s*tutorial-id:\s*([^|]+)\s*\|\s*icon:\s*([^|]+)\s*\|\s*difficulty:\s*([^>]+)\s*-->/g
 
-  let match
+  let match: RegExpExecArray | null
   while ((match = tutorialRegex.exec(content)) !== null) {
     const title = match[1].trim()
     const id = match[2].trim()
@@ -132,7 +174,7 @@ function parseTutorials(content) {
     const startIndex = match.index
     const nextHeadingIndex = content.indexOf('\n## ', startIndex + match[0].length)
 
-    let tutorialContent
+    let tutorialContent: string
     if (nextHeadingIndex !== -1) {
       tutorialContent = content.slice(startIndex + match[0].length, nextHeadingIndex).trim()
     } else {
@@ -160,16 +202,16 @@ function parseTutorials(content) {
 
 /**
  * 提取教程描述（第一个普通段落）
- * @param {string} content - 教程内容
- * @returns {string} 描述文本
+ * @param content - 教程内容
+ * @returns 描述文本
  */
-function extractDescription(content) {
+function extractDescription(content: string): string {
   // 移除代码块
   const withoutCodeBlocks = removeCodeBlocks(content)
 
   // 按行处理，找到第一个非空、非注释、非引用块的段落
   const lines = withoutCodeBlocks.split('\n')
-  let descriptionLines = []
+  const descriptionLines: string[] = []
   let inDescription = false
 
   for (const line of lines) {
@@ -200,17 +242,17 @@ function extractDescription(content) {
 
 /**
  * 解析代码示例列表
- * @param {string} tutorialContent - 教程内容
- * @returns {Array} 示例数组
+ * @param tutorialContent - 教程内容
+ * @returns 示例数组
  */
-function parseExamples(tutorialContent) {
-  const examples = []
+function parseExamples(tutorialContent: string): TutorialExample[] {
+  const examples: TutorialExample[] = []
 
   // 使用正则匹配所有三级标题和其后的代码块及解释
   // 三级标题格式： ### ExampleTitle
   const exampleRegex = /###\s+(.+?)(?:\n|$)/g
 
-  let exampleMatch
+  let exampleMatch: RegExpExecArray | null
   while ((exampleMatch = exampleRegex.exec(tutorialContent)) !== null) {
     const exampleTitle = exampleMatch[1].trim()
 
@@ -218,7 +260,7 @@ function parseExamples(tutorialContent) {
     const exampleStartIndex = exampleMatch.index
     const nextExampleIndex = tutorialContent.indexOf('\n### ', exampleStartIndex + exampleMatch[0].length)
 
-    let exampleContent
+    let exampleContent: string
     if (nextExampleIndex !== -1) {
       exampleContent = tutorialContent.slice(exampleStartIndex + exampleMatch[0].length, nextExampleIndex).trim()
     } else {
@@ -245,10 +287,10 @@ function parseExamples(tutorialContent) {
 
 /**
  * 从内容中提取第一个代码块
- * @param {string} content - 内容文本
- * @returns {string} 代码内容
+ * @param content - 内容文本
+ * @returns 代码内容
  */
-function extractCodeBlock(content) {
+function extractCodeBlock(content: string): string {
   // 匹配 ``` ... ``` 代码块（支持多行）
   const codeBlockRegex = /```[\w]*\n([\s\S]*?)```/g
   const match = codeBlockRegex.exec(content)
@@ -262,14 +304,14 @@ function extractCodeBlock(content) {
 
 /**
  * 从内容中提取解释文本
- * @param {string} content - 内容文本
- * @returns {string} 解释文本
+ * @param content - 内容文本
+ * @returns 解释文本
  */
-function extractExplanation(content) {
+function extractExplanation(content: string): string {
   // 方法1: 尝试提取引用块内容
   const quoteRegex = /^>\s*(.+)$/gm
-  const quoteMatches = []
-  let quoteMatch
+  const quoteMatches: string[] = []
+  let quoteMatch: RegExpExecArray | null
 
   while ((quoteMatch = quoteRegex.exec(content)) !== null) {
     quoteMatches.push(quoteMatch[1].trim())
@@ -292,19 +334,19 @@ function extractExplanation(content) {
 
 /**
  * 移除内容中的所有代码块
- * @param {string} content - 原始内容
- * @returns {string} 移除代码块后的内容
+ * @param content - 原始内容
+ * @returns 移除代码块后的内容
  */
-function removeCodeBlocks(content) {
+function removeCodeBlocks(content: string): string {
   return content.replace(/```[\w]*\n[\s\S]*?```/g, '').trim()
 }
 
 /**
  * 验证解析结果是否有效
- * @param {Object} parsedData - 解析后的数据对象
- * @returns {boolean} 是否有效
+ * @param parsedData - 解析后的数据对象
+ * @returns 是否有效
  */
-export function validateParsedData(parsedData) {
+export function validateParsedData(parsedData: any): boolean {
   if (!parsedData || typeof parsedData !== 'object') return false
 
   const requiredFields = ['id', 'name', 'icon', 'version', 'description', 'tutorials']

@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
 defineProps({
@@ -35,7 +35,7 @@ let observer
 function onEnter(i) {
   activeIndex.value = i
   // Push siblings away
-  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item')
+  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item') as NodeListOf<HTMLElement> | undefined
   cards?.forEach((card, j) => {
     if (j === i) return
     const offset = (j - i) * 8
@@ -45,7 +45,7 @@ function onEnter(i) {
 
 function onLeave() {
   activeIndex.value = -1
-  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item')
+  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item') as NodeListOf<HTMLElement> | undefined
   cards?.forEach(card => { card.style.transform = '' })
 }
 
@@ -54,14 +54,14 @@ onMounted(() => {
     (entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return
-        entry.target.style.transform = 'scale(1)'
+        ;(entry.target as HTMLElement).style.transform = 'scale(1)'
         observer.unobserve(entry.target)
       })
     },
     { threshold: 0.1 }
   )
 
-  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item')
+  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item') as NodeListOf<HTMLElement> | undefined
   cards?.forEach((card, i) => {
     card.style.transform = 'scale(0)'
     card.addEventListener('mouseenter', () => onEnter(i))
@@ -71,7 +71,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item')
+  const cards = wrapRef.value?.querySelectorAll('.bounce-card-item') as NodeListOf<HTMLElement> | undefined
   cards?.forEach(card => {
     card.removeEventListener('mouseenter', onEnter)
     card.removeEventListener('mouseleave', onLeave)

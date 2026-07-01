@@ -2,7 +2,7 @@
   <span class="shiny-text">{{ text }}<slot /></span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   text: { type: String, default: '' },
   speed: { type: Number, default: 4 },

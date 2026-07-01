@@ -287,7 +287,7 @@
   <div
     class="mobile-nav-overlay"
     :class="{ show: mobileMenuOpen }"
-    aria-hidden="!mobileMenuOpen"
+    :aria-hidden="!mobileMenuOpen"
     @click="closeMobileMenu"
   />
   <nav
@@ -357,7 +357,7 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted, watch, onUnmounted, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user.ts';
@@ -446,8 +446,8 @@ const toggleUserMenu = () => {
 
 const openSettings = () => {
   closeUserMenu();
-  if (window.openSettingsPanel) {
-    window.openSettingsPanel();
+  if ((window as any).openSettingsPanel) {
+    (window as any).openSettingsPanel();
   } else {
     console.error('window.openSettingsPanel is not defined');
     // 尝试触发自定义事件作为备选方案
@@ -488,9 +488,9 @@ const initNavGlider = () => {
 onMounted(() => {
   // 监听全局鼠标移动，用于更新雪花背景的鼠标坐标
   document.addEventListener('mousemove', (e) => {
-    if (!window.mouse) window.mouse = { x: null, y: null };
-    window.mouse.x = e.clientX;
-    window.mouse.y = e.clientY;
+    if (!(window as any).mouse) (window as any).mouse = { x: null, y: null };
+    (window as any).mouse.x = e.clientX;
+    (window as any).mouse.y = e.clientY;
   });
 
   // 添加全局点击事件监听器，用于关闭用户菜单

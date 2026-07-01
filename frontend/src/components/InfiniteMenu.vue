@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -69,7 +69,7 @@ onMounted(async () => {
   menuItems.forEach((item, i) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
-    img.src = item.image
+    img.src = (item as any).image
     loadedImages.push({ img, item, angle: (i / menuItems.length) * Math.PI * 2 })
   })
 

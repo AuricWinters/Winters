@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { markRaw } from 'vue'
 import ShowcaseCard from '../../components/ShowcaseCard.vue'
 import DotField from '../../components/DotField.vue'

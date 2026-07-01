@@ -413,7 +413,7 @@ onMounted(() => {
     resizeObserver = new ResizeObserver(() => buildGrid())
     if (wrapperRef.value) resizeObserver.observe(wrapperRef.value)
   } else {
-    window.addEventListener('resize', buildGrid)
+    (window as any).addEventListener('resize', buildGrid)
   }
 
   // 启动渲染循环

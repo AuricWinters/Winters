@@ -27,8 +27,8 @@ interface Blog {
 export const useDataStore = defineStore('data', {
   state: (): { profile: Profile; projects: Project[]; blogs: Blog[] } => ({
     profile: profileData as Profile,
-    projects: projectsData as Project[],
-    blogs: blogsData as Blog[],
+    projects: projectsData as unknown as Project[],
+    blogs: blogsData as unknown as Blog[],
   }),
   getters: {
     latestBlogs: (state): Blog[] => state.blogs.slice(0, 3),

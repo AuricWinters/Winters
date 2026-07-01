@@ -403,7 +403,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useI18n } from '../composables/useI18n.ts';
 import { useParticles } from '../composables/useParticles.ts';

@@ -113,17 +113,17 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from '../../composables/useI18n.ts';
 const { t } = useI18n();
 
 const router = useRouter();
-const canvasRef = ref(null);
-let animationId = null;
-let particles = [];
-let mouse = { x: null, y: null };
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+let animationId: number | null = null;
+let particles: any[] = [];
+let mouse: { x: number | null; y: number | null } = { x: null, y: null };
 
 const colorPresets = ['#EC4899', '#DB2777', '#F472B6', '#F9A8D4', '#ec4899', '#10b981', '#f59e0b'];
 
@@ -163,7 +163,16 @@ function getRandomColor() {
 }
 
 class Particle {
-  constructor(canvas, ctx) {
+  canvas: any;
+  ctx: any;
+  x: any;
+  y: any;
+  vx: any;
+  vy: any;
+  radius: any;
+  color: any;
+
+  constructor(canvas: any, ctx: any) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.x = Math.random() * canvas.width;
@@ -275,8 +284,8 @@ function animate() {
   animationId = requestAnimationFrame(animate);
 }
 
-function updateParticles() {
-  const refreshColors = Boolean(arguments[0]?.refreshColors);
+function updateParticles(opts?: any) {
+  const refreshColors = Boolean(opts?.refreshColors);
 
   // 调整粒子数量
   const canvas = canvasRef.value;

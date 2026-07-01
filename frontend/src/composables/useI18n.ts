@@ -1,8 +1,8 @@
 import { computed, ComputedRef } from 'vue';
 import { useSettingsStore } from '../stores/settings.ts';
-import zhCN from '../locales/zh-CN.js';
-import zhTW from '../locales/zh-TW.js';
-import enUS from '../locales/en-US.js';
+import zhCN from '../locales/zh-CN.ts';
+import zhTW from '../locales/zh-TW.ts';
+import enUS from '../locales/en-US.ts';
 
 const locales: Record<string, any> = { 'zh-CN': zhCN, 'zh-TW': zhTW, 'en-US': enUS };
 

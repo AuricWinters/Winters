@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, useSlots, nextTick } from 'vue'
 
 const props = defineProps({
@@ -46,10 +46,10 @@ function placeNow(el, slot, skew) {
 
 onMounted(async () => {
   await nextTick()
-  const container = containerRef.value
+  const container = containerRef.value as HTMLElement | null
   if (!container) return
 
-  const cards = Array.from(container.children).filter(el => el.classList.contains('card'))
+  const cards = Array.from(container.children).filter((el: Element) => el.classList.contains('card')) as HTMLElement[]
   if (cards.length < 2) return
 
   cardRefs = cards
@@ -86,7 +86,7 @@ onMounted(async () => {
         const el = cards[idx]
         const slot = makeSlot(i, props.cardDistance, props.verticalDistance, cards.length)
         el.style.transition = `transform ${config.durMove}s cubic-bezier(0.68, -0.55, 0.27, 1.55), z-index 0s`
-        el.style.zIndex = slot.zIndex
+        el.style.zIndex = String(slot.zIndex)
         el.style.transform = `translate3d(${slot.x}px, ${slot.y}px, ${slot.z}px)`
       })
 
@@ -94,7 +94,7 @@ onMounted(async () => {
       setTimeout(() => {
         const backSlot = makeSlot(cards.length - 1, props.cardDistance, props.verticalDistance, cards.length)
         elFront.style.transition = `transform ${config.durReturn}s cubic-bezier(0.68, -0.55, 0.27, 1.55), z-index 0s`
-        elFront.style.zIndex = backSlot.zIndex
+        elFront.style.zIndex = String(backSlot.zIndex)
         elFront.style.transform = `translate3d(${backSlot.x}px, ${backSlot.y}px, ${backSlot.z}px)`
 
         setTimeout(() => {

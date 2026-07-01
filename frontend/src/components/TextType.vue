@@ -6,7 +6,7 @@
   >
     <span
       class="text-type__content"
-      :style="{ color: currentColor }"
+      :style="{ color: currentColor } as any"
     >{{ displayedText }}</span>
     <span
       v-if="showCursor"
@@ -16,7 +16,7 @@
   </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -57,7 +57,7 @@ const currentColor = computed(() => {
 
 const hideCursor = computed(() => {
   if (!props.hideCursorWhileTyping) return false
-  return currentCharIndex.value < textArray.value[currentTextIndex.value].length || isDeleting.value
+  return currentCharIndex.value < (textArray.value[currentTextIndex.value] as any).length || isDeleting.value
 })
 
 let timeouts = []
@@ -78,7 +78,7 @@ function schedule(fn, delay) {
 
 function runTypingAnimation() {
   const currentText = textArray.value[currentTextIndex.value]
-  const processedText = props.reverseMode ? currentText.split('').reverse().join('') : currentText
+  const processedText = props.reverseMode ? (currentText as any).split('').reverse().join('') : currentText
 
   if (isDeleting.value) {
     if (displayedText.value === '') {

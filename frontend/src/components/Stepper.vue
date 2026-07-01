@@ -18,7 +18,7 @@
                 inactive: currentStep < index + 1,
               },
             ]"
-            :style="disableStepIndicators ? { pointerEvents: 'none', opacity: 0.5 } : {}"
+            :style="(disableStepIndicators ? { pointerEvents: 'none', opacity: 0.5 } : {}) as any"
             @click="
               !disableStepIndicators && handleStepClick(index + 1)
             "
@@ -99,7 +99,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
 const props = defineProps({
@@ -142,17 +142,17 @@ const isCompleted = computed(() => currentStep.value > totalSteps.value)
 const isLastStep = computed(() => currentStep.value === totalSteps.value)
 
 const contentStyle = computed(() => ({
-  position: 'relative',
-  overflow: 'hidden',
-  transition: 'height 0.4s ease',
+  position: 'relative' as any,
+  overflow: 'hidden' as any,
+  transition: 'height 0.4s ease' as any,
   height: isCompleted.value ? '0px' : `${contentHeight.value}px`,
 }))
 
 const transitionStyle = computed(() => ({
-  position: 'relative',
+  position: 'relative' as any,
   transform: `translateX(${direction.value >= 0 ? '0' : '0'}%)`,
   opacity: 1,
-  transition: 'transform 0.4s ease, opacity 0.4s ease',
+  transition: 'transform 0.4s ease, opacity 0.4s ease' as any,
 }))
 
 function handleBack() {
@@ -184,13 +184,13 @@ function handleStepClick(step) {
 }
 
 function useSlots() {
-  return {}
+  return {} as any
 }
 
 onMounted(() => {
   // Measure content height
   const el = document.querySelector('.step-default')
-  if (el) contentHeight.value = el.offsetHeight
+  if (el) contentHeight.value = (el as HTMLElement).offsetHeight
 })
 </script>
 

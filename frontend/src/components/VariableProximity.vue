@@ -29,7 +29,7 @@
   </span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 
 const props = defineProps({
@@ -136,7 +136,7 @@ onMounted(async () => {
       const falloffValue = calculateFalloff(distance)
       const newSettings = parsedSettings.value
         .map(({ axis, fromValue, toValue }) => {
-          const interpolatedValue = fromValue + (toValue - fromValue) * falloffValue
+          const interpolatedValue = Number(fromValue) + (Number(toValue) - Number(fromValue)) * Number(falloffValue)
           return `'${axis}' ${interpolatedValue}`
         })
         .join(', ')

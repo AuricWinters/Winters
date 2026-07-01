@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import { useEffectStore } from '../stores/effects'
 import DotField from './DotField.vue'

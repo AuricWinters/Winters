@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
@@ -56,15 +56,15 @@ const fontStyle = computed(() => '')
 
 const titleStyle = computed(() => ({
   fontFamily: props.fontFamily,
-  textTransform: 'uppercase',
+  textTransform: 'uppercase' as any,
   fontSize: fontSize.value + 'px',
   lineHeight: lineHeight.value,
   transform: `scale(1, ${scaleY.value})`,
-  transformOrigin: 'center top',
+  transformOrigin: 'center top' as any,
   margin: 0,
-  textAlign: 'center',
-  userSelect: 'none',
-  whiteSpace: 'nowrap',
+  textAlign: 'center' as any,
+  userSelect: 'none' as any,
+  whiteSpace: 'nowrap' as any,
   fontWeight: 100,
   width: '100%',
 }))

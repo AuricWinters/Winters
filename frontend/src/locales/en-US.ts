@@ -76,4 +76,4 @@ export default {
   '下载成功':'Downloaded','下载失败':'Download failed','发送成功':'Sent','发送失败':'Send failed',
   '请重试':'Please try again','请检查网络':'Check network','功能开发中':'Feature in development',
   '无法连接到服务器':'Cannot connect to server','加载失败':'Load failed',
-};
+} as Record<string, string>;

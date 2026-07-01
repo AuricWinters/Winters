@@ -200,7 +200,7 @@ const noiseStyles = computed(() => {
 
 const rootStyles = computed(() => ({
   ...(props.mixBlendMode ? { mixBlendMode: props.mixBlendMode } : {}),
-}));
+} as any));
 
 /* ------------------------------------------------------------------ */
 /*  Spotlight animation loop (rAF with exponential smoothing)          */

@@ -31,7 +31,7 @@
           :placeholder="t('请输入手机号')"
           :disabled="isLoading"
           @blur="$emit('blur', 'phone')"
-          @input="$emit('update:phone', $event.target.value)"
+          @input="onPhoneInput"
           @focus="$emit('focus')"
         >
         <div
@@ -104,7 +104,7 @@
           :placeholder="t('请输入密码')"
           :disabled="isLoading"
           @blur="$emit('blur', 'password')"
-          @input="$emit('update:password', $event.target.value)"
+          @input="onPasswordInput"
           @focus="$emit('focus')"
         >
         <button
@@ -160,7 +160,7 @@
         <input
           :checked="remember"
           type="checkbox"
-          @change="$emit('update:remember', $event.target.checked)"
+          @change="onRememberChange"
         >
         <span class="checkbox-custom" />
         <span class="checkbox-label">{{ t('记住我') }}</span>
@@ -186,7 +186,7 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from '../composables/useI18n.ts';
 const { t } = useI18n();
 defineProps({
@@ -198,7 +198,7 @@ defineProps({
   showPassword: { type: Boolean, default: false },
 });
 
-defineEmits([
+const emit = defineEmits([
   'submit',
   'update:phone',
   'update:password',
@@ -208,6 +208,18 @@ defineEmits([
   'focus',
   'forgot',
 ]);
+
+const onPhoneInput = (e: Event) => {
+  emit('update:phone', (e.target as HTMLInputElement).value);
+};
+
+const onPasswordInput = (e: Event) => {
+  emit('update:password', (e.target as HTMLInputElement).value);
+};
+
+const onRememberChange = (e: Event) => {
+  emit('update:remember', (e.target as HTMLInputElement).checked);
+};
 </script>
 
 <style scoped>
