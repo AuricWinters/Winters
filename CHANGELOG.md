@@ -4,22 +4,38 @@ Winters 项目更新日志。
 
 ## [v0.5.3] — 2026-07-01
 
+### Added
+- **前端全量 JS→TS 迁移** — 154 文件（122 `.vue` + 32 `.js`），vue-tsc 0 错误
+- 新增 `/docs` 官方文档页面 — README + CHANGELOG 双标签渲染
+- `tsconfig.json`、`vue-tsc` 类型检查
+- Stop hook（会话结束自动检查 git + 文档）
+- 新增 `CHANGELOG.md`
+
 ### Changed
 - 默认外观偏好：颜色 `sakura`（樱吹雪）+ 风格 `standard`（普通）+ 圆角 `sharp`（直角）
 - 版本号回退（TRAE 误标 v1.0.0）
+- 项目卡片直接跳转目标页面，删除中间介绍页
+- 全局工作流 7 步闭环（去 TRAE、补文档同步）
+- 多 Agent 自动触发策略（重活 + 大量重复）
+- 文档同步三层覆盖（全局 CLAUDE.md + 项目 CLAUDE.md + README.md）
 
 ### Fixed
-- `backend/executor.py` — 3 处 dict key 缺引号（`error:` → `"error":`），直接影响 C/Python/PHP 异常返回
-- `backend/models.py` — 所有正则 pattern 改为 raw string `r"..."`，消除 Python 3.12+ SyntaxWarning；删除 `UserCreate` 中与 `UserBase` 重复的 nickname/phone/email 字段
-- `backend/routes/auth.py` — JWT secret 从硬编码改为 `os.environ.get("WINTERS_JWT_SECRET", ...)`
+- `backend/executor.py` — 3 处 dict key 缺引号（`error:` → `"error":`）
+- `backend/models.py` — 正则改为 raw string；删除 `UserCreate` 重复字段
+- `backend/routes/auth.py` — JWT secret 改为环境变量
 - `backend/main.py` — 补充 `import os`
+- `CodeLab.vue` — `(t as any)` 导致 i18n 模板变量不替换
+- `ContributionHeatmap.vue` — 模板字符串导致英文翻译失效
+- `useCountUp.ts` — 缺少 `target` 时显示 NaN
 
 ### Removed
-- `backend/test_ws.py` ~ `test_ws5.py` — 5 个无断言临时调试脚本
+- 5 个遗留 `test_ws*.py` 临时调试脚本
 - 30+ 过期 spec 归档到 `archive/`
+- `ProjectDetail.vue` — 项目详情中间页
 
 ### Docs
 - `README.md` 补全动效槽位、i18n、主题风格/圆角
+- 新建 `CHANGELOG.md` — v0.1.0 ~ v0.5.3 完整记录
 
 ## [v0.5.2] — 2026-06-28
 
