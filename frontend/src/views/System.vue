@@ -9,10 +9,10 @@
           🧠 {{ t('内部文档') }}
         </div>
         <h1 class="hero-title">
-          Claude Code<br><span class="hero-accent">{{ t('自驱工作站') }}</span>
+          <span class="hero-accent">{{ t('官方文档') }}</span>
         </h1>
         <p class="hero-sub">
-          {{ t('一套让 AI 理解项目、自动干活、记住偏好的完整体系。从开机扫描市场到写完代码推送 GitHub，每一步背后都有配置在驱动。') }}
+          {{ t('Winters 项目的完整说明书。开发闭环、自动化体系、模型调度、记忆系统、权限配置——全在这里。') }}
         </p>
       </header>
 
@@ -340,7 +340,7 @@
       </section>
 
       <footer class="sys-footer">
-        <p>{{ t('Made with ❤️ by Claude Code · 驱动 Winters 项目的自驱工作站') }}</p>
+        <p>{{ t('Made with ❤️ by Claude Code · Winters 项目官方文档') }}</p>
       </footer>
     </div>
   </div>

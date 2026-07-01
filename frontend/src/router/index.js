@@ -132,7 +132,7 @@ const router = createRouter({
       name: 'System',
       component: () => import('../views/System.vue'),
       meta: {
-        title: '自驱工作站 - Winters',
+        title: '官方文档 - Winters',
       },
     },
     {

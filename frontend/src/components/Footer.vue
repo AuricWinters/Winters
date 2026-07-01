@@ -9,7 +9,7 @@
         to="/system"
         style="color: var(--text-light); text-decoration: none;"
       >
-        {{ t('自驱工作站') }}
+        {{ t('官方文档') }}
       </router-link>
     </p>
   </footer>
