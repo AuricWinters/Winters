@@ -52,8 +52,8 @@
         />
       </div>
       <div class="progress-stats">
-        <span>{{ t(`活跃 ${activeWorkdays} 个工作日 / 目标 ${workdayGoal} 个`) }}</span>
-        <span>{{ t(`共 ${totalWorkdays} 个工作日`) }}</span>
+        <span>{{ t('活跃') }} {{ activeWorkdays }} {{ t('个工作日') }} / {{ t('目标') }} {{ workdayGoal }} {{ t('个') }}</span>
+        <span>{{ t('共') }} {{ totalWorkdays }} {{ t('个工作日') }}</span>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@
 
 | 层 | 技术 |
 |------|------|
-| 前端 | Vue 3 (Composition API + `<script setup>`), Vite 5, Pinia, Vue Router 4 |
+| 前端 | Vue 3 (Composition API + `<script setup lang="ts">`), Vite 5, Pinia, Vue Router 4, TypeScript |
 | 后端 | Python FastAPI, SQLite (原生 sqlite3), WebSocket |
 | 样式 | CSS Custom Properties (8 套主题), Scoped CSS, 玻璃拟态 + React Bits 动效 |
 | 测试 | Playwright (E2E / 浏览器截图) |
@@ -23,8 +23,8 @@ Winters/
 │   ├── stores/           # 6 个 Pinia store（user, settings, data, ai, community, effects）
 │   ├── router/           # Vue Router，路由守卫 + 懒加载
 │   ├── styles/modules/   # 9 个 CSS 模块（variables, base, layout, header, components, auth-forms, features, utilities, journal）
-│   ├── utils/            # 工具函数（particles.js, throttle.js）
-│   └── data/             # 静态数据（profile.json, projects.json, blogs.json, learning-plan.js）
+│   ├── utils/            # 工具函数（particles.ts, throttle.ts）
+│   └── data/             # 静态数据（profile.json, projects.json, blogs.json, learning-plan.ts）
 ├── backend/
 │   ├── main.py           # FastAPI 入口 + CORS + 路由挂载
 │   ├── models.py         # Pydantic v2 数据模型
@@ -112,7 +112,7 @@ Winters/
   </div>
 </template>
 <script setup>
-import { useParticles } from '../composables/useParticles.js';
+import { useParticles } from '../composables/useParticles.ts';
 useParticles('.particles-background');
 </script>
 ```

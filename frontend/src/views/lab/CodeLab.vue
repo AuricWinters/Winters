@@ -647,7 +647,7 @@ const runCode = async () => {
 
   // 清空终端并显示启动信息
   terminal.clear();
-  terminal.writeln(`\x1b[1;33m${(t as any)('>>> 执行 {lang} 代码...', { lang: lang.toUpperCase() })}\x1b[0m`);
+  terminal.writeln(`\x1b[1;33m${t('>>> 执行 ') + lang.toUpperCase() + t(' 代码...')}\x1b[0m`);
   terminal.writeln('');
 
   try {
@@ -682,7 +682,7 @@ const runCode = async () => {
 
     wsConnection.onerror = () => {
       terminal.write('\x1b[31m[' + t('错误') + '] ' + t('无法连接到后端服务') + '\x1b[0m\r\n');
-      terminal.write(`\x1b[90m` + (t as any)('请确保后端已在 {host} 启动', { host: API_BASE || window.location.origin }) + `\x1b[0m\r\n`);
+            terminal.write(`\x1b[90m${t('请确保后端已启动')} (${API_BASE || window.location.origin})\x1b[0m\r\n`);
       terminalStatus.value = 'disconnected';
       isRunning.value = false;
     };

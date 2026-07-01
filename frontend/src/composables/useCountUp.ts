@@ -1,11 +1,11 @@
 interface CountUpOptions {
-  target: number;
+  target?: number;
   duration?: number;
 }
 
-export function useCountUp(elRef: any, { target, duration = 1800 }: CountUpOptions = {} as CountUpOptions): void {
+export function useCountUp(elRef: any, { target, duration = 1800 }: CountUpOptions = {}): void {
   const el: HTMLElement | null = elRef.value || elRef;
-  if (!el) return;
+  if (!el || target === undefined) return;
 
   function easeOutExpo(t: number): number {
     return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
