@@ -22,7 +22,7 @@
             <router-link
               v-for="project in projects"
               :key="project.id"
-              :to="'/projects/' + project.id"
+              :to="project.link || '/projects/' + project.id"
               class="project-card"
               tabindex="0"
             >
