@@ -71,7 +71,7 @@ async def health_check():
     return {
         "status": "running",
         "message": "Winters Backend API 服务正常运行",
-        "version": "1.0.0"
+        "version": "0.5.3"
     }
 
 

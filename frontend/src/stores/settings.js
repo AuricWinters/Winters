@@ -16,8 +16,8 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const defaultSettings = {
     language: 'zh-CN',
-    theme: 'journal',
-    themeStyle: 'journal',
+    theme: 'sakura',
+    themeStyle: 'standard',
     cornerStyle: 'sharp',
     darkMode: 'auto',
     animationEnabled: true,
